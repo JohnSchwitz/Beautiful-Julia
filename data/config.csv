@@ -1,0 +1,12 @@
+key,value
+dev_productivity_factor,1.0
+marketing_productivity_factor,1.0
+intern_productivity_factor,0.2
+mktg_month_salary,8
+dev_month_salary,8
+conservative_valuation_multiple_early,8
+optimistic_valuation_multiple_early,12
+conservative_valuation_multiple_late,10
+optimistic_valuation_multiple_late,15
+founder_equity_early,0.85
+founder_equity_late,0.70

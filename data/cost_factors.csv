@@ -1,0 +1,5 @@
+Cost_Factor,Percentage_of_Revenue,Fixed_Monthly_Amount
+Gemini_LLM,0.20,0
+Google_Cloud_Infrastructure,0.15,0
+Subsidiary_Costs,0.0,8
+Administration_Salaries,0.0,8

@@ -1,0 +1,30 @@
+name,planned_hours,sequence,task_type
+Infrastructure,270,1,Development
+Nebula-NLU MVP,108,2,Development
+Nebula-NLU Scale,445,10,Development
+Lingua-NLU MVP,2295,11,Development
+Mktg Digital Foundation,320,1,Marketing
+Content & Lead Generation,252,2,Marketing
+Advanced Operations,272,3,Marketing
+Disclosure - Doc Upload,15,3,Development
+Disclosure - Preprocessing,40,3,Development
+Disclosure - Batch System,15,3,Development
+Disclosure - VS2.0 Integration,30,4,Development
+Disclosure - Query Engine,15,4,Development
+Disclosure - Gemini Summaries,50,4,Development
+Disclosure - BFF API,60,5,Development
+Disclosure - Attorney Dashboard,80,6,Development
+Disclosure - Case Management,60,6,Development
+Disclosure - Advanced Search UI,80,6,Development
+Disclosure - Doc Viewer,80,7,Development
+Disclosure - Mobile UI,50,7,Development
+Disclosure - Multi-user Mgmt,150,8,Development
+Disclosure - Security/Compliance,150,8,Development
+Disclosure - Integrations,150,8,Development
+Disclosure - Analytics,150,8,Development
+Disclosure - Custom Deployment,100,9,Development
+Disclosure - Advanced Legal AI,150,9,Development
+Disclosure - Large Law Firm Feat,200,9,Development
+Disclosure - Conference Platform,80,9,Development
+Disclosure - Corp Legal Tools,120,9,Development
+Disclosure - Market Expansion,90,9,Development
