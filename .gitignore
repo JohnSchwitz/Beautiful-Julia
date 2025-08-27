@@ -1,0 +1,28 @@
+# Julia
+*.jl.cov
+*.jl.*.cov
+*.jl.mem
+deps/deps.jl
+/Manifest.toml
+/dev/
+/docs/build/
+/docs/site/
+
+# Output files
+output/
+*.csv
+*.png
+*.pdf
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
