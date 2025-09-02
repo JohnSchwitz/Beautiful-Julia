@@ -1,8 +1,7 @@
-# load_factors.jl
 module LoadFactors
 
 using DataFrames, CSV
-export ResourcePlan, ProjectTask, load_configuration, load_resource_plan, load_tasks, load_probability_parameters, load_cost_factors
+export ResourcePlan, load_project_tasks, ProjectTask, load_configuration, load_resource_plan, load_tasks, load_probability_parameters, load_cost_factors, load_model_parameters, create_resource_plan
 
 struct ResourcePlan
     work_days::Vector{Int}
@@ -31,7 +30,7 @@ function load_configuration(filepath::String)
     return config_dict
 end
 
-function load_resource_plan(filepath::String, config::Dict)
+function load_resource_plan_with_config(filepath::String, config::Dict)
     df = CSV.read(filepath, DataFrame)
     return ResourcePlan(
         df.work_days,
@@ -48,9 +47,32 @@ function load_resource_plan(filepath::String, config::Dict)
     )
 end
 
+function load_resource_plan()
+    config = load_configuration("data/config.csv")
+    return load_resource_plan_with_config("data/resource_plan.csv", config)
+end
+
+function create_resource_plan()
+    return load_resource_plan()
+end
+
 function load_tasks(filepath::String)
     df = CSV.read(filepath, DataFrame)
-    return [ProjectTask(row.name, row.planned_hours, row.sequence, row.task_type) for row in eachrow(df)]
+    println("DEBUG: Loaded tasks:")
+    for row in eachrow(df)
+        println("  $(row.Name) - Seq: $(row.Sequence) - Hours: $(row.PlannedHours)")
+    end
+    # Handle missing sequence values
+    tasks = ProjectTask[]
+    for row in eachrow(df)
+        seq = ismissing(row.Sequence) ? 999 : row.Sequence  # Put unsequenced tasks at end
+        push!(tasks, ProjectTask(row.Name, row.PlannedHours, seq, row.TaskType))
+    end
+    return tasks
+end
+
+function load_project_tasks()
+    return load_tasks("data/project_tasks.csv")
 end
 
 function load_probability_parameters(filepath::String)
@@ -66,9 +88,27 @@ function load_probability_parameters(filepath::String)
     return params
 end
 
-function load_cost_factors(filepath::String="cost_factors.csv")
+function load_cost_factors(filepath::String="data/cost_factors.csv")
     df = CSV.read(filepath, DataFrame)
     return df
+end
+
+function load_model_parameters(filepath::String="data/model_parameters.csv")
+    df = CSV.read(filepath, DataFrame)
+    params = Dict{String,Any}()
+    for row in eachrow(df)
+        # Handle different data types
+        if row.ParameterValue == "true"
+            params[row.ParameterName] = true
+        elseif row.ParameterValue == "false"
+            params[row.ParameterName] = false
+        elseif occursin("NLU_MVP", string(row.ParameterValue)) || occursin("Foundation", string(row.ParameterValue))
+            params[row.ParameterName] = string(row.ParameterValue)  # Milestone names
+        else
+            params[row.ParameterName] = parse(Float64, string(row.ParameterValue))
+        end
+    end
+    return params
 end
 
 end # module LoadFactors

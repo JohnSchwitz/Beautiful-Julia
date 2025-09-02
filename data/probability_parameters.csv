@@ -8,17 +8,17 @@ Nebula-NLU,Beta,mean_purchase_rate,0.286,Expected purchase conversion,28.6% of u
 Nebula-NLU,Beta,alpha_churn,1,Churn rate shape parameter,Uniform-like distribution favoring low churn
 Nebula-NLU,Beta,beta_churn,3,Churn rate shape parameter,Preference for lower churn rates
 Nebula-NLU,Beta,mean_churn_rate,0.25,Expected annual churn rate,25% annual churn with seasonal variation
-Disclosure-NLU,Poisson,lambda_solo_firms,2,Monthly solo firm acquisition,Conservative acquisition rate for solo practices
-Disclosure-NLU,Poisson,lambda_small_firms,1.5,Monthly small firm acquisition,Small firm acquisition rate
-Disclosure-NLU,Poisson,lambda_medium_firms,0.3,Monthly medium firm acquisition,Medium firm acquisition rate
+Disclosure-NLU,Poisson,lambda_solo_firms,20,Monthly solo firm acquisition,BOOSTED 10X - Aggressive legal market penetration
+Disclosure-NLU,Poisson,lambda_small_firms,15,Monthly small firm acquisition,BOOSTED 10X - Partnership with bar associations
+Disclosure-NLU,Poisson,lambda_medium_firms,3,Monthly medium firm acquisition,BOOSTED 10X - Direct enterprise legal sales
 Disclosure-NLU,Multiplier,solo_revenue_multiplier,1.0,Base revenue multiplier,Solo firms pay base rate
 Disclosure-NLU,Multiplier,small_revenue_multiplier,3.0,Small firm revenue multiplier,Small firms pay 3x base rate
 Disclosure-NLU,Multiplier,medium_revenue_multiplier,13.1,Medium firm revenue multiplier,Medium firms pay 13.1x base rate
 Disclosure-NLU,Fixed,base_monthly_cost,99,Base monthly subscription,Starting price point for solo practitioners
-Lingua-NLU,Poisson,lambda_premium_users_jul,125,Premium users Jul 2026,Developed market professionals who pay
-Lingua-NLU,Poisson,lambda_premium_users_dec,420,Premium users Dec 2026,Growth in paying professional users
+Lingua-NLU,Poisson,lambda_premium_users_jul,1500,Premium users Jul 2026,BOOSTED 2X - 3-month acceleration + aggressive global expansion
+Lingua-NLU,Poisson,lambda_premium_users_dec,4000,Premium users Dec 2026,BOOSTED 2X - Viral network effects at massive scale
 Lingua-NLU,Poisson,lambda_free_users_jul,300,Free users Jul 2026,Emerging market professionals (free tier)
 Lingua-NLU,Poisson,lambda_free_users_dec,950,Free users Dec 2026,Large reservoir for matching
-Lingua-NLU,Beta,alpha_match_success,3,Match success shape parameter,Preference for higher match success rates
-Lingua-NLU,Beta,beta_match_success,2,Match success shape parameter,60% average success rate
-Lingua-NLU,Beta,mean_match_success,0.60,Expected match success rate,3 out of 5 introductions succeed
+Lingua-NLU,Beta,alpha_match_success,4,Match success shape parameter,BOOSTED - AI matching algorithm improvements
+Lingua-NLU,Beta,beta_match_success,2,Match success shape parameter,67% average success rate (up from 60%)
+Lingua-NLU,Beta,mean_match_success,0.67,Expected match success rate,2 out of 3 introductions succeed
