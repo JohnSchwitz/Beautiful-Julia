@@ -49,227 +49,239 @@ function generate_revenue_variability_plot(nebula_f, disclosure_f, lingua_f, par
 end
 
 # Financial Statement Generation Functions
-function _generate_monthly_pnl(plan, nebula_f, disclosure_f, lingua_f)
-    open("monthly_pnl_with_deferred_salaries.csv", "w") do file
-        write(file, "Month,Nebula_Revenue,Disclosure_Revenue,Lingua_Revenue,Total_Revenue,COGS,Gross_Profit,Operating_Expenses,EBITDA,Deferred_Salary,Net_Income\n")
+function _generate_monthly_pnl_table(plan, nebula_f, disclosure_f, lingua_f)
+    pnl_data = []
 
-        for (i, month) in enumerate(plan.months)
-            nebula_rev = i <= length(nebula_f) ? nebula_f[i].revenue_k * 1000 : 0.0
-            disclosure_rev = i <= length(disclosure_f) ? disclosure_f[i].revenue_k * 1000 : 0.0
-            lingua_rev = i <= length(lingua_f) ? lingua_f[i].revenue_k * 1000 : 0.0
-            total_rev = nebula_rev + disclosure_rev + lingua_rev
+    for (i, month) in enumerate(plan.months)
+        nebula_rev = i <= length(nebula_f) ? nebula_f[i].revenue_k * 1000 : 0.0
+        disclosure_rev = i <= length(disclosure_f) ? disclosure_f[i].revenue_k * 1000 : 0.0
+        lingua_rev = i <= length(lingua_f) ? lingua_f[i].revenue_k * 1000 : 0.0
+        total_rev = nebula_rev + disclosure_rev + lingua_rev
 
-            # Correct Gross Margin: 100% during Google Credits phase, then infrastructure costs apply
-            google_credits_exhausted = i > 36  # After 36 months Google Credits run out
-            if google_credits_exhausted
-                cogs = total_rev * 0.15  # 15% infrastructure costs after Google Credits
-            else
-                cogs = 0.0  # 100% gross margin during Google Credits
-            end
-            gross_profit = total_rev - cogs
-
-            # Operating expenses (salaries are OpEx, NOT part of gross margin)
-            dev_cost = plan.experienced_devs[i] * 10000 + plan.intern_devs[i] * 4000
-            marketing_cost = plan.experienced_marketers[i] * 8000 + plan.intern_marketers[i] * 3000
-            opex = dev_cost + marketing_cost + 5000  # Base overhead
-
-            ebitda = gross_profit - opex
-
-            # Deferred salary tracking (first 12 months)
-            deferred_salary = i <= 12 ? 8000 : 0
-
-            net_income = ebitda - deferred_salary
-
-            write(file, "$month,$nebula_rev,$disclosure_rev,$lingua_rev,$total_rev,$cogs,$gross_profit,$opex,$ebitda,$deferred_salary,$net_income\n")
+        # Correct Gross Margin: 100% during Google Credits phase, then infrastructure costs apply
+        google_credits_exhausted = i > 36  # After 36 months Google Credits run out
+        if google_credits_exhausted
+            cogs = total_rev * 0.15  # 15% infrastructure costs after Google Credits
+        else
+            cogs = 0.0  # 100% gross margin during Google Credits
         end
+        gross_profit = total_rev - cogs
+
+        # Operating expenses (salaries are OpEx, NOT part of gross margin)
+        dev_cost = plan.experienced_devs[i] * 10000 + plan.intern_devs[i] * 4000
+        marketing_cost = plan.experienced_marketers[i] * 8000 + plan.intern_marketers[i] * 3000
+        opex = dev_cost + marketing_cost + 5000  # Base overhead
+
+        ebitda = gross_profit - opex
+
+        # Deferred salary tracking (first 12 months)
+        deferred_salary = i <= 12 ? 8000 : 0
+
+        net_income = ebitda - deferred_salary
+
+        push!(pnl_data, (
+            month=month,
+            nebula_rev=round(Int, nebula_rev),
+            disclosure_rev=round(Int, disclosure_rev),
+            lingua_rev=round(Int, lingua_rev),
+            total_rev=round(Int, total_rev),
+            cogs=round(Int, cogs),
+            gross_profit=round(Int, gross_profit),
+            opex=round(Int, opex),
+            ebitda=round(Int, ebitda),
+            deferred_salary=round(Int, deferred_salary),
+            net_income=round(Int, net_income)
+        ))
     end
+
+    return pnl_data
 end
 
-function _generate_sources_uses_analysis(plan, nebula_f, disclosure_f, lingua_f)
-    # 2025 Sources & Uses
-    open("sources_uses_2025.csv", "w") do file
-        write(file, "Category,Item,Amount\n")
-        write(file, "Sources,Founder Investment,50000\n")
-        write(file, "Sources,Google Credits,3000\n")
+function _generate_sources_uses_table(plan, nebula_f, disclosure_f, lingua_f)
+    # Calculate revenue by year
+    months_2025 = ["Sep 2025", "Oct 2025", "Nov 2025", "Dec 2025"]
+    months_2026 = ["Jan 2026", "Feb 2026", "Mar 2026", "Apr 2026", "May 2026", "Jun 2026",
+        "Jul 2026", "Aug 2026", "Sep 2026", "Oct 2026", "Nov 2026", "Dec 2026"]
+    months_2027 = ["Jan 2027", "Feb 2027", "Mar 2027", "Apr 2027", "May 2027", "Jun 2027",
+        "Jul 2027", "Aug 2027", "Sep 2027", "Oct 2027", "Nov 2027", "Dec 2027"]
 
-        # Calculate 2025 revenue
-        months_2025 = ["Sep 2025", "Oct 2025", "Nov 2025", "Dec 2025"]
-        total_2025_rev = 0.0
-        for f in nebula_f
-            if f.month in months_2025
-                total_2025_rev += f.revenue_k
-            end
-        end
-        for f in disclosure_f
-            if f.month in months_2025
-                total_2025_rev += f.revenue_k
-            end
-        end
-        for f in lingua_f
-            if f.month in months_2025
-                total_2025_rev += f.revenue_k
-            end
-        end
+    total_2025_rev = 0.0
+    total_2026_rev = 0.0
+    total_2027_rev = 0.0
 
-        write(file, "Sources,Revenue Q4 2025,$(round(Int, total_2025_rev * 1000))\n")
-        write(file, "Uses,Infrastructure Development,30000\n")
-        write(file, "Uses,MVP Development,25000\n")
-        write(file, "Uses,Operating Expenses,23000\n")
+    for f in nebula_f
+        if f.month in months_2025
+            total_2025_rev += f.revenue_k
+        elseif f.month in months_2026
+            total_2026_rev += f.revenue_k
+        elseif f.month in months_2027
+            total_2027_rev += f.revenue_k
+        end
     end
 
-    # 2026 Sources & Uses
-    open("sources_uses_2026.csv", "w") do file
-        write(file, "Category,Item,Amount\n")
-        write(file, "Sources,Seed Funding,400000\n")
-        write(file, "Sources,Google Credits Tier 2,25000\n")
-
-        # Calculate 2026 revenue
-        months_2026 = ["Jan 2026", "Feb 2026", "Mar 2026", "Apr 2026", "May 2026", "Jun 2026",
-            "Jul 2026", "Aug 2026", "Sep 2026", "Oct 2026", "Nov 2026", "Dec 2026"]
-        total_2026_rev = 0.0
-        for f in nebula_f
-            if f.month in months_2026
-                total_2026_rev += f.revenue_k
-            end
+    for f in disclosure_f
+        if f.month in months_2025
+            total_2025_rev += f.revenue_k
+        elseif f.month in months_2026
+            total_2026_rev += f.revenue_k
+        elseif f.month in months_2027
+            total_2027_rev += f.revenue_k
         end
-        for f in disclosure_f
-            if f.month in months_2026
-                total_2026_rev += f.revenue_k
-            end
-        end
-        for f in lingua_f
-            if f.month in months_2026
-                total_2026_rev += f.revenue_k
-            end
-        end
-
-        write(file, "Sources,Revenue 2026,$(round(Int, total_2026_rev * 1000))\n")
-        write(file, "Uses,Team Expansion,300000\n")
-        write(file, "Uses,Marketing Sales,150000\n")
-        write(file, "Uses,Product Development,100000\n")
-        write(file, "Uses,Operating Expenses,200000\n")
     end
 
-    # 2027 Sources & Uses  
-    open("sources_uses_2027.csv", "w") do file
-        write(file, "Category,Item,Amount\n")
-        write(file, "Sources,Series A,2500000\n")
-        write(file, "Sources,Google Credits Tier 3,100000\n")
-
-        # Calculate 2027 revenue
-        months_2027 = ["Jan 2027", "Feb 2027", "Mar 2027", "Apr 2027", "May 2027", "Jun 2027",
-            "Jul 2027", "Aug 2027", "Sep 2027", "Oct 2027", "Nov 2027", "Dec 2027"]
-        total_2027_rev = 0.0
-        for f in nebula_f
-            if f.month in months_2027
-                total_2027_rev += f.revenue_k
-            end
+    for f in lingua_f
+        if f.month in months_2025
+            total_2025_rev += f.revenue_k
+        elseif f.month in months_2026
+            total_2026_rev += f.revenue_k
+        elseif f.month in months_2027
+            total_2027_rev += f.revenue_k
         end
-        for f in disclosure_f
-            if f.month in months_2027
-                total_2027_rev += f.revenue_k
-            end
-        end
-        for f in lingua_f
-            if f.month in months_2027
-                total_2027_rev += f.revenue_k
-            end
-        end
-
-        write(file, "Sources,Revenue 2027,$(round(Int, total_2027_rev * 1000))\n")
-        write(file, "Uses,International Expansion,800000\n")
-        write(file, "Uses,Enterprise Sales Team,600000\n")
-        write(file, "Uses,R&D Advanced Features,500000\n")
-        write(file, "Uses,Marketing Scale,400000\n")
-        write(file, "Uses,Operating Expenses,500000\n")
     end
+
+    return (
+        year_2025=[
+            ("Sources", "Founder Investment", 50000),
+            ("Sources", "Google Credits", 3000),
+            ("Sources", "Revenue Q4 2025", round(Int, total_2025_rev * 1000)),
+            ("Uses", "Infrastructure Development", 30000),
+            ("Uses", "MVP Development", 25000),
+            ("Uses", "Operating Expenses", 23000)
+        ],
+        year_2026=[
+            ("Sources", "Seed Funding", 400000),
+            ("Sources", "Google Credits Tier 2", 25000),
+            ("Sources", "Revenue 2026", round(Int, total_2026_rev * 1000)),
+            ("Uses", "Team Expansion", 300000),
+            ("Uses", "Marketing Sales", 150000),
+            ("Uses", "Product Development", 100000),
+            ("Uses", "Operating Expenses", 200000)
+        ],
+        year_2027=[
+            ("Sources", "Series A", 2500000),
+            ("Sources", "Google Credits Tier 3", 100000),
+            ("Sources", "Revenue 2027", round(Int, total_2027_rev * 1000)),
+            ("Uses", "International Expansion", 800000),
+            ("Uses", "Enterprise Sales Team", 600000),
+            ("Uses", "R&D Advanced Features", 500000),
+            ("Uses", "Marketing Scale", 400000),
+            ("Uses", "Operating Expenses", 500000)
+        ]
+    )
 end
 
-function _generate_balance_sheet(plan, nebula_f, disclosure_f, lingua_f)
-    open("balance_sheet_three_year.csv", "w") do file
-        write(file, "Date,Cash,Accounts_Receivable,Total_Assets,Deferred_Revenue,Total_Liabilities,Founders_Equity,Investor_Equity,Total_Equity\n")
+function _generate_balance_sheet_table(plan, nebula_f, disclosure_f, lingua_f)
+    key_dates = ["Dec 2025", "Jun 2026", "Dec 2026", "Jun 2027", "Dec 2027"]
+    cash_balance = 50000.0  # Starting cash
+    balance_data = []
 
-        # Key balance sheet dates
-        key_dates = ["Dec 2025", "Jun 2026", "Dec 2026", "Jun 2027", "Dec 2027"]
-        cash_balance = 50000.0  # Starting cash
-
-        for date in key_dates
-            if date == "Dec 2025"
-                cash_balance += 25000 - 78000  # Revenue - expenses
-                ar = 5000
-                deferred_rev = 10000
-                founders_equity = 50000
-                investor_equity = 0
-            elseif date == "Jun 2026"
-                cash_balance += 400000 + 150000 - 300000  # Seed + revenue - expenses
-                ar = 25000
-                deferred_rev = 50000
-                founders_equity = 50000
-                investor_equity = 400000
-            elseif date == "Dec 2026"
-                cash_balance += 800000 - 500000  # More revenue - expenses
-                ar = 80000
-                deferred_rev = 120000
-                founders_equity = 50000
-                investor_equity = 400000
-            elseif date == "Jun 2027"
-                cash_balance += 2500000 + 1200000 - 1000000  # Series A + revenue - expenses
-                ar = 150000
-                deferred_rev = 200000
-                founders_equity = 50000
-                investor_equity = 2900000
-            else  # Dec 2027
-                cash_balance += 2000000 - 1500000  # Revenue - expenses
-                ar = 300000
-                deferred_rev = 400000
-                founders_equity = 50000
-                investor_equity = 2900000
-            end
-
-            total_assets = cash_balance + ar + 50000  # Plus fixed assets
-            total_liabilities = deferred_rev + 25000  # Plus other liabilities
-            total_equity = founders_equity + investor_equity
-
-            write(file, "$date,$cash_balance,$ar,$total_assets,$deferred_rev,$total_liabilities,$founders_equity,$investor_equity,$total_equity\n")
+    for date in key_dates
+        if date == "Dec 2025"
+            cash_balance += 25000 - 78000  # Revenue - expenses
+            ar = 5000
+            deferred_rev = 10000
+            founders_equity = 50000
+            investor_equity = 0
+        elseif date == "Jun 2026"
+            cash_balance += 400000 + 150000 - 300000  # Seed + revenue - expenses
+            ar = 25000
+            deferred_rev = 50000
+            founders_equity = 50000
+            investor_equity = 400000
+        elseif date == "Dec 2026"
+            cash_balance += 800000 - 500000  # More revenue - expenses
+            ar = 80000
+            deferred_rev = 120000
+            founders_equity = 50000
+            investor_equity = 400000
+        elseif date == "Jun 2027"
+            cash_balance += 2500000 + 1200000 - 1000000  # Series A + revenue - expenses
+            ar = 150000
+            deferred_rev = 200000
+            founders_equity = 50000
+            investor_equity = 2900000
+        else  # Dec 2027
+            cash_balance += 2000000 - 1500000  # Revenue - expenses
+            ar = 300000
+            deferred_rev = 400000
+            founders_equity = 50000
+            investor_equity = 2900000
         end
+
+        total_assets = cash_balance + ar + 50000  # Plus fixed assets
+        total_liabilities = deferred_rev + 25000  # Plus other liabilities
+        total_equity = founders_equity + investor_equity
+
+        push!(balance_data, (
+            date=date,
+            cash=round(Int, cash_balance),
+            ar=round(Int, ar),
+            total_assets=round(Int, total_assets),
+            deferred_rev=round(Int, deferred_rev),
+            total_liabilities=round(Int, total_liabilities),
+            founders_equity=round(Int, founders_equity),
+            investor_equity=round(Int, investor_equity),
+            total_equity=round(Int, total_equity)
+        ))
     end
+
+    return balance_data
 end
 
-function _generate_deferred_salary_tracking(plan)
-    open("deferred_salary_tracking.csv", "w") do file
-        write(file, "Month,Monthly_Deferred,Cumulative_Deferred,Payback_Start,Monthly_Payback,Remaining_Balance\n")
+function _generate_deferred_salary_table(plan)
+    salary_data = []
+    monthly_deferred = 8000.0
+    cumulative = 0.0
+    payback_started = false
 
-        monthly_deferred = 8000.0
-        cumulative = 0.0
-        payback_started = false
-
-        for (i, month) in enumerate(plan.months)
-            if i <= 12  # First 12 months - defer salary
-                cumulative += monthly_deferred
-                write(file, "$month,$monthly_deferred,$cumulative,No,0,$cumulative\n")
-            elseif i <= 24  # Next 12 months - start payback
-                if !payback_started
-                    payback_started = true
-                end
-                monthly_payback = cumulative / 12  # Pay back over 12 months
-                cumulative -= monthly_payback
-                write(file, "$month,0,0,Yes,$monthly_payback,$cumulative\n")
-            else
-                write(file, "$month,0,0,Complete,0,0\n")
+    for (i, month) in enumerate(plan.months)
+        if i <= 12  # First 12 months - defer salary
+            cumulative += monthly_deferred
+            push!(salary_data, (
+                month=month,
+                monthly_deferred=round(Int, monthly_deferred),
+                cumulative_deferred=round(Int, cumulative),
+                payback_start="No",
+                monthly_payback=0,
+                remaining_balance=round(Int, cumulative)
+            ))
+        elseif i <= 24  # Next 12 months - start payback
+            if !payback_started
+                payback_started = true
             end
+            monthly_payback = cumulative / 12  # Pay back over 12 months
+            cumulative -= monthly_payback
+            push!(salary_data, (
+                month=month,
+                monthly_deferred=0,
+                cumulative_deferred=0,
+                payback_start="Yes",
+                monthly_payback=round(Int, monthly_payback),
+                remaining_balance=round(Int, cumulative)
+            ))
+        else
+            push!(salary_data, (
+                month=month,
+                monthly_deferred=0,
+                cumulative_deferred=0,
+                payback_start="Complete",
+                monthly_payback=0,
+                remaining_balance=0
+            ))
         end
     end
+
+    return salary_data
 end
 
 function generate_spreadsheet_output(plan, milestones, initial_tasks, hours, nebula_f, disclosure_f, lingua_f, prob_params)
-    # Generate all financial statements
-    _generate_monthly_pnl(plan, nebula_f, disclosure_f, lingua_f)
-    _generate_sources_uses_analysis(plan, nebula_f, disclosure_f, lingua_f)
-    _generate_balance_sheet(plan, nebula_f, disclosure_f, lingua_f)
-    _generate_deferred_salary_tracking(plan)
+    # Generate data tables (but don't save to CSV)
+    pnl_data = _generate_monthly_pnl_table(plan, nebula_f, disclosure_f, lingua_f)
+    sources_uses_data = _generate_sources_uses_table(plan, nebula_f, disclosure_f, lingua_f)
+    balance_data = _generate_balance_sheet_table(plan, nebula_f, disclosure_f, lingua_f)
+    salary_data = _generate_deferred_salary_table(plan)
 
-    # No terminal output - all goes to files
-    println("✅ Generated financial statements: P&L, Sources & Uses, Balance Sheet, Deferred Salary")
+    println("✅ Generated financial data tables (embedded in reports)")
 end
 
 function generate_executive_summary_file(plan, milestones, nebula_f, disclosure_f, lingua_f)
@@ -388,19 +400,19 @@ function generate_three_year_projections_file(plan, milestones, initial_tasks, h
 ## Financial Statements Overview
 
 ### Profit & Loss Statement
-- **File Generated:** `monthly_pnl_with_deferred_salaries.csv`
+- **Data embedded in reports** as monthly P&L tables
 - **Gross Margin:** 100% during Google Credits phase (months 1-36), then 85%
 - **Operating Expenses:** Include team salaries, marketing, and overhead
 - **Deferred Salary:** Founder salary deferred first 12 months, paid back months 13-24
 
 ### Sources & Uses of Funds
-- **Files Generated:** `sources_uses_2025.csv`, `sources_uses_2026.csv`, `sources_uses_2027.csv`
+- **Data embedded in reports** by year (2025, 2026, 2027)
 - **2025:** Founder investment + Google Credits + initial revenue
 - **2026:** Seed funding + Google Credits Tier 2 + scaling revenue
 - **2027:** Series A + Google Credits Tier 3 + substantial revenue
 
 ### Balance Sheet
-- **File Generated:** `balance_sheet_three_year.csv` 
+- **Data embedded in reports** for key milestone dates
 - **Key Dates:** Dec 2025, Jun 2026, Dec 2026, Jun 2027, Dec 2027
 - **Assets:** Cash, Accounts Receivable, Fixed Assets
 - **Liabilities:** Deferred Revenue, Operating Liabilities  
@@ -426,7 +438,7 @@ function generate_three_year_projections_file(plan, milestones, initial_tasks, h
 
 ---
 
-*All financial data exported to CSV files for detailed analysis. Parameters configurable via CSV files without code changes.*
+*All financial data embedded as tables in strategic plan reports. Parameters configurable via CSV files without code changes.*
 """
         )
     end
@@ -435,6 +447,12 @@ function generate_three_year_projections_file(plan, milestones, initial_tasks, h
 end
 
 function generate_complete_strategic_plan_file(plan, milestones, initial_tasks, hours, nebula_f, disclosure_f, lingua_f, prob_params)
+    # Generate financial data tables
+    pnl_data = _generate_monthly_pnl_table(plan, nebula_f, disclosure_f, lingua_f)
+    sources_uses_data = _generate_sources_uses_table(plan, nebula_f, disclosure_f, lingua_f)
+    balance_data = _generate_balance_sheet_table(plan, nebula_f, disclosure_f, lingua_f)
+    salary_data = _generate_deferred_salary_table(plan)
+
     nebula_map = Dict(f.month => f.revenue_k for f in nebula_f)
     disclosure_map = Dict(f.month => f.revenue_k for f in disclosure_f)
     lingua_map = Dict(f.month => f.revenue_k for f in lingua_f)
@@ -675,6 +693,9 @@ function generate_complete_strategic_plan_file(plan, milestones, initial_tasks, 
         )
 
         nebula_mvp_idx = findfirst(f -> f.revenue_k > 0, nebula_f)
+        if nebula_mvp_idx === nothing
+            nebula_mvp_idx = length(nebula_f) + 1
+        end
 
         for (i, f) in enumerate(nebula_f[1:min(24, end)])  # First 24 months
             new_cust = i < nebula_mvp_idx ? "pre-MVP" : string(f.new_customers)
@@ -695,6 +716,9 @@ function generate_complete_strategic_plan_file(plan, milestones, initial_tasks, 
         )
 
         disclosure_mvp_idx = findfirst(f -> f.revenue_k > 0, disclosure_f)
+        if disclosure_mvp_idx === nothing
+            disclosure_mvp_idx = length(disclosure_f) + 1
+        end
 
         for (i, f) in enumerate(disclosure_f[1:min(24, end)])  # First 24 months
             solo = i < disclosure_mvp_idx ? "pre-MVP" : string(f.total_solo)
@@ -790,6 +814,10 @@ function generate_complete_strategic_plan_file(plan, milestones, initial_tasks, 
         )
         mar_2026_total = get(nebula_map, "Mar 2026", 0.0) + get(disclosure_map, "Mar 2026", 0.0) + get(lingua_map, "Mar 2026", 0.0)
         mar_2026_arr = mar_2026_total * 12
+        dec_2026_total = get(nebula_map, "Dec 2026", 0.0) + get(disclosure_map, "Dec 2026", 0.0) + get(lingua_map, "Dec 2026", 0.0)
+        dec_2026_arr = dec_2026_total * 12
+        sep_2027_total = get(nebula_map, "Sep 2027", 0.0) + get(disclosure_map, "Sep 2027", 0.0) + get(lingua_map, "Sep 2027", 0.0)
+        sep_2027_arr = sep_2027_total * 12
 
         write(
             file,
@@ -800,28 +828,14 @@ function generate_complete_strategic_plan_file(plan, milestones, initial_tasks, 
 - **1% Equity Value:** \$$(round(mar_2026_arr * 8/100000, digits=0))K - \$$(round(mar_2026_arr * 12/100000, digits=0))K
 
 ### December 2026 Valuation
-"""
-        )
-        dec_2026_total = get(nebula_map, "Dec 2026", 0.0) + get(disclosure_map, "Dec 2026", 0.0) + get(lingua_map, "Dec 2026", 0.0)
-        dec_2026_arr = dec_2026_total * 12
-
-        write(
-            file,
-            """- **Monthly Recurring Revenue:** \$$(round(Int, dec_2026_total))K
+- **Monthly Recurring Revenue:** \$$(round(Int, dec_2026_total))K
 - **Implied ARR:** \$$(round(dec_2026_arr/1000, digits=1))M
 - **Conservative Valuation (10x ARR):** \$$(round(dec_2026_arr * 10/1000, digits=1))M  
 - **Optimistic Valuation (15x ARR):** \$$(round(dec_2026_arr * 15/1000, digits=1))M
 - **1% Equity Value:** \$$(round(dec_2026_arr * 10/100000, digits=0))K - \$$(round(dec_2026_arr * 15/100000, digits=0))K
 
 ### September 2027 Valuation
-"""
-        )
-        sep_2027_total = get(nebula_map, "Sep 2027", 0.0) + get(disclosure_map, "Sep 2027", 0.0) + get(lingua_map, "Sep 2027", 0.0)
-        sep_2027_arr = sep_2027_total * 12
-
-        write(
-            file,
-            """- **Monthly Recurring Revenue:** \$$(round(Int, sep_2027_total))K
+- **Monthly Recurring Revenue:** \$$(round(Int, sep_2027_total))K
 - **Implied ARR:** \$$(round(sep_2027_arr/1000, digits=1))M
 - **Conservative Valuation (12x ARR):** \$$(round(sep_2027_arr * 12/1000, digits=1))M
 - **Optimistic Valuation (18x ARR):** \$$(round(sep_2027_arr * 18/1000, digits=1))M  
@@ -850,16 +864,94 @@ This represents one realization of the stochastic models showing actual revenue 
 
 ## 🏦 Financial Statements
 
-### Generated Financial Files
+### Monthly Profit & Loss Statement (First 24 Months)
 
-| Statement | File Name | Description |
-|-----------|-----------|-------------|
-| **Profit & Loss** | `monthly_pnl_with_deferred_salaries.csv` | Monthly P&L with correct gross margin calculation |
-| **Sources & Uses 2025** | `sources_uses_2025.csv` | Founder investment, Google Credits, initial revenue |
-| **Sources & Uses 2026** | `sources_uses_2026.csv` | Seed funding, team expansion, marketing scale |
-| **Sources & Uses 2027** | `sources_uses_2027.csv` | Series A, international expansion, enterprise sales |
-| **Balance Sheet** | `balance_sheet_three_year.csv` | Assets, liabilities, equity progression |
-| **Deferred Salary** | `deferred_salary_tracking.csv` | Founder salary deferral and payback schedule |
+| Month | Nebula Rev | Disclosure Rev | Lingua Rev | Total Rev | COGS | Gross Profit | OpEx | EBITDA | Deferred Salary | Net Income |
+|-------|------------|----------------|------------|-----------|------|--------------|------|--------|-----------------|------------|
+"""
+        )
+
+        for (i, pnl) in enumerate(pnl_data[1:min(24, end)])
+            write(file, "| $(pnl.month) | \$$(pnl.nebula_rev) | \$$(pnl.disclosure_rev) | \$$(pnl.lingua_rev) | \$$(pnl.total_rev) | \$$(pnl.cogs) | \$$(pnl.gross_profit) | \$$(pnl.opex) | \$$(pnl.ebitda) | \$$(pnl.deferred_salary) | \$$(pnl.net_income) |\n")
+        end
+
+        write(
+            file,
+            """
+
+### Sources & Uses Analysis
+
+#### 2025 Sources & Uses
+| Category | Item | Amount |
+|----------|------|---------|
+"""
+        )
+
+        for (category, item, amount) in sources_uses_data.year_2025
+            write(file, "| $(category) | $(item) | \$$(amount) |\n")
+        end
+
+        write(
+            file,
+            """
+
+#### 2026 Sources & Uses  
+| Category | Item | Amount |
+|----------|------|---------|
+"""
+        )
+
+        for (category, item, amount) in sources_uses_data.year_2026
+            write(file, "| $(category) | $(item) | \$$(amount) |\n")
+        end
+
+        write(
+            file,
+            """
+
+#### 2027 Sources & Uses
+| Category | Item | Amount |
+|----------|------|---------|
+"""
+        )
+
+        for (category, item, amount) in sources_uses_data.year_2027
+            write(file, "| $(category) | $(item) | \$$(amount) |\n")
+        end
+
+        write(
+            file,
+            """
+
+### Balance Sheet Progression
+
+| Date | Cash | Accounts Receivable | Total Assets | Deferred Revenue | Total Liabilities | Founders Equity | Investor Equity | Total Equity |
+|------|------|-------------------|--------------|------------------|-------------------|-----------------|-----------------|--------------|
+"""
+        )
+
+        for balance in balance_data
+            write(file, "| $(balance.date) | \$$(balance.cash) | \$$(balance.ar) | \$$(balance.total_assets) | \$$(balance.deferred_rev) | \$$(balance.total_liabilities) | \$$(balance.founders_equity) | \$$(balance.investor_equity) | \$$(balance.total_equity) |\n")
+        end
+
+        write(
+            file,
+            """
+
+### Deferred Salary Tracking
+
+| Month | Monthly Deferred | Cumulative Deferred | Payback Start | Monthly Payback | Remaining Balance |
+|-------|------------------|---------------------|---------------|-----------------|-------------------|
+"""
+        )
+
+        for (i, salary) in enumerate(salary_data[1:min(24, end)])
+            write(file, "| $(salary.month) | \$$(salary.monthly_deferred) | \$$(salary.cumulative_deferred) | $(salary.payback_start) | \$$(salary.monthly_payback) | \$$(salary.remaining_balance) |\n")
+        end
+
+        write(
+            file,
+            """
 
 ### Key Financial Metrics
 
@@ -914,14 +1006,12 @@ This represents one realization of the stochastic models showing actual revenue 
 
 ---
 
-*This strategic plan provides comprehensive project management data and financial projections for the NLU Portfolio through 2027. All model parameters are loaded from CSV configuration files. Financial statements generated as CSV files for detailed analysis.*
+*This strategic plan provides comprehensive project management data and financial projections for the NLU Portfolio through 2027. All model parameters are loaded from CSV configuration files. Financial statements embedded as tables for complete analysis.*
 
 *Complete Report Generated: All 13 sections included with full financial analysis, customer metrics, valuation analysis, and strategic planning data.*
-"""
-        )
+""")
     end
-
     println("✅ Generated: NLU_Strategic_Plan_Complete.md")
 end
 
-end # module PresentationOutput
+end

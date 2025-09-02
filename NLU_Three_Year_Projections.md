@@ -4,27 +4,27 @@
 
 | Product | 2025 Revenue | 2026 Revenue | 2027 Revenue | **Total Revenue** |
 |---------|--------------|--------------|--------------|-------------------|
-| **Nebula-NLU** | $52K | $4064K | $19184K | **$23299K** |
-| **Disclosure-NLU** | $179K | $2453K | $4475K | **$7108K** |
-| **Lingua-NLU** | $0K | $39K | $261K | **$300K** |
-| **TOTAL PORTFOLIO** | **$231K** | **$6556K** | **$23919K** | **$30707K** |
+| **Nebula-NLU** | $53K | $5859K | $26519K | **$32430K** |
+| **Disclosure-NLU** | $122K | $1412K | $3808K | **$5342K** |
+| **Lingua-NLU** | $0K | $36K | $259K | **$295K** |
+| **TOTAL PORTFOLIO** | **$175K** | **$7307K** | **$30586K** | **$38067K** |
 
 ## Financial Statements Overview
 
 ### Profit & Loss Statement
-- **File Generated:** `monthly_pnl_with_deferred_salaries.csv`
+- **Data embedded in reports** as monthly P&L tables
 - **Gross Margin:** 100% during Google Credits phase (months 1-36), then 85%
 - **Operating Expenses:** Include team salaries, marketing, and overhead
 - **Deferred Salary:** Founder salary deferred first 12 months, paid back months 13-24
 
 ### Sources & Uses of Funds
-- **Files Generated:** `sources_uses_2025.csv`, `sources_uses_2026.csv`, `sources_uses_2027.csv`
+- **Data embedded in reports** by year (2025, 2026, 2027)
 - **2025:** Founder investment + Google Credits + initial revenue
 - **2026:** Seed funding + Google Credits Tier 2 + scaling revenue
 - **2027:** Series A + Google Credits Tier 3 + substantial revenue
 
 ### Balance Sheet
-- **File Generated:** `balance_sheet_three_year.csv` 
+- **Data embedded in reports** for key milestone dates
 - **Key Dates:** Dec 2025, Jun 2026, Dec 2026, Jun 2027, Dec 2027
 - **Assets:** Cash, Accounts Receivable, Fixed Assets
 - **Liabilities:** Deferred Revenue, Operating Liabilities  
@@ -50,4 +50,4 @@
 
 ---
 
-*All financial data exported to CSV files for detailed analysis. Parameters configurable via CSV files without code changes.*
+*All financial data embedded as tables in strategic plan reports. Parameters configurable via CSV files without code changes.*

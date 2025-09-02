@@ -2,15 +2,15 @@
 
 ## Investment Opportunity Overview
 
-The NLU Portfolio comprises three AI-powered platforms targeting a **$18.5B addressable market**, leveraging Google Cloud infrastructure and proprietary algorithms to deliver measurable competitive advantages. With validated customer acquisition channels for Nebula-NLU and Disclosure-NLU, the portfolio projects **$31M ARR by September 2027**.
+The NLU Portfolio comprises three AI-powered platforms targeting a **$18.5B addressable market**, leveraging Google Cloud infrastructure and proprietary algorithms to deliver measurable competitive advantages. With validated customer acquisition channels for Nebula-NLU and Disclosure-NLU, the portfolio projects **$36M ARR by September 2027**.
 
 ### Financial Highlights
 
 #### Revenue Trajectory
-- **2025 (4 months):** $231K total revenue
-- **2026 (full year):** $6556K total revenue  
-- **2027 (full year):** $23919K total revenue
-- **September 2027 ARR:** $31M
+- **2025 (4 months):** $175K total revenue
+- **2026 (full year):** $7307K total revenue  
+- **2027 (full year):** $30586K total revenue
+- **September 2027 ARR:** $36M
 
 #### Unit Economics Excellence
 - **Gross Margin:** 100% during Google Credits phase, 85% post-credits
