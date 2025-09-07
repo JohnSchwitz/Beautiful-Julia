@@ -4,10 +4,10 @@
 
 | Product | 2025 Revenue | 2026 Revenue | 2027 Revenue | **Total Revenue** |
 |---------|--------------|--------------|--------------|-------------------|
-| **Nebula-NLU** | $53K | $5859K | $26519K | **$32430K** |
-| **Disclosure-NLU** | $122K | $1412K | $3808K | **$5342K** |
-| **Lingua-NLU** | $0K | $36K | $259K | **$295K** |
-| **TOTAL PORTFOLIO** | **$175K** | **$7307K** | **$30586K** | **$38067K** |
+| **Nebula-NLU** | $50K | $5701K | $27240K | **$32991K** |
+| **Disclosure-NLU** | $65K | $1944K | $5434K | **$7444K** |
+| **Lingua-NLU** | $0K | $61K | $213K | **$274K** |
+| **TOTAL PORTFOLIO** | **$115K** | **$7706K** | **$32888K** | **$40709K** |
 
 ## Financial Statements Overview
 

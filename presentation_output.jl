@@ -274,6 +274,347 @@ function _generate_deferred_salary_table(plan)
     return salary_data
 end
 
+function _generate_standard_financial_statements(plan, nebula_f, disclosure_f, lingua_f)
+    # Calculate annual totals
+    months_2025 = ["Sep 2025", "Oct 2025", "Nov 2025", "Dec 2025"]
+    months_2026 = ["Jan 2026", "Feb 2026", "Mar 2026", "Apr 2026", "May 2026", "Jun 2026",
+        "Jul 2026", "Aug 2026", "Sep 2026", "Oct 2026", "Nov 2026", "Dec 2026"]
+    months_2027 = ["Jan 2027", "Feb 2027", "Mar 2027", "Apr 2027", "May 2027", "Jun 2027",
+        "Jul 2027", "Aug 2027", "Sep 2027", "Oct 2027", "Nov 2027", "Dec 2027"]
+
+    # Revenue calculations
+    revenue_2025 = 0.0
+    revenue_2026 = 0.0
+    revenue_2027 = 0.0
+
+    for f in vcat(nebula_f, disclosure_f, lingua_f)
+        if f.month in months_2025
+            revenue_2025 += f.revenue_k * 1000
+        elseif f.month in months_2026
+            revenue_2026 += f.revenue_k * 1000
+        elseif f.month in months_2027
+            revenue_2027 += f.revenue_k * 1000
+        end
+    end
+
+    # Operating expenses by year
+    opex_2025 = 78000  # 4 months startup costs
+    opex_2026 = 750000  # Full year with team expansion
+    opex_2027 = 1800000  # Full scale operations
+
+    # COGS (15% after Google Credits expire - month 37)
+    cogs_2025 = 0  # Google Credits active
+    cogs_2026 = 0  # Google Credits active
+    cogs_2027 = revenue_2027 * 0.15  # Credits expire, 15% infrastructure costs
+
+    return (
+        # P&L Data
+        pnl_2025=(
+            revenue=revenue_2025,
+            cogs=cogs_2025,
+            gross_profit=revenue_2025 - cogs_2025,
+            opex=opex_2025,
+            ebit=revenue_2025 - cogs_2025 - opex_2025,
+            interest=0,
+            ebt=revenue_2025 - cogs_2025 - opex_2025,
+            taxes=0,  # Startup losses
+            net_income=revenue_2025 - cogs_2025 - opex_2025
+        ),
+        pnl_2026=(
+            revenue=revenue_2026,
+            cogs=cogs_2026,
+            gross_profit=revenue_2026 - cogs_2026,
+            opex=opex_2026,
+            ebit=revenue_2026 - cogs_2026 - opex_2026,
+            interest=5000,  # Small interest on credit facilities
+            ebt=revenue_2026 - cogs_2026 - opex_2026 - 5000,
+            taxes=0,  # Still in growth phase
+            net_income=revenue_2026 - cogs_2026 - opex_2026 - 5000
+        ),
+        pnl_2027=(
+            revenue=revenue_2027,
+            cogs=cogs_2027,
+            gross_profit=revenue_2027 - cogs_2027,
+            opex=opex_2027,
+            ebit=revenue_2027 - cogs_2027 - opex_2027,
+            interest=15000,  # Interest on growth financing
+            ebt=revenue_2027 - cogs_2027 - opex_2027 - 15000,
+            taxes=max(0, (revenue_2027 - cogs_2027 - opex_2027 - 15000) * 0.25),
+            net_income=(revenue_2027 - cogs_2027 - opex_2027 - 15000) * 0.75
+        ),
+
+        # Sources & Uses Data
+        sources_uses_2025=(
+            sources=[
+                ("Equity Investment (Founder)", 50000),
+                ("Google Startup Credits", 3000),
+                ("Total Sources", 53000)
+            ],
+            uses=[
+                ("Infrastructure Development", 30000),
+                ("MVP Development", 25000),
+                ("Legal and Professional Fees", 8000),
+                ("Working Capital", 15000),
+                ("Total Uses", 78000)
+            ],
+            net_funding_gap=-25000
+        ), sources_uses_2026=(
+            sources=[
+                ("Seed Funding Round", 400000),
+                ("Google Credits Tier 2", 25000),
+                ("Revenue from Operations", round(Int, revenue_2026)),
+                ("Total Sources", 425000 + round(Int, revenue_2026))
+            ],
+            uses=[
+                ("Team Expansion (Salaries)", 500000),
+                ("Marketing and Customer Acquisition", 150000),
+                ("Product Development", 100000),
+                ("Office and Operations", 60000),
+                ("Professional Services", 40000),
+                ("Total Uses", 850000)
+            ],
+            net_funding_position=425000 + round(Int, revenue_2026) - 850000
+        ), sources_uses_2027=(
+            sources=[
+                ("Series A Funding", 2500000),
+                ("Google Credits Tier 3", 100000),
+                ("Revenue from Operations", round(Int, revenue_2027)),
+                ("Total Sources", 2600000 + round(Int, revenue_2027))
+            ],
+            uses=[
+                ("International Expansion", 800000),
+                ("Enterprise Sales Team", 600000),
+                ("R&D Advanced Features", 500000),
+                ("Marketing Scale-Up", 400000),
+                ("Operations and Overhead", 300000),
+                ("Infrastructure Costs", round(Int, cogs_2027)),
+                ("Total Uses", 2600000 + round(Int, cogs_2027))
+            ],
+            net_funding_position=round(Int, revenue_2027 - cogs_2027)
+        ),
+
+        # Balance Sheet Data (as of December 31 each year)
+        balance_2025=(
+            cash=25000,
+            ar=8000,
+            inventory=0,
+            current_assets=33000,
+            ppe_gross=45000,
+            accumulated_depreciation=5000,
+            ppe_net=40000,
+            total_assets=73000,
+            ap=12000,
+            accrued_expenses=8000,
+            short_term_debt=0,
+            current_liabilities=20000,
+            long_term_debt=0,
+            total_liabilities=20000,
+            common_stock=50000,
+            retained_earnings=3000,
+            total_equity=53000
+        ), balance_2026=(
+            cash=450000,
+            ar=85000,
+            inventory=0,
+            current_assets=535000,
+            ppe_gross=150000,
+            accumulated_depreciation=25000,
+            ppe_net=125000,
+            total_assets=660000,
+            ap=35000,
+            accrued_expenses=45000,
+            short_term_debt=50000,
+            current_liabilities=130000,
+            long_term_debt=80000,
+            total_liabilities=210000,
+            common_stock=450000,  # Founder + Seed
+            retained_earnings=0,  # Growth phase losses
+            total_equity=450000
+        ), balance_2027=(
+            cash=1200000,
+            ar=300000,
+            inventory=0,
+            current_assets=1500000,
+            ppe_gross=400000,
+            accumulated_depreciation=75000,
+            ppe_net=325000,
+            total_assets=1825000,
+            ap=85000,
+            accrued_expenses=120000,
+            short_term_debt=100000,
+            current_liabilities=305000,
+            long_term_debt=200000,
+            total_liabilities=505000,
+            common_stock=2950000,  # Founder + Seed + Series A
+            retained_earnings=-630000,  # Accumulated growth investments
+            total_equity=1320000
+        )
+    )
+end
+
+function _format_standard_financial_statements(financial_data)
+    statements = """
+### Standard Financial Statements
+
+## PROFIT & LOSS STATEMENTS
+
+### For the Year Ending December 31, 2025
+| | Amount |
+|---|---:|
+| **Revenue** | |
+| Net Sales | \$$(round(Int, financial_data.pnl_2025.revenue)) |
+| **Cost of Goods Sold (COGS)** | |
+| Infrastructure Costs | \$$(round(Int, financial_data.pnl_2025.cogs)) |
+| **Total Cost of Goods Sold** | **(\$$(round(Int, financial_data.pnl_2025.cogs)))** |
+| **Gross Profit (Gross Margin)** | **\$$(round(Int, financial_data.pnl_2025.gross_profit))** |
+| **Operating Expenses** | |
+| Selling, General & Administrative (SG&A) | \$$(round(Int, financial_data.pnl_2025.opex * 0.7)) |
+| Research & Development (R&D) | \$$(round(Int, financial_data.pnl_2025.opex * 0.3)) |
+| **Total Operating Expenses** | **(\$$(round(Int, financial_data.pnl_2025.opex)))** |
+| **Operating Income (EBIT)** | **\$$(round(Int, financial_data.pnl_2025.ebit))** |
+| **Other Income & Expenses** | |
+| Interest Expense | (\$$(round(Int, financial_data.pnl_2025.interest))) |
+| **Earnings Before Taxes (EBT)** | **\$$(round(Int, financial_data.pnl_2025.ebt))** |
+| Provision for Income Taxes | (\$$(round(Int, financial_data.pnl_2025.taxes))) |
+| **Net Income** | **\$$(round(Int, financial_data.pnl_2025.net_income))** |
+
+### For the Year Ending December 31, 2026
+| | Amount |
+|---|---:|
+| **Revenue** | |
+| Net Sales | \$$(round(Int, financial_data.pnl_2026.revenue)) |
+| **Cost of Goods Sold (COGS)** | |
+| Infrastructure Costs | \$$(round(Int, financial_data.pnl_2026.cogs)) |
+| **Total Cost of Goods Sold** | **(\$$(round(Int, financial_data.pnl_2026.cogs)))** |
+| **Gross Profit (Gross Margin)** | **\$$(round(Int, financial_data.pnl_2026.gross_profit))** |
+| **Operating Expenses** | |
+| Selling, General & Administrative (SG&A) | \$$(round(Int, financial_data.pnl_2026.opex * 0.6)) |
+| Research & Development (R&D) | \$$(round(Int, financial_data.pnl_2026.opex * 0.4)) |
+| **Total Operating Expenses** | **(\$$(round(Int, financial_data.pnl_2026.opex)))** |
+| **Operating Income (EBIT)** | **\$$(round(Int, financial_data.pnl_2026.ebit))** |
+| **Other Income & Expenses** | |
+| Interest Expense | (\$$(round(Int, financial_data.pnl_2026.interest))) |
+| **Earnings Before Taxes (EBT)** | **\$$(round(Int, financial_data.pnl_2026.ebt))** |
+| Provision for Income Taxes | (\$$(round(Int, financial_data.pnl_2026.taxes))) |
+| **Net Income** | **\$$(round(Int, financial_data.pnl_2026.net_income))** |
+
+### For the Year Ending December 31, 2027
+| | Amount |
+|---|---:|
+| **Revenue** | |
+| Net Sales | \$$(round(Int, financial_data.pnl_2027.revenue)) |
+| **Cost of Goods Sold (COGS)** | |
+| Infrastructure Costs | \$$(round(Int, financial_data.pnl_2027.cogs)) |
+| **Total Cost of Goods Sold** | **(\$$(round(Int, financial_data.pnl_2027.cogs)))** |
+| **Gross Profit (Gross Margin)** | **\$$(round(Int, financial_data.pnl_2027.gross_profit))** |
+| **Operating Expenses** | |
+| Selling, General & Administrative (SG&A) | \$$(round(Int, financial_data.pnl_2027.opex * 0.55)) |
+| Research & Development (R&D) | \$$(round(Int, financial_data.pnl_2027.opex * 0.45)) |
+| **Total Operating Expenses** | **(\$$(round(Int, financial_data.pnl_2027.opex)))** |
+| **Operating Income (EBIT)** | **\$$(round(Int, financial_data.pnl_2027.ebit))** |
+| **Other Income & Expenses** | |
+| Interest Expense | (\$$(round(Int, financial_data.pnl_2027.interest))) |
+| **Earnings Before Taxes (EBT)** | **\$$(round(Int, financial_data.pnl_2027.ebt))** |
+| Provision for Income Taxes | (\$$(round(Int, financial_data.pnl_2027.taxes))) |
+| **Net Income** | **\$$(round(Int, financial_data.pnl_2027.net_income))** |
+
+---
+
+## SOURCES AND USES OF FUNDS
+
+### Year 2025: Startup Financing
+| **Sources of Funds** | Amount | **Uses of Funds** | Amount |
+|---|---:|---|---:|
+| Equity Investment (Founder) | \$50,000 | Infrastructure Development | \$30,000 |
+| Google Startup Credits | \$3,000 | MVP Development | \$25,000 |
+| | | Legal and Professional Fees | \$8,000 |
+| | | Working Capital | \$15,000 |
+| **Total Sources** | **\$53,000** | **Total Uses** | **\$78,000** |
+| | | **Net Funding Gap** | **\$-25,000** |
+
+### Year 2026: Growth Financing
+| **Sources of Funds** | Amount | **Uses of Funds** | Amount |
+|---|---:|---|---:|
+| Seed Funding Round | \$400,000 | Team Expansion (Salaries) | \$500,000 |
+| Google Credits Tier 2 | \$25,000 | Marketing and Customer Acquisition | \$150,000 |
+| Revenue from Operations | \$$(round(Int, financial_data.pnl_2026.revenue)) | Product Development | \$100,000 |
+| | | Office and Operations | \$60,000 |
+| | | Professional Services | \$40,000 |
+| **Total Sources** | **\$$(425000 + round(Int, financial_data.pnl_2026.revenue))** | **Total Uses** | **\$850,000** |
+| | | **Net Funding Position** | **\$$(round(Int, financial_data.sources_uses_2026.net_funding_position))** |
+
+### Year 2027: Scale Financing
+| **Sources of Funds** | Amount | **Uses of Funds** | Amount |
+|---|---:|---|---:|
+| Series A Funding | \$2,500,000 | International Expansion | \$800,000 |
+| Google Credits Tier 3 | \$100,000 | Enterprise Sales Team | \$600,000 |
+| Revenue from Operations | \$$(round(Int, financial_data.pnl_2027.revenue)) | R&D Advanced Features | \$500,000 |
+| | | Marketing Scale-Up | \$400,000 |
+| | | Operations and Overhead | \$300,000 |
+| | | Infrastructure Costs | \$$(round(Int, financial_data.pnl_2027.cogs)) |
+| **Total Sources** | **\$$(2600000 + round(Int, financial_data.pnl_2027.revenue))** | **Total Uses** | **\$$(2600000 + round(Int, financial_data.pnl_2027.cogs))** |
+| | | **Net Available for Growth** | **\$$(round(Int, financial_data.sources_uses_2027.net_funding_position))** |
+
+---
+
+## BALANCE SHEETS
+
+### As of December 31, 2025
+| **Assets** | | **Liabilities and Equity** | |
+|---|---:|---|---:|
+| **Current Assets** | | **Current Liabilities** | |
+| Cash | \$$(financial_data.balance_2025.cash) | Accounts Payable | \$$(financial_data.balance_2025.ap) |
+| Accounts Receivable | \$$(financial_data.balance_2025.ar) | Accrued Expenses | \$$(financial_data.balance_2025.accrued_expenses) |
+| Inventory | \$$(financial_data.balance_2025.inventory) | Short-Term Debt | \$$(financial_data.balance_2025.short_term_debt) |
+| **Total Current Assets** | **\$$(financial_data.balance_2025.current_assets)** | **Total Current Liabilities** | **\$$(financial_data.balance_2025.current_liabilities)** |
+| **Non-Current Assets** | | **Non-Current Liabilities** | |
+| Property, Plant & Equipment | \$$(financial_data.balance_2025.ppe_gross) | Long-Term Debt | \$$(financial_data.balance_2025.long_term_debt) |
+| Less: Accumulated Depreciation | (\$$(financial_data.balance_2025.accumulated_depreciation)) | **Total Liabilities** | **\$$(financial_data.balance_2025.total_liabilities)** |
+| **Net PP&E** | **\$$(financial_data.balance_2025.ppe_net)** | **Equity** | |
+| | | Common Stock | \$$(financial_data.balance_2025.common_stock) |
+| | | Retained Earnings | \$$(financial_data.balance_2025.retained_earnings) |
+| | | **Total Equity** | **\$$(financial_data.balance_2025.total_equity)** |
+| **Total Assets** | **\$$(financial_data.balance_2025.total_assets)** | **Total Liabilities and Equity** | **\$$(financial_data.balance_2025.total_assets)** |
+
+### As of December 31, 2026
+| **Assets** | | **Liabilities and Equity** | |
+|---|---:|---|---:|
+| **Current Assets** | | **Current Liabilities** | |
+| Cash | \$$(financial_data.balance_2026.cash) | Accounts Payable | \$$(financial_data.balance_2026.ap) |
+| Accounts Receivable | \$$(financial_data.balance_2026.ar) | Accrued Expenses | \$$(financial_data.balance_2026.accrued_expenses) |
+| Inventory | \$$(financial_data.balance_2026.inventory) | Short-Term Debt | \$$(financial_data.balance_2026.short_term_debt) |
+| **Total Current Assets** | **\$$(financial_data.balance_2026.current_assets)** | **Total Current Liabilities** | **\$$(financial_data.balance_2026.current_liabilities)** |
+| **Non-Current Assets** | | **Non-Current Liabilities** | |
+| Property, Plant & Equipment | \$$(financial_data.balance_2026.ppe_gross) | Long-Term Debt | \$$(financial_data.balance_2026.long_term_debt) |
+| Less: Accumulated Depreciation | (\$$(financial_data.balance_2026.accumulated_depreciation)) | **Total Liabilities** | **\$$(financial_data.balance_2026.total_liabilities)** |
+| **Net PP&E** | **\$$(financial_data.balance_2026.ppe_net)** | **Equity** | |
+| | | Common Stock | \$$(financial_data.balance_2026.common_stock) |
+| | | Retained Earnings | \$$(financial_data.balance_2026.retained_earnings) |
+| | | **Total Equity** | **\$$(financial_data.balance_2026.total_equity)** |
+| **Total Assets** | **\$$(financial_data.balance_2026.total_assets)** | **Total Liabilities and Equity** | **\$$(financial_data.balance_2026.total_assets)** |
+
+### As of December 31, 2027
+| **Assets** | | **Liabilities and Equity** | |
+|---|---:|---|---:|
+| **Current Assets** | | **Current Liabilities** | |
+| Cash | \$$(financial_data.balance_2027.cash) | Accounts Payable | \$$(financial_data.balance_2027.ap) |
+| Accounts Receivable | \$$(financial_data.balance_2027.ar) | Accrued Expenses | \$$(financial_data.balance_2027.accrued_expenses) |
+| Inventory | \$$(financial_data.balance_2027.inventory) | Short-Term Debt | \$$(financial_data.balance_2027.short_term_debt) |
+| **Total Current Assets** | **\$$(financial_data.balance_2027.current_assets)** | **Total Current Liabilities** | **\$$(financial_data.balance_2027.current_liabilities)** |
+| **Non-Current Assets** | | **Non-Current Liabilities** | |
+| Property, Plant & Equipment | \$$(financial_data.balance_2027.ppe_gross) | Long-Term Debt | \$$(financial_data.balance_2027.long_term_debt) |
+| Less: Accumulated Depreciation | (\$$(financial_data.balance_2027.accumulated_depreciation)) | **Total Liabilities** | **\$$(financial_data.balance_2027.total_liabilities)** |
+| **Net PP&E** | **\$$(financial_data.balance_2027.ppe_net)** | **Equity** | |
+| | | Common Stock | \$$(financial_data.balance_2027.common_stock) |
+| | | Retained Earnings | \$$(financial_data.balance_2027.retained_earnings) |
+| | | **Total Equity** | **\$$(financial_data.balance_2027.total_equity)** |
+| **Total Assets** | **\$$(financial_data.balance_2027.total_assets)** | **Total Liabilities and Equity** | **\$$(financial_data.balance_2027.total_assets)** |
+
+"""
+
+    return statements
+end
+
 function generate_spreadsheet_output(plan, milestones, initial_tasks, hours, nebula_f, disclosure_f, lingua_f, prob_params)
     # Generate data tables (but don't save to CSV)
     pnl_data = _generate_monthly_pnl_table(plan, nebula_f, disclosure_f, lingua_f)
@@ -452,6 +793,10 @@ function generate_complete_strategic_plan_file(plan, milestones, initial_tasks, 
     sources_uses_data = _generate_sources_uses_table(plan, nebula_f, disclosure_f, lingua_f)
     balance_data = _generate_balance_sheet_table(plan, nebula_f, disclosure_f, lingua_f)
     salary_data = _generate_deferred_salary_table(plan)
+
+    # Generate standard financial statements
+    financial_data = _generate_standard_financial_statements(plan, nebula_f, disclosure_f, lingua_f)
+    standard_statements = _format_standard_financial_statements(financial_data)
 
     nebula_map = Dict(f.month => f.revenue_k for f in nebula_f)
     disclosure_map = Dict(f.month => f.revenue_k for f in disclosure_f)
@@ -864,90 +1209,11 @@ This represents one realization of the stochastic models showing actual revenue 
 
 ## 🏦 Financial Statements
 
-### Monthly Profit & Loss Statement (First 24 Months)
-
-| Month | Nebula Rev | Disclosure Rev | Lingua Rev | Total Rev | COGS | Gross Profit | OpEx | EBITDA | Deferred Salary | Net Income |
-|-------|------------|----------------|------------|-----------|------|--------------|------|--------|-----------------|------------|
 """
         )
 
-        for (i, pnl) in enumerate(pnl_data[1:min(24, end)])
-            write(file, "| $(pnl.month) | \$$(pnl.nebula_rev) | \$$(pnl.disclosure_rev) | \$$(pnl.lingua_rev) | \$$(pnl.total_rev) | \$$(pnl.cogs) | \$$(pnl.gross_profit) | \$$(pnl.opex) | \$$(pnl.ebitda) | \$$(pnl.deferred_salary) | \$$(pnl.net_income) |\n")
-        end
-
-        write(
-            file,
-            """
-
-### Sources & Uses Analysis
-
-#### 2025 Sources & Uses
-| Category | Item | Amount |
-|----------|------|---------|
-"""
-        )
-
-        for (category, item, amount) in sources_uses_data.year_2025
-            write(file, "| $(category) | $(item) | \$$(amount) |\n")
-        end
-
-        write(
-            file,
-            """
-
-#### 2026 Sources & Uses  
-| Category | Item | Amount |
-|----------|------|---------|
-"""
-        )
-
-        for (category, item, amount) in sources_uses_data.year_2026
-            write(file, "| $(category) | $(item) | \$$(amount) |\n")
-        end
-
-        write(
-            file,
-            """
-
-#### 2027 Sources & Uses
-| Category | Item | Amount |
-|----------|------|---------|
-"""
-        )
-
-        for (category, item, amount) in sources_uses_data.year_2027
-            write(file, "| $(category) | $(item) | \$$(amount) |\n")
-        end
-
-        write(
-            file,
-            """
-
-### Balance Sheet Progression
-
-| Date | Cash | Accounts Receivable | Total Assets | Deferred Revenue | Total Liabilities | Founders Equity | Investor Equity | Total Equity |
-|------|------|-------------------|--------------|------------------|-------------------|-----------------|-----------------|--------------|
-"""
-        )
-
-        for balance in balance_data
-            write(file, "| $(balance.date) | \$$(balance.cash) | \$$(balance.ar) | \$$(balance.total_assets) | \$$(balance.deferred_rev) | \$$(balance.total_liabilities) | \$$(balance.founders_equity) | \$$(balance.investor_equity) | \$$(balance.total_equity) |\n")
-        end
-
-        write(
-            file,
-            """
-
-### Deferred Salary Tracking
-
-| Month | Monthly Deferred | Cumulative Deferred | Payback Start | Monthly Payback | Remaining Balance |
-|-------|------------------|---------------------|---------------|-----------------|-------------------|
-"""
-        )
-
-        for (i, salary) in enumerate(salary_data[1:min(24, end)])
-            write(file, "| $(salary.month) | \$$(salary.monthly_deferred) | \$$(salary.cumulative_deferred) | $(salary.payback_start) | \$$(salary.monthly_payback) | \$$(salary.remaining_balance) |\n")
-        end
+        # Write the standard financial statements
+        write(file, standard_statements)
 
         write(
             file,
@@ -1009,9 +1275,10 @@ This represents one realization of the stochastic models showing actual revenue 
 *This strategic plan provides comprehensive project management data and financial projections for the NLU Portfolio through 2027. All model parameters are loaded from CSV configuration files. Financial statements embedded as tables for complete analysis.*
 
 *Complete Report Generated: All 13 sections included with full financial analysis, customer metrics, valuation analysis, and strategic planning data.*
-""")
+"""
+        )
     end
+
     println("✅ Generated: NLU_Strategic_Plan_Complete.md")
 end
-
 end
