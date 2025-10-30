@@ -1,7 +1,7 @@
 module LoadFactors
 
 using DataFrames, CSV
-export ResourcePlan, load_project_tasks, ProjectTask, load_configuration, load_resource_plan, load_tasks, load_probability_parameters, load_cost_factors, load_model_parameters, create_resource_plan
+export ResourcePlan, load_project_tasks, ProjectTask, load_configuration, load_resource_plan, load_tasks, load_probability_parameters, load_cost_factors, load_model_parameters, create_resource_plan, load_financing
 
 struct ResourcePlan
     work_days::Vector{Int}
@@ -62,10 +62,9 @@ function load_tasks(filepath::String)
     for row in eachrow(df)
         println("  $(row.Name) - Seq: $(row.Sequence) - Hours: $(row.PlannedHours)")
     end
-    # Handle missing sequence values
     tasks = ProjectTask[]
     for row in eachrow(df)
-        seq = ismissing(row.Sequence) ? 999 : row.Sequence  # Put unsequenced tasks at end
+        seq = ismissing(row.Sequence) ? 999 : row.Sequence
         push!(tasks, ProjectTask(row.Name, row.PlannedHours, seq, row.TaskType))
     end
     return tasks
@@ -98,17 +97,23 @@ function load_model_parameters(filepath::String="data/model_parameters.csv")
     params = Dict{String,Any}()
     for row in eachrow(df)
         # Handle different data types
-        if row.ParameterValue == "true"
-            params[row.ParameterName] = true
-        elseif row.ParameterValue == "false"
-            params[row.ParameterName] = false
-        elseif occursin("NLU_MVP", string(row.ParameterValue)) || occursin("Foundation", string(row.ParameterValue))
-            params[row.ParameterName] = string(row.ParameterValue)  # Milestone names
+        value_str = string(row.Value)
+        if value_str == "true"
+            params[row.Parameter] = true
+        elseif value_str == "false"
+            params[row.Parameter] = false
+        elseif occursin("2026", value_str) || occursin("2027", value_str)
+            params[row.Parameter] = value_str  # Month names like "Apr 2026"
         else
-            params[row.ParameterName] = parse(Float64, string(row.ParameterValue))
+            params[row.Parameter] = parse(Float64, value_str)
         end
     end
     return params
+end
+
+function load_financing(filepath::String="data/financing.csv")
+    df = CSV.read(filepath, DataFrame)
+    return df
 end
 
 end # module LoadFactors

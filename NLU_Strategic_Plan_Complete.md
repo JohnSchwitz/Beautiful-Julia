@@ -24,15 +24,15 @@
 
 | Quarter | Nebula-NLU | Disclosure-NLU | Lingua-NLU | **Total** | **QoQ Growth** |
 |---------|------------|----------------|------------|-----------|----------------|
-| 2025 Q4 | $50K | $65K | $0K | **$115K** | - |
-| 2026 Q1 | $475K | $160K | $0K | **$635K** | 450.7% |
-| 2026 Q2 | $940K | $317K | $0K | **$1257K** | 98.0% |
-| 2026 Q3 | $1685K | $634K | $20K | **$2340K** | 86.1% |
-| 2026 Q4 | $2601K | $832K | $40K | **$3474K** | 48.5% |
-| 2027 Q1 | $3781K | $1133K | $62K | **$4976K** | 43.2% |
-| 2027 Q2 | $6202K | $1310K | $56K | **$7568K** | 52.1% |
-| 2027 Q3 | $7902K | $1436K | $63K | **$9401K** | 24.2% |
-| 2027 Q4 | $9356K | $1555K | $32K | **$10943K** | 16.4% |
+| 2025 Q4 | $33K | $112K | $0K | **$146K** | - |
+| 2026 Q1 | $444K | $253K | $0K | **$697K** | 378.6% |
+| 2026 Q2 | $1078K | $371K | $0K | **$1449K** | 107.9% |
+| 2026 Q3 | $1904K | $529K | $17K | **$2450K** | 69.1% |
+| 2026 Q4 | $3016K | $679K | $39K | **$3734K** | 52.4% |
+| 2027 Q1 | $4397K | $1026K | $80K | **$5503K** | 47.4% |
+| 2027 Q2 | $5508K | $1270K | $84K | **$6862K** | 24.7% |
+| 2027 Q3 | $8086K | $1424K | $67K | **$9577K** | 39.6% |
+| 2027 Q4 | $10772K | $1477K | $39K | **$12288K** | 28.3% |
 
 ---
 
@@ -42,8 +42,8 @@
 
 | Milestone | Monthly Revenue | ARR | Conservative (10x) | Optimistic (15x) | **1% Equity Value** |
 |-----------|-----------------|-----|-------------------|-------------------|-------------------|
-| **Q2 2026** | $419K | $5.0M | $50.3M | $75.4M | **$503.0K - $754.0K** |
-| **Q4 2026** | $1158K | $13.9M | $139.0M | $208.4M | **$1390.0K - $2084.0K** |
+| **Q2 2026** | $483K | $5.8M | $58.0M | $86.9M | **$580.0K - $869.0K** |
+| **Q4 2026** | $1245K | $14.9M | $149.3M | $224.0M | **$1493.0K - $2240.0K** |
 
 ---
 
@@ -150,27 +150,27 @@
 | Aug 2025 | pre-MVP | pre-MVP | pre-MVP |
 | Sep 2025 | pre-MVP | pre-MVP | pre-MVP |
 | Oct 2025 | pre-MVP | pre-MVP | pre-MVP |
-| Nov 2025 | 2008 | 780 | Mixed ($20/month, $60/year) |
-| Dec 2025 | 3978 | 2616 | Mixed ($20/month, $60/year) |
-| Jan 2026 | 7885 | 7639 | Mixed ($20/month, $60/year) |
-| Feb 2026 | 8718 | 10340 | Mixed ($20/month, $60/year) |
-| Mar 2026 | 9626 | 14203 | Mixed ($20/month, $60/year) |
-| Apr 2026 | 10460 | 17194 | Mixed ($20/month, $60/year) |
-| May 2026 | 11731 | 19631 | Mixed ($20/month, $60/year) |
-| Jun 2026 | 12469 | 26937 | Mixed ($20/month, $60/year) |
-| Jul 2026 | 13815 | 30526 | Mixed ($20/month, $60/year) |
-| Aug 2026 | 15310 | 37623 | Mixed ($20/month, $60/year) |
-| Sep 2026 | 16612 | 46235 | Mixed ($20/month, $60/year) |
-| Oct 2026 | 18250 | 54465 | Mixed ($20/month, $60/year) |
-| Nov 2026 | 19945 | 58308 | Mixed ($20/month, $60/year) |
-| Dec 2026 | 21946 | 63875 | Mixed ($20/month, $60/year) |
-| Jan 2027 | 24033 | 69001 | Mixed ($20/month, $60/year) |
-| Feb 2027 | 26243 | 82987 | Mixed ($20/month, $60/year) |
-| Mar 2027 | 29017 | 104736 | Mixed ($20/month, $60/year) |
-| Apr 2027 | 31265 | 122695 | Mixed ($20/month, $60/year) |
-| May 2027 | 34661 | 140416 | Mixed ($20/month, $60/year) |
-| Jun 2027 | 37849 | 157830 | Mixed ($20/month, $60/year) |
-| Jul 2027 | 41549 | 172299 | Mixed ($20/month, $60/year) |
+| Nov 2025 | 1974 | 605 | Mixed ($20/month, $60/year) |
+| Dec 2025 | 3949 | 1666 | Mixed ($20/month, $60/year) |
+| Jan 2026 | 7962 | 4501 | Mixed ($20/month, $60/year) |
+| Feb 2026 | 8739 | 9084 | Mixed ($20/month, $60/year) |
+| Mar 2026 | 9661 | 16520 | Mixed ($20/month, $60/year) |
+| Apr 2026 | 10428 | 21401 | Mixed ($20/month, $60/year) |
+| May 2026 | 11516 | 23706 | Mixed ($20/month, $60/year) |
+| Jun 2026 | 12480 | 27976 | Mixed ($20/month, $60/year) |
+| Jul 2026 | 13965 | 35515 | Mixed ($20/month, $60/year) |
+| Aug 2026 | 15190 | 42472 | Mixed ($20/month, $60/year) |
+| Sep 2026 | 16537 | 51305 | Mixed ($20/month, $60/year) |
+| Oct 2026 | 18253 | 60117 | Mixed ($20/month, $60/year) |
+| Nov 2026 | 20234 | 65782 | Mixed ($20/month, $60/year) |
+| Dec 2026 | 21967 | 78825 | Mixed ($20/month, $60/year) |
+| Jan 2027 | 23988 | 89863 | Mixed ($20/month, $60/year) |
+| Feb 2027 | 26339 | 99086 | Mixed ($20/month, $60/year) |
+| Mar 2027 | 28883 | 109533 | Mixed ($20/month, $60/year) |
+| Apr 2027 | 31619 | 114011 | Mixed ($20/month, $60/year) |
+| May 2027 | 34661 | 123553 | Mixed ($20/month, $60/year) |
+| Jun 2027 | 37312 | 136539 | Mixed ($20/month, $60/year) |
+| Jul 2027 | 41632 | 165777 | Mixed ($20/month, $60/year) |
 
 ### Disclosure-NLU Legal Firm Metrics
 
@@ -178,28 +178,28 @@
 |-------|------------|-------------|--------------|-------------|
 | Aug 2025 | pre-MVP | pre-MVP | pre-MVP | pre-MVP |
 | Sep 2025 | pre-MVP | pre-MVP | pre-MVP | pre-MVP |
-| Oct 2025 | 4 | 2 | 0 | 6 |
-| Nov 2025 | 5 | 4 | 0 | 9 |
-| Dec 2025 | 10 | 4 | 0 | 14 |
-| Jan 2026 | 11 | 6 | 0 | 17 |
-| Feb 2026 | 14 | 9 | 0 | 23 |
-| Mar 2026 | 14 | 12 | 0 | 26 |
-| Apr 2026 | 15 | 13 | 1 | 29 |
-| May 2026 | 17 | 16 | 1 | 34 |
-| Jun 2026 | 21 | 17 | 1 | 39 |
-| Jul 2026 | 23 | 18 | 1 | 42 |
-| Aug 2026 | 27 | 21 | 1 | 52 |
-| Sep 2026 | 30 | 21 | 1 | 56 |
-| Oct 2026 | 32 | 22 | 2 | 60 |
-| Nov 2026 | 34 | 24 | 2 | 63 |
-| Dec 2026 | 36 | 24 | 2 | 65 |
-| Jan 2027 | 38 | 27 | 2 | 72 |
-| Feb 2027 | 39 | 29 | 2 | 76 |
-| Mar 2027 | 44 | 30 | 2 | 83 |
-| Apr 2027 | 45 | 33 | 2 | 87 |
-| May 2027 | 47 | 33 | 3 | 90 |
-| Jun 2027 | 48 | 35 | 3 | 92 |
-| Jul 2027 | 49 | 38 | 3 | 97 |
+| Oct 2025 | 3 | 3 | 0 | 6 |
+| Nov 2025 | 6 | 6 | 1 | 13 |
+| Dec 2025 | 9 | 7 | 1 | 16 |
+| Jan 2026 | 13 | 8 | 1 | 21 |
+| Feb 2026 | 14 | 12 | 2 | 27 |
+| Mar 2026 | 14 | 15 | 2 | 30 |
+| Apr 2026 | 18 | 16 | 2 | 35 |
+| May 2026 | 21 | 19 | 2 | 41 |
+| Jun 2026 | 22 | 20 | 2 | 43 |
+| Jul 2026 | 21 | 22 | 3 | 46 |
+| Aug 2026 | 21 | 24 | 4 | 49 |
+| Sep 2026 | 23 | 27 | 5 | 55 |
+| Oct 2026 | 24 | 29 | 5 | 59 |
+| Nov 2026 | 29 | 32 | 5 | 66 |
+| Dec 2026 | 32 | 32 | 5 | 69 |
+| Jan 2027 | 33 | 34 | 5 | 72 |
+| Feb 2027 | 34 | 34 | 5 | 75 |
+| Mar 2027 | 35 | 34 | 5 | 76 |
+| Apr 2027 | 35 | 34 | 6 | 79 |
+| May 2027 | 39 | 35 | 6 | 83 |
+| Jun 2027 | 43 | 37 | 6 | 90 |
+| Jul 2027 | 44 | 40 | 6 | 94 |
 
 ### Lingua-NLU Professional Network Metrics
 
@@ -216,19 +216,19 @@
 | Apr 2026 | pre-MVP | pre-MVP |
 | May 2026 | pre-MVP | pre-MVP |
 | Jun 2026 | pre-MVP | pre-MVP |
-| Jul 2026 | 116 | Match-based ($59) |
-| Aug 2026 | 123 | Match-based ($59) |
-| Sep 2026 | 103 | Match-based ($59) |
-| Oct 2026 | 44 | Match-based ($59) |
-| Nov 2026 | 119 | Match-based ($59) |
-| Dec 2026 | 523 | Match-based ($59) |
-| Jan 2027 | 419 | Match-based ($59) |
-| Feb 2027 | 217 | Match-based ($59) |
-| Mar 2027 | 419 | Match-based ($59) |
-| Apr 2027 | 295 | Match-based ($59) |
-| May 2027 | 392 | Match-based ($59) |
-| Jun 2027 | 262 | Match-based ($59) |
-| Jul 2027 | 260 | Match-based ($59) |
+| Jul 2026 | 81 | Match-based ($59) |
+| Aug 2026 | 124 | Match-based ($59) |
+| Sep 2026 | 82 | Match-based ($59) |
+| Oct 2026 | 71 | Match-based ($59) |
+| Nov 2026 | 112 | Match-based ($59) |
+| Dec 2026 | 477 | Match-based ($59) |
+| Jan 2027 | 552 | Match-based ($59) |
+| Feb 2027 | 251 | Match-based ($59) |
+| Mar 2027 | 547 | Match-based ($59) |
+| Apr 2027 | 540 | Match-based ($59) |
+| May 2027 | 364 | Match-based ($59) |
+| Jun 2027 | 516 | Match-based ($59) |
+| Jul 2027 | 400 | Match-based ($59) |
 
 ---
 
@@ -240,28 +240,28 @@
 |-------|-------------------|----------------------|-------------------|------------------|
 | Aug 2025 | 0 | 0 | 0 | **0** |
 | Sep 2025 | 0 | 0 | 0 | **0** |
-| Oct 2025 | 0 | 13 | 0 | **13** |
-| Nov 2025 | 12 | 23 | 0 | **34** |
-| Dec 2025 | 39 | 29 | 0 | **68** |
-| Jan 2026 | 113 | 39 | 0 | **151** |
-| Feb 2026 | 152 | 55 | 0 | **207** |
-| Mar 2026 | 209 | 67 | 0 | **277** |
-| Apr 2026 | 254 | 85 | 0 | **338** |
-| May 2026 | 289 | 99 | 0 | **389** |
-| Jun 2026 | 397 | 133 | 0 | **530** |
-| Jul 2026 | 450 | 139 | 7 | **595** |
-| Aug 2026 | 554 | 244 | 7 | **806** |
-| Sep 2026 | 681 | 251 | 6 | **938** |
-| Oct 2026 | 803 | 270 | 3 | **1075** |
-| Nov 2026 | 858 | 280 | 7 | **1145** |
-| Dec 2026 | 940 | 282 | 31 | **1253** |
-| Jan 2027 | 1016 | 344 | 25 | **1385** |
-| Feb 2027 | 1222 | 377 | 13 | **1612** |
-| Mar 2027 | 1543 | 412 | 25 | **1979** |
-| Apr 2027 | 1808 | 425 | 17 | **2250** |
-| May 2027 | 2069 | 438 | 23 | **2530** |
-| Jun 2027 | 2325 | 446 | 15 | **2787** |
-| Jul 2027 | 2539 | 458 | 15 | **3013** |
+| Oct 2025 | 0 | 16 | 0 | **16** |
+| Nov 2025 | 9 | 45 | 0 | **54** |
+| Dec 2025 | 25 | 51 | 0 | **76** |
+| Jan 2026 | 66 | 60 | 0 | **126** |
+| Feb 2026 | 134 | 90 | 0 | **224** |
+| Mar 2026 | 244 | 103 | 0 | **346** |
+| Apr 2026 | 316 | 111 | 0 | **427** |
+| May 2026 | 349 | 127 | 0 | **477** |
+| Jun 2026 | 412 | 133 | 0 | **545** |
+| Jul 2026 | 523 | 153 | 5 | **681** |
+| Aug 2026 | 625 | 174 | 7 | **807** |
+| Sep 2026 | 756 | 201 | 5 | **962** |
+| Oct 2026 | 886 | 214 | 4 | **1104** |
+| Nov 2026 | 969 | 232 | 7 | **1208** |
+| Dec 2026 | 1161 | 233 | 28 | **1422** |
+| Jan 2027 | 1324 | 305 | 33 | **1661** |
+| Feb 2027 | 1460 | 330 | 15 | **1804** |
+| Mar 2027 | 1614 | 392 | 32 | **2037** |
+| Apr 2027 | 1678 | 405 | 32 | **2115** |
+| May 2027 | 1819 | 411 | 21 | **2252** |
+| Jun 2027 | 2010 | 455 | 30 | **2495** |
+| Jul 2027 | 2441 | 469 | 24 | **2933** |
 
 ---
 
@@ -291,24 +291,24 @@
 ## 💼 Valuation Analysis
 
 ### March 2026 Valuation
-- **Monthly Recurring Revenue:** $277K
-- **Implied ARR:** $3.3M  
-- **Conservative Valuation (8x ARR):** $26.5M
-- **Optimistic Valuation (12x ARR):** $39.8M
+- **Monthly Recurring Revenue:** $346K
+- **Implied ARR:** $4.2M  
+- **Conservative Valuation (8x ARR):** $33.2M
+- **Optimistic Valuation (12x ARR):** $49.9M
 - **1% Equity Value:** $0.0K - $0.0K
 
 ### December 2026 Valuation
-- **Monthly Recurring Revenue:** $1253K
-- **Implied ARR:** $15.0M
-- **Conservative Valuation (10x ARR):** $150.4M  
-- **Optimistic Valuation (15x ARR):** $225.6M
-- **1% Equity Value:** $2.0K - $2.0K
+- **Monthly Recurring Revenue:** $1422K
+- **Implied ARR:** $17.1M
+- **Conservative Valuation (10x ARR):** $170.7M  
+- **Optimistic Valuation (15x ARR):** $256.0M
+- **1% Equity Value:** $2.0K - $3.0K
 
 ### September 2027 Valuation
-- **Monthly Recurring Revenue:** $3277K
-- **Implied ARR:** $39.3M
-- **Conservative Valuation (12x ARR):** $471.9M
-- **Optimistic Valuation (18x ARR):** $707.8M  
+- **Monthly Recurring Revenue:** $3421K
+- **Implied ARR:** $41.1M
+- **Conservative Valuation (12x ARR):** $492.7M
+- **Optimistic Valuation (18x ARR):** $739.0M  
 - **1% Equity Value:** $0.5M - $0.7M
 
 ---
@@ -324,9 +324,9 @@ This represents one realization of the stochastic models showing actual revenue 
 - **Lingua-NLU Professional Matching:** Match-based revenue with 67% average success rate
 
 #### Revenue Realization Analysis
-- **Q4 2025 Total:** $115K
-- **Q4 2026 Total:** $3474K
-- **Q4 2027 Total:** $10943K
+- **Q4 2025 Total:** $146K
+- **Q4 2026 Total:** $3734K
+- **Q4 2027 Total:** $12288K
 
 *Note: To generate multiple realizations for Monte Carlo analysis, run the model multiple times with different random seeds.*
 
@@ -342,61 +342,61 @@ This represents one realization of the stochastic models showing actual revenue 
 | | Amount |
 |---|---:|
 | **Revenue** | |
-| Net Sales | $115286 |
+| Net Sales | $145598 |
 | **Cost of Goods Sold (COGS)** | |
 | Infrastructure Costs | $0 |
 | **Total Cost of Goods Sold** | **($0)** |
-| **Gross Profit (Gross Margin)** | **$115286** |
+| **Gross Profit (Gross Margin)** | **$145598** |
 | **Operating Expenses** | |
 | Selling, General & Administrative (SG&A) | $54600 |
 | Research & Development (R&D) | $23400 |
 | **Total Operating Expenses** | **($78000)** |
-| **Operating Income (EBIT)** | **$37286** |
+| **Operating Income (EBIT)** | **$67598** |
 | **Other Income & Expenses** | |
 | Interest Expense | ($0) |
-| **Earnings Before Taxes (EBT)** | **$37286** |
+| **Earnings Before Taxes (EBT)** | **$67598** |
 | Provision for Income Taxes | ($0) |
-| **Net Income** | **$37286** |
+| **Net Income** | **$67598** |
 
 ### For the Year Ending December 31, 2026
 | | Amount |
 |---|---:|
 | **Revenue** | |
-| Net Sales | $7705756 |
+| Net Sales | $8329182 |
 | **Cost of Goods Sold (COGS)** | |
 | Infrastructure Costs | $0 |
 | **Total Cost of Goods Sold** | **($0)** |
-| **Gross Profit (Gross Margin)** | **$7705756** |
+| **Gross Profit (Gross Margin)** | **$8329182** |
 | **Operating Expenses** | |
 | Selling, General & Administrative (SG&A) | $450000 |
 | Research & Development (R&D) | $300000 |
 | **Total Operating Expenses** | **($750000)** |
-| **Operating Income (EBIT)** | **$6955756** |
+| **Operating Income (EBIT)** | **$7579182** |
 | **Other Income & Expenses** | |
 | Interest Expense | ($5000) |
-| **Earnings Before Taxes (EBT)** | **$6950756** |
+| **Earnings Before Taxes (EBT)** | **$7574182** |
 | Provision for Income Taxes | ($0) |
-| **Net Income** | **$6950756** |
+| **Net Income** | **$7574182** |
 
 ### For the Year Ending December 31, 2027
 | | Amount |
 |---|---:|
 | **Revenue** | |
-| Net Sales | $32887706 |
+| Net Sales | $34230106 |
 | **Cost of Goods Sold (COGS)** | |
-| Infrastructure Costs | $4933156 |
-| **Total Cost of Goods Sold** | **($4933156)** |
-| **Gross Profit (Gross Margin)** | **$27954550** |
+| Infrastructure Costs | $5134516 |
+| **Total Cost of Goods Sold** | **($5134516)** |
+| **Gross Profit (Gross Margin)** | **$29095590** |
 | **Operating Expenses** | |
 | Selling, General & Administrative (SG&A) | $990000 |
 | Research & Development (R&D) | $810000 |
 | **Total Operating Expenses** | **($1800000)** |
-| **Operating Income (EBIT)** | **$26154550** |
+| **Operating Income (EBIT)** | **$27295590** |
 | **Other Income & Expenses** | |
 | Interest Expense | ($15000) |
-| **Earnings Before Taxes (EBT)** | **$26139550** |
-| Provision for Income Taxes | ($6534888) |
-| **Net Income** | **$19604663** |
+| **Earnings Before Taxes (EBT)** | **$27280590** |
+| Provision for Income Taxes | ($6820148) |
+| **Net Income** | **$20460443** |
 
 ---
 
@@ -417,23 +417,23 @@ This represents one realization of the stochastic models showing actual revenue 
 |---|---:|---|---:|
 | Seed Funding Round | $400,000 | Team Expansion (Salaries) | $500,000 |
 | Google Credits Tier 2 | $25,000 | Marketing and Customer Acquisition | $150,000 |
-| Revenue from Operations | $7705756 | Product Development | $100,000 |
+| Revenue from Operations | $8329182 | Product Development | $100,000 |
 | | | Office and Operations | $60,000 |
 | | | Professional Services | $40,000 |
-| **Total Sources** | **$8130756** | **Total Uses** | **$850,000** |
-| | | **Net Funding Position** | **$7280756** |
+| **Total Sources** | **$8754182** | **Total Uses** | **$850,000** |
+| | | **Net Funding Position** | **$7904182** |
 
 ### Year 2027: Scale Financing
 | **Sources of Funds** | Amount | **Uses of Funds** | Amount |
 |---|---:|---|---:|
 | Series A Funding | $2,500,000 | International Expansion | $800,000 |
 | Google Credits Tier 3 | $100,000 | Enterprise Sales Team | $600,000 |
-| Revenue from Operations | $32887706 | R&D Advanced Features | $500,000 |
+| Revenue from Operations | $34230106 | R&D Advanced Features | $500,000 |
 | | | Marketing Scale-Up | $400,000 |
 | | | Operations and Overhead | $300,000 |
-| | | Infrastructure Costs | $4933156 |
-| **Total Sources** | **$35487706** | **Total Uses** | **$7533156** |
-| | | **Net Available for Growth** | **$27954550** |
+| | | Infrastructure Costs | $5134516 |
+| **Total Sources** | **$36830106** | **Total Uses** | **$7734516** |
+| | | **Net Available for Growth** | **$29095590** |
 
 ---
 
