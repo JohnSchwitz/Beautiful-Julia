@@ -50,14 +50,28 @@ This document contains sensitive compensation and equity information.
 
 ### Projected Post-Angel (Jul 2026)
 
-| Shareholder | Shares | % (Diluted) | Value @ $2M pre |
-|-------------|--------|-------------|------------------|
-| Founder | 4,000,000 | 68.0% | $1,530K |
-| SAR Plan | 400,000 | 6.8% | $153K |
-| Angel Investors | 735,294 | 12.5% | $250K |
-| **Allocated** | **5,135,294** | **87.3%** | |
-| **Available for Series A** | **750,000** | **12.7%** | |
-| **Total Outstanding** | **5,885,294** | **100.0%** | $2,250K post-money |
+| Shareholder | Shares | % (Diluted) | Value @ $2.25M post |
+|-------------|--------|-------------|---------------------|
+| Founder | 4,000,000 | 64.3% | $1,447K |
+| Dev Team (converted) | 300,000 | 4.8% | $108K |
+| Sales Team (converted) | 650,000 | 10.5% | $236K |
+| Executives (hired) | 275,000 | 4.4% | $99K |
+| Angel Investors | 735,294 | 11.8% | $265K |
+| **Outstanding** | **5,960,294** | **95.8%** | |
+| **C-Level Pool (remaining)** | **175,000** | **2.8%** | CFO/CTO slots |
+| **VP/Director Pool (remaining)** | **100,000** | **1.6%** | Senior hires |
+| **Total Fully Diluted** | **6,235,294** | **100.0%** | $2,250K post-money |
+
+### Planned Key Hires (Pre-Series A)
+
+| Role | Timing | Equity Pool | Strategic Rationale |
+|------|--------|-------------|---------------------|
+| CFO | Q1 2027 | C-Level (2.8%) | Financial controls, Series A prep |
+| CTO (if needed) | Q2 2027 | C-Level (2.8%) | Technical architecture scaling |
+| VP Engineering | Q4 2026 | VP/Director (1.6%) | Dev team leadership |
+| VP Sales | Q1 2027 | VP/Director (1.6%) | Revenue acceleration |
+
+**Rationale:** CFO hire 6 months before Series A is standard. CTO optional if founder remains technical lead.
 
 ### Projected Post-Series A (Jul 2027)
 
@@ -80,6 +94,54 @@ This document contains sensitive compensation and equity information.
 | Post-Angel (Jul 2026) | 5,135,294 | 750,000 | 5,885,294 | 12.7% |
 | Pre-Series A (Jun 2027) | 5,450,000 | 435,294 | 5,885,294 | 7.4% |
 | Post-Series A (Jul 2027) | 71,102,940 | 8,897,060 | 80,000,000 | 11.1% |
+
+### Anti-Dilution Provisions
+
+**Angel Round Terms:**
+- Standard weighted-average anti-dilution protection
+- Pro-rata rights for subsequent rounds
+- 1x liquidation preference, non-participating
+
+**Series A Terms (projected):**
+- Weighted-average anti-dilution (typical VC standard)
+- Pro-rata rights + super pro-rata (up to 2x initial investment)
+- 1x liquidation preference, participating cap at 3x
+
+These terms align with NVCA model documents and are standard for institutional rounds.
+
+### Board Composition
+
+**Post-Angel Round (Jul 2026):**
+
+| Seat | Member | Voting Rights | Notes |
+|------|--------|---------------|-------|
+| Chair | Founder | Yes | Retains board control |
+| Observer | Lead Angel Rep | No | Advisory role, no vote |
+| **Total** | **2 members** | **1 voting** | Founder maintains control |
+
+**Post-Series A Round (Jul 2027):**
+
+| Seat | Member | Appointed By | Voting Rights |
+|------|--------|--------------|---------------|
+| Chair | Founder (CEO) | Founders | Yes |
+| Member | Co-Founder/CTO* | Founders | Yes |
+| Member | Series A Lead Partner | Series A Investors | Yes |
+| Member | Angel Representative | Angel Investors | Yes |
+| Independent | Industry Expert | Unanimous approval | Yes |
+| **Total** | **5 seats** | | **5 voting** |
+
+*If no co-founder, second seat goes to independent director agreed by all parties
+
+**Board Meeting Cadence:**
+- Pre-Angel: Quarterly informal updates
+- Post-Angel: Quarterly formal board meetings
+- Post-Series A: Monthly board meetings + quarterly strategic reviews
+
+**Key Governance Provisions:**
+- Founder retains operational control through Series A
+- Material decisions require board majority (acquisitions $500K, new funding rounds)
+- Independent director ensures alignment between founders and investors
+- Standard protective provisions per NVCA model documents
 
 ---
 
@@ -110,4 +172,4 @@ SAR grants vest over 24 months. Not recorded on balance sheet until exercised pe
 
 ---
 
-*Generated: 2025-10-30 13:38:37*
+*Generated: 2025-10-31 08:33:22*

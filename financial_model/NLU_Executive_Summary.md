@@ -8,7 +8,7 @@ The NLU Portfolio comprises three AI-powered platforms targeting a **$18500.0M**
 
 #### Revenue Trajectory
 - **2025 (2 months):** $0 total revenue
-- **2026 (full year):** $6.2M total revenue
-- **2027 (full year):** $21.9M total revenue
-- **September 2027 ARR:** $25.0M
+- **2026 (full year):** $4.8M total revenue
+- **2027 (full year):** $18.9M total revenue
+- **September 2027 ARR:** $21.7M
 
