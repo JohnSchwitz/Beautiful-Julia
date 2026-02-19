@@ -1,10 +1,9 @@
 module StochasticModel
 
-using Distributions, Random
+using Dates, Distributions, Random
 using ..LoadFactors
 
-export Milestone, MonthlyForecast, DisclosureForecast, LinguaForecast
-export calculate_resource_hours, calculate_milestones, prepare_tasks_for_milestones
+export MonthlyForecast, DisclosureForecast, LinguaForecast
 export model_nebula_revenue, model_disclosure_revenue, model_lingua_revenue
 export run_stochastic_analysis, StochasticResults
 export format_number, format_currency
@@ -33,17 +32,6 @@ function format_currency(value::Real; use_k_m::Bool=true)
 end
 
 # ========== DATA STRUCTURES ==========
-struct Milestone
-    task::String
-    sequence::Int
-    planned_hours::Int
-    cumulative_hours::Int
-    milestone_date::String
-    available_hours::Float64
-    buffer_hours::Float64
-    resource_type::String
-end
-
 struct MonthlyForecast
     month::String
     new_customers::Int
@@ -78,60 +66,10 @@ struct StochasticResults
     prob_params::Dict{String,Dict{String,Float64}}
 end
 
-# ========== CALCULATION FUNCTIONS ==========
-function calculate_resource_hours(plan::ResourcePlan)
-    monthly_dev_hours = (plan.experienced_devs .* plan.dev_productivity_factor .+
-                         plan.intern_devs .* plan.intern_productivity_factor) .* 8 .* plan.work_days .* plan.dev_efficiency
-
-    monthly_marketing_hours = (plan.experienced_marketers .* plan.marketing_productivity_factor .+
-                               plan.intern_marketers .* plan.intern_productivity_factor) .* 8 .* plan.work_days .* plan.marketing_efficiency
-
-    return (monthly_dev=monthly_dev_hours,
-        monthly_marketing=monthly_marketing_hours,
-        cumulative_dev=cumsum(monthly_dev_hours),
-        cumulative_marketing=cumsum(monthly_marketing_hours))
-end
-
-function calculate_milestones(tasks::Vector{ProjectTask}, hours, months::Vector{String})
-    dev_tasks = sort(filter(t -> t.task_type == "Development", tasks), by=t -> t.sequence)
-    marketing_tasks = sort(filter(t -> t.task_type == "Marketing", tasks), by=t -> t.sequence)
-    milestones = Milestone[]
-
-    function _calculate_milestones_for_type(task_list, cumulative_hours, resource_type, months)
-        task_cumulative = 0
-        for task in task_list
-            task_cumulative += task.planned_hours
-            milestone_month_idx = findfirst(h -> h >= task_cumulative, cumulative_hours)
-            if milestone_month_idx !== nothing
-                push!(milestones, Milestone(task.name, task.sequence, task.planned_hours, task_cumulative, months[milestone_month_idx], cumulative_hours[milestone_month_idx], cumulative_hours[milestone_month_idx] - task_cumulative, resource_type))
-            else
-                push!(milestones, Milestone(task.name, task.sequence, task.planned_hours, task_cumulative, "Beyond Plan", 0.0, 0.0, resource_type))
-            end
-        end
-    end
-
-    _calculate_milestones_for_type(dev_tasks, hours.cumulative_dev, "Development", months)
-    _calculate_milestones_for_type(marketing_tasks, hours.cumulative_marketing, "Marketing", months)
-    return milestones
-end
-
-function prepare_tasks_for_milestones(initial_tasks::Vector{ProjectTask}, hours)
-    tasks = deepcopy(initial_tasks)
-    dev_planned_total = sum(t.planned_hours for t in tasks if t.task_type == "Development")
-    mktg_planned_total = sum(t.planned_hours for t in tasks if t.task_type == "Marketing")
-    remaining_dev_hours = hours.cumulative_dev[end] - dev_planned_total
-    remaining_mktg_hours = hours.cumulative_marketing[end] - mktg_planned_total
-    next_dev_seq = isempty(filter(t -> t.task_type == "Development", tasks)) ? 1 : maximum(t.sequence for t in tasks if t.task_type == "Development") + 1
-    next_mktg_seq = isempty(filter(t -> t.task_type == "Marketing", tasks)) ? 1 : maximum(t.sequence for t in tasks if t.task_type == "Marketing") + 1
-    push!(tasks, ProjectTask("Future Project Development", max(0, round(Int, remaining_dev_hours)), next_dev_seq, "Development"))
-    push!(tasks, ProjectTask("Executing Mktg", max(0, round(Int, remaining_mktg_hours)), next_mktg_seq, "Marketing"))
-    return tasks
-end
-
 # ========== FINANCIAL MODELING ==========
 
-function model_nebula_revenue(plan::ResourcePlan, params::Dict{String,Float64}, model_params::Dict{String,Any})
-    # Extract pricing parameters from CSV
+function model_nebula_revenue(months::Vector{String}, params::Dict{String,Float64}, model_params::Dict{String,Any}, start_month_name::String)
+    # Extract parameters from CSV
     monthly_price = model_params["MonthlyPrice"]
     annual_price = model_params["AnnualPrice"]
     annual_conversion_rate = model_params["AnnualConversionRate"]
@@ -148,22 +86,20 @@ function model_nebula_revenue(plan::ResourcePlan, params::Dict{String,Float64}, 
     purchase_rate_dist = Beta(params["alpha_purchase"], params["beta_purchase"])
     churn_dist = Beta(params["alpha_churn"], params["beta_churn"])
 
-    # Find MVP start month (Dec 2025 based on CSV)
-    mvp_start_month = findfirst(==("Dec 2025"), plan.months)
-    doubling_end = findfirst(==("Apr 2026"), plan.months)
-    linear_start = findfirst(==("May 2026"), plan.months)
+    # Find the start index for revenue generation
+    start_idx = findfirst(==(start_month_name), months)
 
     forecasts = MonthlyForecast[]
     total_monthly_customers = 0.0
     total_annual_customers = 0.0
     pending_delayed_customers = 0.0
 
-    for (i, month_name) in enumerate(plan.months)
+    for (i, month_name) in enumerate(months)
         new_customers = 0
         lambda_current = 0.0
 
         # Customer acquisition based on CSV parameters
-        if i >= mvp_start_month && !isnothing(mvp_start_month)
+        if !isnothing(start_idx) && i >= start_idx
             if month_name == "Dec 2025"
                 lambda_current = lambda_dec
             elseif month_name == "Jan 2026"
@@ -174,7 +110,7 @@ function model_nebula_revenue(plan::ResourcePlan, params::Dict{String,Float64}, 
                 lambda_current = lambda_mar
             elseif month_name == "Apr 2026"
                 lambda_current = lambda_apr
-            elseif !isnothing(linear_start) && i >= linear_start
+            elseif i >= findfirst(==("May 2026"), months)
                 lambda_current = lambda_may_onwards
             end
 
@@ -227,8 +163,8 @@ function model_nebula_revenue(plan::ResourcePlan, params::Dict{String,Float64}, 
     return forecasts
 end
 
-function model_disclosure_revenue(plan::ResourcePlan, milestones::Vector{Milestone}, params::Dict{String,Float64}, model_params::Dict{String,Any})
-    # Extract annual revenue per firm size from CSV
+function model_disclosure_revenue(months::Vector{String}, params::Dict{String,Float64}, model_params::Dict{String,Any}, start_month_name::String)
+    # Extract parameters from CSV
     solo_annual = model_params["SoloAnnualRevenue"]
     small_annual = model_params["SmallAnnualRevenue"]
     medium_annual = model_params["MediumAnnualRevenue"]
@@ -242,47 +178,31 @@ function model_disclosure_revenue(plan::ResourcePlan, milestones::Vector{Milesto
     lambda_large = get(params, "lambda_large_firms", 0.1)
     lambda_biglaw = get(params, "lambda_biglaw_firms", 0.05)
 
-    # CRITICAL FIX: Find MVP completion date from milestones
-    disclosure_mvp_milestone = findfirst(m -> m.task == "DisclosureNLU_MVP", milestones)
-
-    if disclosure_mvp_milestone !== nothing
-        mvp_completion_month = milestones[disclosure_mvp_milestone].milestone_date
-        println("DEBUG: Disclosure MVP completes: $(mvp_completion_month)")
-    else
-        mvp_completion_month = "Jan 2026"  # Fallback
-        println("DEBUG: Disclosure MVP milestone not found, using fallback: Jan 2026")
-    end
-
-    # Find the index of MVP completion month
-    sales_start_idx = findfirst(==(mvp_completion_month), plan.months)
-
+    # Find the start index for revenue generation
+    sales_start_idx = findfirst(==(start_month_name), months)
     if sales_start_idx === nothing
-        # If MVP month not in plan, start from beginning of plan
-        sales_start_idx = 1
-        println("DEBUG: MVP month $(mvp_completion_month) not found in plan, starting from month 1")
-    else
-        println("DEBUG: Sales start at index $(sales_start_idx): $(plan.months[sales_start_idx])")
+        return DisclosureForecast[] # Or handle error appropriately
     end
 
     # Start months for Large and BigLaw from CSV (Q3 2027)
     large_start_month_name = get(model_params, "LargeStartMonth", "Jul 2027")
     biglaw_start_month_name = get(model_params, "BigLawStartMonth", "Jul 2027")
 
-    large_start_idx = findfirst(==(large_start_month_name), plan.months)
-    biglaw_start_idx = findfirst(==(biglaw_start_month_name), plan.months)
+    large_start_idx = findfirst(==(large_start_month_name), months)
+    biglaw_start_idx = findfirst(==(biglaw_start_month_name), months)
 
     if large_start_idx === nothing
-        large_start_idx = length(plan.months) + 1  # Never start
+        large_start_idx = length(months) + 1  # Never start
     end
     if biglaw_start_idx === nothing
-        biglaw_start_idx = length(plan.months) + 1  # Never start
+        biglaw_start_idx = length(months) + 1  # Never start
     end
 
     forecasts = DisclosureForecast[]
     total_solo, total_small, total_medium, total_large, total_biglaw = 0.0, 0.0, 0.0, 0.0, 0.0
     churn_dist = Beta(1, 15)  # Low churn for legal professionals
 
-    for (i, month_name) in enumerate(plan.months)
+    for (i, month_name) in enumerate(months)
         new_solo, new_small, new_medium, new_large, new_biglaw = 0, 0, 0, 0, 0
 
         # CRITICAL: Only acquire firms after MVP completion
@@ -340,14 +260,11 @@ function model_disclosure_revenue(plan::ResourcePlan, milestones::Vector{Milesto
         ))
     end
 
-    println("DEBUG: Disclosure forecasts generated: $(length(forecasts)) months")
-    println("DEBUG: First revenue month: $(findfirst(f -> f.revenue_k > 0, forecasts))")
-
     return forecasts
 end
 
-function model_lingua_revenue(plan::ResourcePlan, milestones::Vector{Milestone}, params::Dict{String,Float64}, model_params::Dict{String,Any})
-    # Price per match from CSV
+function model_lingua_revenue(months::Vector{String}, params::Dict{String,Float64}, model_params::Dict{String,Any}, start_month_name::String)
+    # Extract parameters from CSV
     price_per_match = get(model_params, "LinguaMatchPrice", 59.0)
 
     # User acquisition from probability_parameters.csv
@@ -357,19 +274,16 @@ function model_lingua_revenue(plan::ResourcePlan, milestones::Vector{Milestone},
     match_dist = Beta(params["alpha_match_success"], params["beta_match_success"])
     churn_dist = Beta(1, 15)
 
-    # Find MVP completion month
-    mvp_milestone_idx = findfirst(m -> m.task == "LinguaNU_MVP", milestones)
-    mvp_completion_date = mvp_milestone_idx !== nothing ? milestones[mvp_milestone_idx].milestone_date : "Jul 2026"
-
-    sales_start_idx = findfirst(==(mvp_completion_date), plan.months)
+    # Find the start index for revenue generation
+    sales_start_idx = findfirst(==(start_month_name), months)
     if sales_start_idx === nothing
-        sales_start_idx = findfirst(==("Jul 2026"), plan.months)
+        return LinguaForecast[] # Or handle error
     end
 
     forecasts = LinguaForecast[]
     total_premium_users = 0.0
 
-    for (i, month_name) in enumerate(plan.months)
+    for (i, month_name) in enumerate(months)
         lambda_prem = 0.0
         if month_name == "Jul 2026"
             lambda_prem = lambda_prem_jul
@@ -378,7 +292,7 @@ function model_lingua_revenue(plan::ResourcePlan, milestones::Vector{Milestone},
         end
 
         new_premium_users = 0
-        if i >= sales_start_idx && lambda_prem > 0
+        if !isnothing(sales_start_idx) && i >= sales_start_idx && lambda_prem > 0
             new_premium_users = rand(Poisson(lambda_prem))
         end
 
@@ -400,20 +314,23 @@ function model_lingua_revenue(plan::ResourcePlan, milestones::Vector{Milestone},
     return forecasts
 end
 
-function run_stochastic_analysis()
-    # Load all configuration from CSV files
-    plan = LoadFactors.create_resource_plan()
-    hours = calculate_resource_hours(plan)
-    initial_tasks = LoadFactors.load_project_tasks()
-    milestones = calculate_milestones(initial_tasks, hours, plan.months)
-
+function run_stochastic_analysis(months::Vector{String})
+    # Load configuration from CSV files
     prob_params = LoadFactors.load_probability_parameters("data/probability_parameters.csv")
     model_params = LoadFactors.load_model_parameters("data/model_parameters.csv")
 
+    # Centralized start dates. These can be overridden by values in model_parameters.csv
+    default_start_dates = Dict(
+        "NebulaStartMonth" => "Apr 2026",
+        "DisclosureStartMonth" => "May 2026",
+        "LinguaStartMonth" => "Sep 2026"
+    )
+    start_dates = merge(default_start_dates, model_params)
+
     # Generate forecasts
-    nebula_forecast = model_nebula_revenue(plan, prob_params["Nebula-NLU"], model_params)
-    disclosure_forecast = model_disclosure_revenue(plan, milestones, prob_params["Disclosure-NLU"], model_params)
-    lingua_forecast = model_lingua_revenue(plan, milestones, prob_params["Lingua-NLU"], model_params)
+    nebula_forecast = model_nebula_revenue(months, prob_params["Nebula-NLU"], model_params, start_dates["NebulaStartMonth"])
+    disclosure_forecast = model_disclosure_revenue(months, prob_params["Disclosure-NLU"], model_params, start_dates["DisclosureStartMonth"])
+    lingua_forecast = model_lingua_revenue(months, prob_params["Lingua-NLU"], model_params, start_dates["LinguaStartMonth"])
 
     return StochasticResults(
         nebula_forecast,

@@ -1,56 +1,63 @@
+using CSV
+using DataFrames
+using Dates
+
+# Load all modules
 include("load_factors.jl")
 include("stochastic_model.jl")
-include("presentation/presentation_output.jl")  # Updated path
+include("presentation/formatting.jl")
+include("presentation/financial_statements.jl")
+include("presentation/report_generators.jl")
 
 using .LoadFactors
 using .StochasticModel
-using .PresentationOutput
+using .Formatting
+using .FinancialStatements
+using .ReportGenerators
 
-function run_analysis()
-    println("🚀 Running NLU Portfolio Analysis...")
+function main()
+    println("Starting financial model simulation...")
 
-    initial_tasks = LoadFactors.load_project_tasks()
-    plan = LoadFactors.load_resource_plan()
-    hours = StochasticModel.calculate_resource_hours(plan)
-    milestones = StochasticModel.calculate_milestones(initial_tasks, hours, plan.months)
+    # Load input data
+    println("Loading input data from CSV files...")
+    cost_factors_df = LoadFactors.load_cost_factors()
+    salaries_df = LoadFactors.load_salaries()
+    headcount_df = LoadFactors.load_headcount()
 
-    # Run stochastic models
-    results = StochasticModel.run_stochastic_analysis()
+    println("✅ Input data loaded.")
 
-    # Extract forecast data
+    # Load active months for forecasting
+    println("Loading active months from data/active_months.csv...")
+    active_months_df = LoadFactors.load_active_months()
+    months = active_months_df.Month
+
+    # Run deterministic analysis only
+    println("Running deterministic forecast...")
+    results = StochasticModel.run_stochastic_analysis(months)
+    println("✅ Deterministic forecast complete.")
+
+    # Extract forecasts from results
     nebula_f = results.nebula_forecast
     disclosure_f = results.disclosure_forecast
     lingua_f = results.lingua_forecast
-    prob_params = results.prob_params
 
-    # Generate outputs
-    PresentationOutput.generate_spreadsheet_output(plan, milestones, initial_tasks, hours, nebula_f, disclosure_f, lingua_f, prob_params)
+    # Generate output reports (deterministic only)
+    println("Generating output reports...")
 
-    # Generate markdown reports
-    PresentationOutput.generate_executive_summary_file(plan, milestones, nebula_f, disclosure_f, lingua_f)
-    PresentationOutput.generate_three_year_projections_file(plan, milestones, initial_tasks, hours, nebula_f, disclosure_f, lingua_f, prob_params)
-    PresentationOutput.generate_complete_strategic_plan_file(plan, milestones, initial_tasks, hours, nebula_f, disclosure_f, lingua_f, prob_params)
-    PresentationOutput.generate_founder_capitalization_file(plan, milestones, initial_tasks, hours, nebula_f, disclosure_f, lingua_f, prob_params)  # ADD THIS LINEestones, initial_tasks, hours, nebula_f, disclosure_f, lingua_f, prob_params)
+    ReportGenerators.generate_complete_strategic_plan_file(
+        months,
+        nebula_f,
+        disclosure_f,
+        lingua_f,
+        cost_factors_df,
+        salaries_df,
+        headcount_df
+    )
 
-    return results
+    println("✅ All reports generated successfully!")
+    println("\nOutput files:")
+    println("  - NLU_Strategic_Plan_Complete.md")
 end
 
-# Run the analysis
-println("Available LoadFactors functions: ", names(LoadFactors))
-println("Starting NLU Portfolio Analysis...")
-results = run_analysis()
-println("✅ Analysis complete!")
-println("📁 Generated files:")
-println("  - NLU_Executive_Summary.md")
-println("  - NLU_Three_Year_Projections.md")
-println("  - NLU_Strategic_Plan_Complete.md (13 sections - for investors/employees)")
-println("  - NLU_Founder_Capitalization.md (CONFIDENTIAL - founder only)")
-
-
-
-
-
-
-
-
-
+# Run the main function
+main()

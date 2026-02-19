@@ -1,80 +1,47 @@
 module LoadFactors
 
-using DataFrames, CSV
-export ResourcePlan, load_project_tasks, ProjectTask, load_configuration, load_resource_plan, load_tasks, load_probability_parameters, load_cost_factors, load_model_parameters, create_resource_plan, load_financing
+using DataFrames, CSV, Dates
+export load_cost_factors, load_salaries, load_headcount,
+    load_model_parameters, load_probability_parameters,
+    load_timeline, load_active_months,  # ← Added load_active_months
+    load_financing, load_tasks, load_resource_plan
 
-struct ResourcePlan
-    work_days::Vector{Int}
-    experienced_devs::Vector{Float64}
-    intern_devs::Vector{Float64}
-    experienced_marketers::Vector{Float64}
-    intern_marketers::Vector{Float64}
-    dev_efficiency::Vector{Float64}
-    marketing_efficiency::Vector{Float64}
-    months::Vector{String}
-    dev_productivity_factor::Float64
-    marketing_productivity_factor::Float64
-    intern_productivity_factor::Float64
-end
-
-struct ProjectTask
-    name::String
-    planned_hours::Int
-    sequence::Int
-    task_type::String
-end
-
-function load_configuration(filepath::String)
-    config_df = CSV.read(filepath, DataFrame)
-    config_dict = Dict(row.key => parse(Float64, string(row.value)) for row in eachrow(config_df))
-    return config_dict
-end
-
-function load_resource_plan_with_config(filepath::String, config::Dict)
+function load_cost_factors(filepath::String="data/cost_factors.csv")
     df = CSV.read(filepath, DataFrame)
-    return ResourcePlan(
-        df.work_days,
-        df.experienced_devs,
-        df.intern_devs,
-        df.experienced_marketers,
-        df.intern_marketers,
-        df.dev_efficiency,
-        df.marketing_efficiency,
-        df.month,
-        config["dev_productivity_factor"],
-        config["marketing_productivity_factor"],
-        config["intern_productivity_factor"]
-    )
+    return df
 end
 
-function load_resource_plan()
-    config = load_configuration("data/config.csv")
-    return load_resource_plan_with_config("data/resource_plan.csv", config)
-end
+function load_model_parameters(filepath::String="config/model_parameters.csv")
+    df = CSV.read(filepath, DataFrame, header=1, types=[String, String, String])
 
-function create_resource_plan()
-    return load_resource_plan()
-end
+    params = Dict{String,Any}()
 
-function load_tasks(filepath::String)
-    df = CSV.read(filepath, DataFrame)
-    println("DEBUG: Loaded tasks:")
     for row in eachrow(df)
-        println("  $(row.Name) - Seq: $(row.Sequence) - Hours: $(row.PlannedHours)")
+        # Access columns by name
+        param_name = row.Parameter
+        param_value_str = row.Value
+
+        # Skip if this is the header row (shouldn't happen but safe check)
+        if param_name == "Parameter"
+            continue
+        end
+
+        # Try to convert to number if possible, otherwise keep as string
+        if !ismissing(param_value_str) && param_value_str != ""
+            value = try
+                parse(Float64, param_value_str)
+            catch
+                param_value_str  # Keep as string for month names
+            end
+
+            params[param_name] = value
+        end
     end
-    tasks = ProjectTask[]
-    for row in eachrow(df)
-        seq = ismissing(row.Sequence) ? 999 : row.Sequence
-        push!(tasks, ProjectTask(row.Name, row.PlannedHours, seq, row.TaskType))
-    end
-    return tasks
+
+    return params
 end
 
-function load_project_tasks()
-    return load_tasks("data/project_tasks.csv")
-end
-
-function load_probability_parameters(filepath::String)
+function load_probability_parameters(filepath::String="data/probability_parameters.csv")
     df = CSV.read(filepath, DataFrame)
     params = Dict{String,Dict{String,Float64}}()
     for row in eachrow(df)
@@ -87,32 +54,37 @@ function load_probability_parameters(filepath::String)
     return params
 end
 
-function load_cost_factors(filepath::String="data/cost_factors.csv")
+function load_financing(filepath::String="data/financing.csv")
     df = CSV.read(filepath, DataFrame)
     return df
 end
 
-function load_model_parameters(filepath::String="data/model_parameters.csv")
-    df = CSV.read(filepath, DataFrame)
-    params = Dict{String,Any}()
-    for row in eachrow(df)
-        # Handle different data types
-        value_str = string(row.Value)
-        if value_str == "true"
-            params[row.Parameter] = true
-        elseif value_str == "false"
-            params[row.Parameter] = false
-        elseif occursin("2026", value_str) || occursin("2027", value_str)
-            params[row.Parameter] = value_str  # Month names like "Apr 2026"
-        else
-            params[row.Parameter] = parse(Float64, value_str)
-        end
-    end
-    return params
+function load_sales_force(filepath::String="data/sales_force.csv")
+    return CSV.read(filepath, DataFrame)
 end
 
-function load_financing(filepath::String="data/financing.csv")
+function load_headcount(filepath::String="data/Headcount.csv")
+    return CSV.read(filepath, DataFrame)
+end
+
+function load_salaries(filepath::String="data/Salaries.csv")
+    return CSV.read(filepath, DataFrame)
+end
+
+function load_timeline(filepath::String="data/timeline.csv")
     df = CSV.read(filepath, DataFrame)
+    timeline_params = Dict(row.Parameter => row.Value for row in eachrow(df))
+    start_date = Date(timeline_params["StartDate"])
+    end_date = Date(timeline_params["EndDate"])
+    return [Dates.format(d, "U Y") for d in start_date:Dates.Month(1):end_date]
+end
+
+function load_active_months(filepath::String="data/active_months.csv")
+    """
+    Load the list of active months for forecasting.
+    Returns a DataFrame with a single column 'Month' containing month strings.
+    """
+    df = CSV.read(filepath, DataFrame, header=true, stringtype=String)  # ← Force String type
     return df
 end
 
