@@ -69,92 +69,149 @@ end
 # ========== FINANCIAL MODELING ==========
 
 function model_nebula_revenue(months::Vector{String}, params::Dict{String,Float64}, model_params::Dict{String,Any}, start_month_name::String)
-    # Extract parameters from CSV
+    # Extract freemium funnel parameters
     monthly_price = model_params["MonthlyPrice"]
     annual_price = model_params["AnnualPrice"]
-    annual_conversion_rate = model_params["AnnualConversionRate"]
+    free_to_monthly = model_params["FreeToMonthlyConversion"]
+    free_to_annual = model_params["FreeToAnnualConversion"]
+    monthly_to_annual_rate = model_params["MonthlyToAnnualUpgrade"]
+    monthly_churn = model_params["MonthlyChurnRate"]
+    annual_renewal = model_params["AnnualRenewalRate"]
+    grandparent_pct = model_params["GrandparentPercentage"]
+    grandparent_annual_conv = model_params["GrandparentFreeToAnnualConversion"]
+    grandparent_renewal = model_params["GrandparentAnnualRenewal"]
+    grandparent_churn = model_params["GrandparentMonthlyChurn"]
 
-    # Extract growth parameters from probability_parameters.csv
-    lambda_dec = params["lambda_dec_2025"]      # 200
-    lambda_jan = params["lambda_jan_2026"]      # 400
-    lambda_feb = params["lambda_feb_2026"]      # 800
-    lambda_mar = params["lambda_mar_2026"]      # 1600
-    lambda_apr = params["lambda_apr_2026"]      # 3200
-    lambda_may_onwards = params["lambda_may_2026_onwards"]  # 533
+    # Growth parameters from CSV
+    starting_customers = model_params["StartingCustomersAtMVP"]
+    doubling_end_month = model_params["DoublingPhaseEndMonth"]
+    linear_start_month = model_params["LinearPhaseStartMonth"]
+    linear_growth = model_params["LinearMonthlyGrowth"]
 
-    # Distribution configurations
-    purchase_rate_dist = Beta(params["alpha_purchase"], params["beta_purchase"])
-    churn_dist = Beta(params["alpha_churn"], params["beta_churn"])
-
-    # Find the start index for revenue generation
+    # Find key month indices
     start_idx = findfirst(==(start_month_name), months)
+    doubling_end_idx = findfirst(==(doubling_end_month), months)
+    linear_start_idx = findfirst(==(linear_start_month), months)
+
+    if start_idx === nothing
+        @warn "Revenue start month '$start_month_name' not found in timeline"
+        return MonthlyForecast[]
+    end
 
     forecasts = MonthlyForecast[]
-    total_monthly_customers = 0.0
-    total_annual_customers = 0.0
-    pending_delayed_customers = 0.0
+
+    # Cohort tracking
+    monthly_subscribers = 0.0
+    annual_subscribers = 0.0
+    grandparent_monthly = 0.0
+    grandparent_annual = 0.0
+
+    # Track cohorts for upgrade timing (monthly→annual happens after ~3 months)
+    monthly_cohorts = Dict{Int,Float64}()
+
+    # Track current customer base for growth calculation
+    current_base = 0.0
 
     for (i, month_name) in enumerate(months)
-        new_customers = 0
-        lambda_current = 0.0
+        # Step 1: Calculate new free trial signups based on growth phase
+        new_trials = 0
 
-        # Customer acquisition based on CSV parameters
-        if !isnothing(start_idx) && i >= start_idx
-            if month_name == "Dec 2025"
-                lambda_current = lambda_dec
-            elseif month_name == "Jan 2026"
-                lambda_current = lambda_jan
-            elseif month_name == "Feb 2026"
-                lambda_current = lambda_feb
-            elseif month_name == "Mar 2026"
-                lambda_current = lambda_mar
-            elseif month_name == "Apr 2026"
-                lambda_current = lambda_apr
-            elseif i >= findfirst(==("May 2026"), months)
-                lambda_current = lambda_may_onwards
+        if i >= start_idx
+            if i == start_idx
+                # First month: starting customer base
+                new_trials = round(Int, starting_customers)
+                current_base = starting_customers
+
+            elseif !isnothing(doubling_end_idx) && i > start_idx && i <= doubling_end_idx
+                # Doubling phase: 2x previous month
+                new_trials = round(Int, current_base * 2)
+                current_base = new_trials
+
+            elseif !isnothing(linear_start_idx) && i >= linear_start_idx
+                # Linear growth phase: fixed number per month
+                new_trials = round(Int, linear_growth)
+                current_base = linear_growth
+
+            else
+                # Transition month or unspecified: use current base
+                new_trials = round(Int, current_base)
             end
 
-            if lambda_current > 0
-                new_customers = rand(Poisson(lambda_current))
-            end
+            # Add some stochastic variation (±10%)
+            variation = rand() * 0.2 - 0.1  # -10% to +10%
+            new_trials = max(0, round(Int, new_trials * (1 + variation)))
         end
 
-        # Purchase and pricing decisions
-        purchase_conversion_rate = rand(purchase_rate_dist)
-        annual_churn_rate = rand(churn_dist)
-        monthly_churn_rate = 1 - (1 - annual_churn_rate)^(1 / 12)
+        # Step 2: Free → Paid conversion
+        new_conversions = new_trials * (free_to_monthly + free_to_annual)
 
-        # Process delayed purchases from previous month
-        immediate_purchases = new_customers * purchase_conversion_rate * model_params["ImmediatePurchaseRate"]
-        delayed_purchases = pending_delayed_customers
-        total_new_purchases = immediate_purchases + delayed_purchases
+        # Segment: Regular vs Grandparent
+        grandparent_trials = new_conversions * grandparent_pct
+        regular_trials = new_conversions * (1 - grandparent_pct)
 
-        # Pricing split based on CSV annual conversion rate
-        new_annual_customers = total_new_purchases * annual_conversion_rate
-        new_monthly_customers = total_new_purchases * (1 - annual_conversion_rate)
+        # Regular conversions
+        total_conversion_rate = free_to_monthly + free_to_annual
+        if total_conversion_rate > 0
+            new_monthly_regular = regular_trials * (free_to_monthly / total_conversion_rate)
+            new_annual_regular = regular_trials * (free_to_annual / total_conversion_rate)
+        else
+            new_monthly_regular = 0.0
+            new_annual_regular = 0.0
+        end
 
-        # Apply churn
-        retained_monthly = total_monthly_customers * (1 - monthly_churn_rate)
-        retained_annual = total_annual_customers * (1 - annual_churn_rate / 12)
+        # Grandparent conversions (higher annual preference)
+        new_annual_grandparent = grandparent_trials * grandparent_annual_conv
+        new_monthly_grandparent = grandparent_trials * (1 - grandparent_annual_conv)
 
-        # Update customer base
-        total_monthly_customers = retained_monthly + new_monthly_customers
-        total_annual_customers = retained_annual + new_annual_customers
+        # Step 3: Apply churn to existing subscribers
+        monthly_subscribers *= (1 - monthly_churn)
+        annual_subscribers *= (1 - (1 - annual_renewal) / 12)  # Monthly equivalent of annual churn
+        grandparent_monthly *= (1 - grandparent_churn)
+        grandparent_annual *= (1 - (1 - grandparent_renewal) / 12)
 
-        # Calculate revenue
-        monthly_revenue = (total_monthly_customers * monthly_price) +
-                          (total_annual_customers * annual_price / 12)
+        # Step 4: Monthly → Annual upgrades (after 3 months)
+        upgrades_to_annual = 0.0
+        cohort_to_check = i - 3
+        if haskey(monthly_cohorts, cohort_to_check)
+            cohort_size = monthly_cohorts[cohort_to_check]
+            upgrades_to_annual = cohort_size * monthly_to_annual_rate
+            monthly_subscribers -= upgrades_to_annual
+            annual_subscribers += upgrades_to_annual
+            delete!(monthly_cohorts, cohort_to_check)
+        end
 
-        # Set up next month's delayed purchases
-        pending_delayed_customers = new_customers * purchase_conversion_rate * model_params["DelayedPurchaseRate"]
+        # Step 5: Add new subscribers
+        monthly_subscribers += new_monthly_regular
+        annual_subscribers += new_annual_regular
+        grandparent_monthly += new_monthly_grandparent
+        grandparent_annual += new_annual_grandparent
 
-        total_customers = round(Int, total_monthly_customers + total_annual_customers)
+        # Track this month's cohort for future upgrades
+        if new_monthly_regular > 0
+            monthly_cohorts[i] = new_monthly_regular
+        end
+
+        # Step 6: Calculate revenue
+        total_monthly_subs = monthly_subscribers + grandparent_monthly
+        total_annual_subs = annual_subscribers + grandparent_annual
+
+        monthly_revenue = (total_monthly_subs * monthly_price) +
+                          (total_annual_subs * annual_price / 12)
+
+        total_customers = round(Int, total_monthly_subs + total_annual_subs)
+
+        # Calculate conversion rate for this month
+        avg_conversion_rate = if new_trials > 0
+            new_conversions / new_trials
+        else
+            0.0
+        end
 
         push!(forecasts, MonthlyForecast(
             month_name,
-            new_customers,
-            purchase_conversion_rate,
-            annual_churn_rate,
+            new_trials,
+            avg_conversion_rate,
+            monthly_churn,
             total_customers,
             monthly_revenue / 1000
         ))

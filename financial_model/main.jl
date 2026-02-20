@@ -23,13 +23,15 @@ function main()
     cost_factors_df = LoadFactors.load_cost_factors()
     salaries_df = LoadFactors.load_salaries()
     headcount_df = LoadFactors.load_headcount()
+    model_params = LoadFactors.load_model_parameters()  # ← Add this
+    prob_params = LoadFactors.load_probability_parameters()  # ← Add this
 
     println("✅ Input data loaded.")
 
     # Load active months for forecasting
     println("Loading active months from data/active_months.csv...")
     active_months_df = LoadFactors.load_active_months()
-    months = active_months_df.Month
+    months = String.(active_months_df.Month)
 
     # Run deterministic analysis only
     println("Running deterministic forecast...")
@@ -51,7 +53,9 @@ function main()
         lingua_f,
         cost_factors_df,
         salaries_df,
-        headcount_df
+        headcount_df,
+        model_params,      # ← Add this
+        prob_params        # ← Add this
     )
 
     println("✅ All reports generated successfully!")

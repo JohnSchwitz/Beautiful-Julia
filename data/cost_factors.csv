@@ -1,5 +1,0 @@
-Cost_Factor,Percentage_of_Revenue,Fixed_Monthly_Amount,Description
-Gemini_LLM,0.20,0.0,AI model API costs
-Google_Cloud_Infrastructure,0.15,0.0,Cloud infrastructure costs
-Subsidiary_Costs,0.0,8.0,Fixed operational costs
-Administration_Salaries,0.0,8.0,Administrative overhead

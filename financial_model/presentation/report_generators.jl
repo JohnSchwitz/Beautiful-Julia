@@ -54,7 +54,7 @@ function generate_revenue_summary_section(months::Vector{String}, nebula_map, di
     |---------|--------|------------|--------|-------|--------|
     """
 
-    # Create quarters dynamically
+    # Group by quarters
     quarters = []
     current_quarter_months = []
     current_quarter_name = ""
@@ -79,18 +79,47 @@ function generate_revenue_summary_section(months::Vector{String}, nebula_map, di
         push!(current_quarter_months, month_str)
     end
 
+    # Track annual totals
+    annual_totals = Dict{String,Dict{String,Float64}}()
+
     previous_quarter_total = 0.0
     for (quarter_name, quarter_months) in quarters
+        year = split(quarter_name, " ")[1]
+
         nebula_q = sum(get(nebula_map, m, 0.0) for m in quarter_months)
         disclosure_q = sum(get(disclosure_map, m, 0.0) for m in quarter_months)
         lingua_q = sum(get(lingua_map, m, 0.0) for m in quarter_months)
         total_q = nebula_q + disclosure_q + lingua_q
+
+        # Accumulate annual totals
+        if !haskey(annual_totals, year)
+            annual_totals[year] = Dict("nebula" => 0.0, "disclosure" => 0.0, "lingua" => 0.0, "total" => 0.0)
+        end
+        annual_totals[year]["nebula"] += nebula_q
+        annual_totals[year]["disclosure"] += disclosure_q
+        annual_totals[year]["lingua"] += lingua_q
+        annual_totals[year]["total"] += total_q
 
         growth_str = previous_quarter_total > 0 ? string(round(((total_q - previous_quarter_total) / previous_quarter_total) * 100, digits=1), "%") : "-"
 
         output *= "| $quarter_name | $(format_currency(nebula_q * 1000)) | $(format_currency(disclosure_q * 1000)) | $(format_currency(lingua_q * 1000)) | $(format_currency(total_q * 1000)) | $growth_str |\n"
 
         previous_quarter_total = total_q
+    end
+
+    # Add annual summary rows
+    output *= "\n### Annual Totals\n\n"
+    output *= "| Year | Nebula | Disclosure | Lingua | **Total** | YoY Growth |\n"
+    output *= "|------|--------|------------|--------|-----------|------------|\n"
+
+    previous_year_total = 0.0
+    for year in sort(collect(keys(annual_totals)))
+        ann = annual_totals[year]
+        yoy_growth = previous_year_total > 0 ? string(round(((ann["total"] - previous_year_total) / previous_year_total) * 100, digits=1), "%") : "-"
+
+        output *= "| **$year** | **$(format_currency(ann["nebula"] * 1000))** | **$(format_currency(ann["disclosure"] * 1000))** | **$(format_currency(ann["lingua"] * 1000))** | **$(format_currency(ann["total"] * 1000))** | **$yoy_growth** |\n"
+
+        previous_year_total = ann["total"]
     end
 
     output *= "\n---\n\n"
@@ -101,17 +130,15 @@ function generate_valuation_summary_section(months::Vector{String}, nebula_map, 
     output = """
     ## 2. Valuation Summary
 
-    ### Annual Financial Summary
-
     """
 
     # 2025 Summary
     output *= """
-    #### 2025 Financial Summary
+    ### 2025 Financial Summary
 
     **Revenue:** $(format_currency_abbreviated(financial_data.pnl_2025.revenue))
     **COGS:** \$0 (Google Credits: $(format_currency_abbreviated(financial_data.pnl_2025.google_credits)))
-    **Gross Profit:** $(format_currency_abbreviated(financial_data.pnl_2025.gross_profit))
+    **Gross Margin:** $(format_currency_abbreviated(financial_data.pnl_2025.gross_profit))
 
     **Operating Expenses:**
     - Commission (25% of revenue): $(format_currency_abbreviated(financial_data.pnl_2025.commission))
@@ -121,18 +148,61 @@ function generate_valuation_summary_section(months::Vector{String}, nebula_map, 
     - **Total OpEx:** $(format_currency_abbreviated(financial_data.pnl_2025.opex))
 
     **EBIT:** $(format_currency_abbreviated(financial_data.pnl_2025.ebit))
-    **Interest:** $(format_currency_abbreviated(financial_data.pnl_2025.interest))
-    **Taxes:** $(format_currency_abbreviated(financial_data.pnl_2025.taxes))
     **Net Income:** $(format_currency_abbreviated(financial_data.pnl_2025.net_income))
 
-    **R&D Tax Credit Calculation:**
-    - Qualified Research Expenses: $(format_currency_abbreviated(financial_data.pnl_2025.dev))
-    - Estimated Federal Credit (20%): $(format_currency_abbreviated(financial_data.pnl_2025.dev * 0.20))
-    - Net Cash Impact: $(format_currency_abbreviated(financial_data.pnl_2025.net_income + financial_data.pnl_2025.dev * 0.20))
+    **R&D Tax Credit:** $(format_currency_abbreviated(financial_data.pnl_2025.dev * 0.20))
+    **Net Cash Impact:** $(format_currency_abbreviated(financial_data.pnl_2025.net_income + financial_data.pnl_2025.dev * 0.20))
 
     """
 
-    # Q4 2026 and Q4 2027 valuations
+    # 2026 Summary
+    output *= """
+    ### 2026 Financial Summary
+
+    **Revenue:** $(format_currency_abbreviated(financial_data.pnl_2026.revenue))
+    **COGS:** \$0 (Google Credits: $(format_currency_abbreviated(financial_data.pnl_2026.google_credits)))
+    **Gross Margin:** $(format_currency_abbreviated(financial_data.pnl_2026.gross_profit))
+
+    **Operating Expenses:**
+    - Commission: $(format_currency_abbreviated(financial_data.pnl_2026.commission))
+    - Development Salaries: $(format_currency_abbreviated(financial_data.pnl_2026.dev)) ← **R&D Tax Credit Eligible**
+    - DevOps Salaries: $(format_currency_abbreviated(financial_data.pnl_2026.devops))
+    - G&A Salaries: $(format_currency_abbreviated(financial_data.pnl_2026.ga))
+    - **Total OpEx:** $(format_currency_abbreviated(financial_data.pnl_2026.opex))
+
+    **EBIT:** $(format_currency_abbreviated(financial_data.pnl_2026.ebit))
+    **Interest:** $(format_currency_abbreviated(financial_data.pnl_2026.interest))
+    **Net Income:** $(format_currency_abbreviated(financial_data.pnl_2026.net_income))
+
+    **R&D Tax Credit:** $(format_currency_abbreviated(financial_data.pnl_2026.dev * 0.20))
+
+    """
+
+    # 2027 Summary
+    output *= """
+    ### 2027 Financial Summary
+
+    **Revenue:** $(format_currency_abbreviated(financial_data.pnl_2027.revenue))
+    **COGS:** \$0 (Google Credits: $(format_currency_abbreviated(financial_data.pnl_2027.google_credits)))
+    **Gross Margin:** $(format_currency_abbreviated(financial_data.pnl_2027.gross_profit))
+
+    **Operating Expenses:**
+    - Commission: $(format_currency_abbreviated(financial_data.pnl_2027.commission))
+    - Development Salaries: $(format_currency_abbreviated(financial_data.pnl_2027.dev)) ← **R&D Tax Credit Eligible**
+    - DevOps Salaries: $(format_currency_abbreviated(financial_data.pnl_2027.devops))
+    - G&A Salaries: $(format_currency_abbreviated(financial_data.pnl_2027.ga))
+    - **Total OpEx:** $(format_currency_abbreviated(financial_data.pnl_2027.opex))
+
+    **EBIT:** $(format_currency_abbreviated(financial_data.pnl_2027.ebit))
+    **Interest:** $(format_currency_abbreviated(financial_data.pnl_2027.interest))
+    **Taxes:** $(format_currency_abbreviated(financial_data.pnl_2027.taxes))
+    **Net Income:** $(format_currency_abbreviated(financial_data.pnl_2027.net_income))
+
+    **R&D Tax Credit:** $(format_currency_abbreviated(financial_data.pnl_2027.dev * 0.20))
+
+    """
+
+    # Valuation milestones table
     q4_2026_months = ["Oct 2026", "Nov 2026", "Dec 2026"]
     q4_2026_total = sum(get(nebula_map, m, 0.0) + get(disclosure_map, m, 0.0) + get(lingua_map, m, 0.0) for m in q4_2026_months) / 3
     q4_2026_arr = q4_2026_total * 12
@@ -245,45 +315,62 @@ function generate_hiring_schedule_section(months::Vector{String}, salaries_df, h
     return output
 end
 
-function generate_probability_analysis_section()
-    return """
+function generate_probability_analysis_section(model_params::Dict{String,Any}, prob_params::Dict{String,Dict{String,Float64}})
+    output = """
     ## 5. Probability Analysis
 
-    **All parameters from CSV files**
+    **All parameters dynamically loaded from CSV configuration files**
 
-    ### Nebula-NLU Model
-    - Product Launch: Dec 2025 (200 customers, no revenue)
-    - Revenue Start: Jan 2026
-    - Jan-Apr 2026: Doubling phase (200→400→800→1,600→3,200)
-    - May 2026+: Linear growth (533/month)
-    - Pricing: Monthly \$20, Annual \$96 (35% choose annual)
+    ### Nebula-NLU Freemium Model
+    - **Product Launch:** $(model_params["Nebula_Product_Launch"])
+    - **Revenue Start:** $(model_params["NebulaNLU_Revenue_Start"])
+    - **Free Trial:** $(Int(model_params["FreeTrialStories"])) stories before paywall
+    - **Conversion Rates:**
+      - Free → Monthly: $(round(model_params["FreeToMonthlyConversion"]*100, digits=1))%
+      - Free → Annual: $(round(model_params["FreeToAnnualConversion"]*100, digits=1))%
+      - Total Conversion: $(round(model_params["TotalFreeConversion"]*100, digits=1))%
+    - **Pricing:**
+      - Monthly: \$$(Int(model_params["MonthlyPrice"]))
+      - Annual: \$$(Int(model_params["AnnualPrice"])) (\$$(round(model_params["AnnualPrice"]/12, digits=2))/mo effective)
+    - **Churn Rates:**
+      - Monthly: $(round(model_params["MonthlyChurnRate"]*100, digits=1))%/month
+      - Annual: $(round((1-model_params["AnnualRenewalRate"])*100, digits=1))%/year
+    - **Upgrade Path:** $(round(model_params["MonthlyToAnnualUpgrade"]*100, digits=1))% of monthly subscribers upgrade to annual
+    - **Growth Pattern:**
+      - $(model_params["Nebula_Product_Launch"]) - $(model_params["DoublingPhaseEndMonth"]): Exponential doubling
+      - $(model_params["LinearPhaseStartMonth"])+: Linear growth ($(Int(model_params["LinearMonthlyGrowth"])) trials/month)
 
     ### Disclosure-NLU Model
-    - Product Launch: Mar 2026
-    - Solo: \$15K/year (λ=10 new firms/month, Poisson distribution)
-    - Small: \$50K/year (λ=10 new firms/month, Poisson distribution)
-    - Medium: \$150K/year (λ=3 new firms/month, Poisson distribution)
-    - Large: \$300K/year (λ=0.1 new firms/month, starts Jan 2027, Poisson)
-    - BigLaw: \$750K/year (λ=0.1 new firms/month, starts Jan 2027, Poisson)
+    - **Product Launch:** $(model_params["Disclosure_Product_Launch"])
+    - **Revenue Start:** $(model_params["DisclosureNLU_Revenue_Start"])
+    - **Pricing by Firm Size:**
+      - Solo: \$$(format_currency(model_params["SoloAnnualRevenue"], use_k_m=false))/year (λ=$(prob_params["Disclosure-NLU"]["lambda_solo_firms"]) firms/month)
+      - Small: \$$(format_currency(model_params["SmallAnnualRevenue"], use_k_m=false))/year (λ=$(prob_params["Disclosure-NLU"]["lambda_small_firms"]) firms/month)
+      - Medium: \$$(format_currency(model_params["MediumAnnualRevenue"], use_k_m=false))/year (λ=$(prob_params["Disclosure-NLU"]["lambda_medium_firms"]) firms/month)
+      - Large: \$$(format_currency(model_params["LargeAnnualRevenue"], use_k_m=false))/year (λ=$(get(prob_params["Disclosure-NLU"], "lambda_large_firms", 0.1)) firms/month, starts $(model_params["LargeStartMonth"]))
+      - BigLaw: \$$(format_currency(model_params["BigLawAnnualRevenue"], use_k_m=false))/year (λ=$(get(prob_params["Disclosure-NLU"], "lambda_biglaw_firms", 0.1)) firms/month, starts $(model_params["BigLawStartMonth"]))
+    - **Distribution:** Poisson process for new client acquisition
+    - **Churn:** Beta(1,15) distribution (low churn for legal professionals)
 
     ### Lingua-NLU Model
-    **B2B-to-Consumer Strategy:**
-    - Product Launch: Jul 2026
-    - Sales approach: B2B corporate contracts with Fortune 5000 companies
-    - Target customers: Companies with 500-10,000 employees needing language training
-    - Value proposition: Replace \$10K/employee traditional training with \$500/employee peer matching
-    - Corporate pricing: \$250K-\$3M annual contracts (tiered by company size)
-
-    **Individual User Economics:**
-    - Match price: \$59 per successful pairing
-    - Match success rate: 67% (Beta distribution α=4, β=2)
-    - User acquisition: Through corporate partnerships
-    - Jul 2026 launch: 1,500 users from initial corporate pilots
-    - Dec 2026: 4,000 users (ramping with corporate contracts)
+    - **Product Launch:** $(model_params["Lingua_Product_Launch"])
+    - **Revenue Start:** $(model_params["LinguaNLU_Revenue_Start"])
+    - **B2B-to-Consumer Strategy:**
+      - Sales approach: Corporate contracts with Fortune 5000 companies
+      - Target: Companies with 500-10,000 employees needing language training
+      - Value proposition: Replace \$10K/employee traditional training with \$500/employee peer matching
+      - Corporate pricing: \$250K-\$3M annual contracts (tiered by company size)
+    - **Individual User Economics:**
+      - Match price: \$$(Int(model_params["LinguaMatchPrice"])) per successful pairing
+      - Match success rate: $(round(prob_params["Lingua-NLU"]["alpha_match_success"]/(prob_params["Lingua-NLU"]["alpha_match_success"]+prob_params["Lingua-NLU"]["beta_match_success"])*100, digits=1))% (Beta distribution α=$(prob_params["Lingua-NLU"]["alpha_match_success"]), β=$(prob_params["Lingua-NLU"]["beta_match_success"]))
+      - User acquisition: Through corporate partnerships
+      - Launch ramp: $(Int(prob_params["Lingua-NLU"]["lambda_premium_users_jul"])) users (Jul 2026) → $(Int(prob_params["Lingua-NLU"]["lambda_premium_users_dec"])) users (Dec 2026)
 
     ---
 
     """
+
+    return output
 end
 
 function generate_activity_indicators_section(months::Vector{String}, nebula_f, disclosure_f, lingua_f)
@@ -357,9 +444,14 @@ function generate_revenue_by_product_section(months::Vector{String}, nebula_map,
     output = """
     ## 7. Revenue by Product
 
+    ### Monthly Revenue Detail
+
     | Month | Nebula | Disclosure | Lingua | Total |
     |-------|--------|------------|--------|-------|
     """
+
+    # Track annual totals
+    annual_totals = Dict{String,Dict{String,Float64}}()
 
     for month_name in months[1:min(26, end)]
         neb_rev = get(nebula_map, month_name, 0.0)
@@ -368,6 +460,66 @@ function generate_revenue_by_product_section(months::Vector{String}, nebula_map,
         total_rev = neb_rev + dis_rev + lin_rev
 
         output *= "| $month_name | $(format_currency(neb_rev * 1000)) | $(format_currency(dis_rev * 1000)) | $(format_currency(lin_rev * 1000)) | $(format_currency(total_rev * 1000)) |\n"
+
+        # Accumulate annual totals
+        year = split(month_name, " ")[2]
+        if !haskey(annual_totals, year)
+            annual_totals[year] = Dict("nebula" => 0.0, "disclosure" => 0.0, "lingua" => 0.0)
+        end
+        annual_totals[year]["nebula"] += neb_rev
+        annual_totals[year]["disclosure"] += dis_rev
+        annual_totals[year]["lingua"] += lin_rev
+    end
+
+    # Add annual summary table
+    output *= """
+
+    ### Annual Revenue Summary
+
+    | Year | Nebula | Disclosure | Lingua | **Total** | YoY Growth |
+    |------|--------|------------|--------|-----------|------------|
+    """
+
+    previous_year_total = 0.0
+    for year in sort(collect(keys(annual_totals)))
+        ann = annual_totals[year]
+        total = ann["nebula"] + ann["disclosure"] + ann["lingua"]
+
+        yoy_growth = if previous_year_total > 0
+            growth_pct = ((total - previous_year_total) / previous_year_total) * 100
+            string(round(growth_pct, digits=1), "%")
+        else
+            "-"
+        end
+
+        output *= "| **$year** | **$(format_currency(ann["nebula"] * 1000))** | **$(format_currency(ann["disclosure"] * 1000))** | **$(format_currency(ann["lingua"] * 1000))** | **$(format_currency(total * 1000))** | **$yoy_growth** |\n"
+
+        previous_year_total = total
+    end
+
+    # Add product mix analysis
+    output *= """
+
+    ### Product Mix Analysis
+
+    """
+
+    output *= "| Year | Nebula % | Disclosure % | Lingua % |\n"
+    output *= "|------|----------|--------------|----------|\n"
+
+    for year in sort(collect(keys(annual_totals)))
+        ann = annual_totals[year]
+        total = ann["nebula"] + ann["disclosure"] + ann["lingua"]
+
+        if total > 0
+            nebula_pct = round((ann["nebula"] / total) * 100, digits=1)
+            disclosure_pct = round((ann["disclosure"] / total) * 100, digits=1)
+            lingua_pct = round((ann["lingua"] / total) * 100, digits=1)
+
+            output *= "| $year | $(nebula_pct)% | $(disclosure_pct)% | $(lingua_pct)% |\n"
+        else
+            output *= "| $year | 0% | 0% | 0% |\n"
+        end
     end
 
     output *= "\n---\n\n"
@@ -381,8 +533,8 @@ function generate_revenue_by_channel_section()
     ### Nebula Channels
     - Retirement Communities: 1,920+ facilities
     - Public Libraries: 17,000+ branches
-    - Direct Marketing
-    - Referrals
+    - Direct Marketing (Facebook/Instagram targeting parents & grandparents)
+    - Referrals & Word-of-Mouth
 
     ### Disclosure Channels
 
@@ -394,11 +546,25 @@ function generate_revenue_by_channel_section()
     | Large | \$300K | 120d | AE Ent | 1-2 |
     | BigLaw | \$750K | 180d | AE Ent | 1 |
 
+    **Channel Strategy:**
+    - Direct outreach to law firms
+    - Legal technology conferences
+    - State Bar Association partnerships
+    - Legal publications & webinars
+    - Referral program (existing clients)
+
     ### Lingua Channels
-    - LinkedIn Marketing
-    - Corporate Partnerships
-    - Professional Networks
-    - Referrals
+    - LinkedIn Marketing (B2B targeting HR/L&D professionals)
+    - Corporate Partnerships (Fortune 5000 companies)
+    - Professional Networks (SHRM, ATD)
+    - Enterprise Sales Team (5 dedicated reps)
+    - Referrals & Case Studies
+
+    **B2B Corporate Strategy:**
+    - Target: Companies with 500-10,000 employees
+    - Sales cycle: 3-6 months for mid-market, 6-12 months for enterprise
+    - Contract value: \$250K-\$3M annually
+    - User acquisition: Through corporate employee benefits programs
 
     ---
 
@@ -551,83 +717,6 @@ function generate_revenue_realizations_section(months::Vector{String}, nebula_f,
     return output
 end
 
-function generate_financial_statements_section(financial_data)
-    output = """
-    ## 11. Financial Statements
-
-    ### Profit & Loss Statement - 2025
-
-    | Item | Amount |
-    |------|-------:|
-    | Revenue | $(format_currency(financial_data.pnl_2025.revenue, use_k_m=false)) |
-    | Gemini LLM (20%) | $(format_currency(financial_data.pnl_2025.gemini, use_k_m=false)) |
-    | Infrastructure (15%) | $(format_currency(financial_data.pnl_2025.infrastructure, use_k_m=false)) |
-    | Google Credits | ($(format_currency(financial_data.pnl_2025.google_credits, use_k_m=false))) |
-    | **COGS** | **$(format_currency(financial_data.pnl_2025.cogs, use_k_m=false))** |
-    | **Gross Profit (100%)** | **$(format_currency(financial_data.pnl_2025.gross_profit, use_k_m=false))** |
-    | Commission (25%) | $(format_currency(financial_data.pnl_2025.commission, use_k_m=false)) |
-    | Development Salaries | $(format_currency(financial_data.pnl_2025.dev, use_k_m=false)) |
-    | DevOps Salaries | $(format_currency(financial_data.pnl_2025.devops, use_k_m=false)) |
-    | G&A Salaries | $(format_currency(financial_data.pnl_2025.ga, use_k_m=false)) |
-    | **OpEx** | **$(format_currency(financial_data.pnl_2025.opex, use_k_m=false))** |
-    | **EBIT** | **$(format_currency(financial_data.pnl_2025.ebit, use_k_m=false))** |
-    | Interest | ($(format_currency(financial_data.pnl_2025.interest, use_k_m=false))) |
-    | Taxes | ($(format_currency(financial_data.pnl_2025.taxes, use_k_m=false))) |
-    | **Net Income** | **$(format_currency(financial_data.pnl_2025.net_income, use_k_m=false))** |
-
-    ### Profit & Loss Statement - 2026
-
-    | Item | Amount |
-    |------|-------:|
-    | Revenue | $(format_currency(financial_data.pnl_2026.revenue)) |
-    | Gemini LLM (20%) | $(format_currency(financial_data.pnl_2026.gemini)) |
-    | Infrastructure (15%) | $(format_currency(financial_data.pnl_2026.infrastructure)) |
-    | Google Credits | ($(format_currency(financial_data.pnl_2026.google_credits))) |
-    | **COGS** | **$(format_currency(financial_data.pnl_2026.cogs))** |
-    | **Gross Profit (100%)** | **$(format_currency(financial_data.pnl_2026.gross_profit))** |
-    | Commission (25%) | $(format_currency(financial_data.pnl_2026.commission)) |
-    | Development Salaries | $(format_currency(financial_data.pnl_2026.dev)) |
-    | DevOps Salaries | $(format_currency(financial_data.pnl_2026.devops)) |
-    | G&A Salaries | $(format_currency(financial_data.pnl_2026.ga)) |
-    | **OpEx** | **$(format_currency(financial_data.pnl_2026.opex))** |
-    | **EBIT** | **$(format_currency(financial_data.pnl_2026.ebit))** |
-    | Interest | ($(format_currency(financial_data.pnl_2026.interest))) |
-    | Taxes | ($(format_currency(financial_data.pnl_2026.taxes))) |
-    | **Net Income** | **$(format_currency(financial_data.pnl_2026.net_income))** |
-
-    ### Profit & Loss Statement - 2027
-
-    | Item | Amount |
-    |------|-------:|
-    | Revenue | $(format_currency(financial_data.pnl_2027.revenue)) |
-    | Gemini LLM (20%) | $(format_currency(financial_data.pnl_2027.gemini)) |
-    | Infrastructure (15%) | $(format_currency(financial_data.pnl_2027.infrastructure)) |
-    | Google Credits | ($(format_currency(financial_data.pnl_2027.google_credits))) |
-    | **COGS** | **$(format_currency(financial_data.pnl_2027.cogs))** |
-    | **Gross Profit (100%)** | **$(format_currency(financial_data.pnl_2027.gross_profit))** |
-    | Commission (25%) | $(format_currency(financial_data.pnl_2027.commission)) |
-    | Development Salaries | $(format_currency(financial_data.pnl_2027.dev)) |
-    | DevOps Salaries | $(format_currency(financial_data.pnl_2027.devops)) |
-    | G&A Salaries | $(format_currency(financial_data.pnl_2027.ga)) |
-    | **OpEx** | **$(format_currency(financial_data.pnl_2027.opex))** |
-    | **EBIT** | **$(format_currency(financial_data.pnl_2027.ebit))** |
-    | Interest | ($(format_currency(financial_data.pnl_2027.interest))) |
-    | Taxes | ($(format_currency(financial_data.pnl_2027.taxes))) |
-    | **Net Income** | **$(format_currency(financial_data.pnl_2027.net_income))** |
-
-    ---
-
-    """
-
-    # Sources & Uses tables
-    output *= generate_sources_uses_tables(financial_data)
-
-    # Balance Sheets
-    output *= generate_balance_sheets(financial_data)
-
-    return output
-end
-
 function generate_sources_uses_tables(financial_data)
     output = """
     ### Sources & Uses of Funds - 2025
@@ -726,6 +815,185 @@ function generate_balance_sheets(financial_data)
     return output
 end
 
+function generate_runway_analysis_2026(months::Vector{String}, pnl_data, financing_df)
+    # Get starting cash from financing.csv
+    starting_cash = 0.0
+    for row in eachrow(financing_df)
+        if row.FinancingType == "FounderCash" && row.Month == "Dec 2025"
+            starting_cash = Float64(row.Amount)
+            break
+        end
+    end
+
+    output = """
+    ### 2026 Runway Analysis
+
+    | Month | Revenue | COGS | Gross Margin | OpEx | EBIT | Cash Consumed | Cash Remaining |
+    |-------|---------|------|--------------|------|------|---------------|----------------|
+    """
+
+    cumulative_ebit = 0.0
+    cash_remaining = starting_cash
+
+    for p in pnl_data
+        # Only show 2026 months
+        year_str = split(p.month, " ")[2]
+        if year_str != "2026"
+            continue
+        end
+
+        # Calculate cumulative cash consumed (negative EBIT reduces cash)
+        monthly_ebit = Float64(p.ebitda)
+        cumulative_ebit += monthly_ebit
+        cash_remaining = starting_cash + cumulative_ebit
+
+        # Format values
+        revenue_str = format_currency_abbreviated(Float64(p.total_rev))
+        cogs_str = format_currency_abbreviated(Float64(p.cogs))
+        gm_str = format_currency_abbreviated(Float64(p.gross_profit))
+        opex_str = format_currency_abbreviated(Float64(p.opex))
+        ebit_str = format_currency_abbreviated(monthly_ebit)
+        cumulative_str = format_currency_abbreviated(cumulative_ebit)
+
+        # Mark RED when cash runs out
+        if cash_remaining < 0
+            cash_str = "**🔴 $(format_currency_abbreviated(cash_remaining))**"
+        else
+            cash_str = format_currency_abbreviated(cash_remaining)
+        end
+
+        output *= "| $(p.month) | $revenue_str | $cogs_str | $gm_str | $opex_str | $ebit_str | $cumulative_str | $cash_str |\n"
+    end
+
+    output *= "\n**Starting Cash (December 2025):** $(format_currency_abbreviated(starting_cash))\n"
+    output *= "**Cash Consumed:** Cumulative monthly EBIT (negative values reduce cash)\n"
+    output *= "**Note:** 🔴 RED indicates runway exhausted - cash reserves depleted.\n\n"
+    output *= "---\n\n"
+
+    return output
+end
+
+function generate_financial_statements_section(months::Vector{String}, financial_data, financing_df, pnl_data)
+    output = """
+    ## 11. Financial Statements
+
+    """
+
+    # Add 2026 Runway Analysis BEFORE P&L statements
+    output *= generate_runway_analysis_2026(months, pnl_data, financing_df)
+
+    output *= """
+    ### Profit & Loss Statement - 2025
+
+    | Item | Amount |
+    |------|-------:|
+    | **Revenue** | **$(format_currency(financial_data.pnl_2025.revenue, use_k_m=false))** |
+    | | |
+    | Gemini LLM (20%) | $(format_currency(financial_data.pnl_2025.gemini, use_k_m=false)) |
+    | Infrastructure (20%) | $(format_currency(financial_data.pnl_2025.infrastructure, use_k_m=false)) |
+    | Google Credits | ($(format_currency(financial_data.pnl_2025.google_credits, use_k_m=false))) |
+    | **COGS** | **$(format_currency(financial_data.pnl_2025.cogs, use_k_m=false))** |
+    | | |
+    """
+
+    # Calculate Gross Margin %
+    gm_pct_2025 = financial_data.pnl_2025.revenue > 0 ?
+                  round((financial_data.pnl_2025.gross_profit / financial_data.pnl_2025.revenue) * 100, digits=1) : 0.0
+
+    output *= "| **Gross Margin** | **$(format_currency(financial_data.pnl_2025.gross_profit, use_k_m=false)) ($(gm_pct_2025)%)** |\n"
+    output *= "| | |\n"
+
+    output *= """
+    | Commission (25%) | $(format_currency(financial_data.pnl_2025.commission, use_k_m=false)) |
+    | Development Salaries | $(format_currency(financial_data.pnl_2025.dev, use_k_m=false)) |
+    | DevOps Salaries | $(format_currency(financial_data.pnl_2025.devops, use_k_m=false)) |
+    | G&A Salaries | $(format_currency(financial_data.pnl_2025.ga, use_k_m=false)) |
+    | **OpEx** | **$(format_currency(financial_data.pnl_2025.opex, use_k_m=false))** |
+    | | |
+    | **EBIT** | **$(format_currency(financial_data.pnl_2025.ebit, use_k_m=false))** |
+    | Interest | ($(format_currency(financial_data.pnl_2025.interest, use_k_m=false))) |
+    | Taxes | ($(format_currency(financial_data.pnl_2025.taxes, use_k_m=false))) |
+    | **Net Income** | **$(format_currency(financial_data.pnl_2025.net_income, use_k_m=false))** |
+
+    ### Profit & Loss Statement - 2026
+
+    | Item | Amount |
+    |------|-------:|
+    | **Revenue** | **$(format_currency(financial_data.pnl_2026.revenue))** |
+    | | |
+    | Gemini LLM (20%) | $(format_currency(financial_data.pnl_2026.gemini)) |
+    | Infrastructure (20%) | $(format_currency(financial_data.pnl_2026.infrastructure)) |
+    | Google Credits (Limited to \$277K lifetime) | ($(format_currency(financial_data.pnl_2026.google_credits))) |
+    | **COGS** | **$(format_currency(financial_data.pnl_2026.cogs))** |
+    | | |
+    """
+
+    # Calculate Gross Margin %
+    gm_pct_2026 = financial_data.pnl_2026.revenue > 0 ?
+                  round((financial_data.pnl_2026.gross_profit / financial_data.pnl_2026.revenue) * 100, digits=1) : 0.0
+
+    output *= "| **Gross Margin** | **$(format_currency(financial_data.pnl_2026.gross_profit)) ($(gm_pct_2026)%)** |\n"
+    output *= "| | |\n"
+
+    output *= """
+    | Commission (25%) | $(format_currency(financial_data.pnl_2026.commission)) |
+    | Development Salaries | $(format_currency(financial_data.pnl_2026.dev)) |
+    | DevOps Salaries | $(format_currency(financial_data.pnl_2026.devops)) |
+    | G&A Salaries | $(format_currency(financial_data.pnl_2026.ga)) |
+    | **OpEx** | **$(format_currency(financial_data.pnl_2026.opex))** |
+    | | |
+    | **EBIT** | **$(format_currency(financial_data.pnl_2026.ebit))** |
+    | Interest | ($(format_currency(financial_data.pnl_2026.interest))) |
+    | Taxes | ($(format_currency(financial_data.pnl_2026.taxes))) |
+    | **Net Income** | **$(format_currency(financial_data.pnl_2026.net_income))** |
+
+    ### Profit & Loss Statement - 2027
+
+    | Item | Amount |
+    |------|-------:|
+    | **Revenue** | **$(format_currency(financial_data.pnl_2027.revenue))** |
+    | | |
+    | Gemini LLM (20%) | $(format_currency(financial_data.pnl_2027.gemini)) |
+    | Infrastructure (20%) | $(format_currency(financial_data.pnl_2027.infrastructure)) |
+    | Google Credits (Exhausted) | ($(format_currency(financial_data.pnl_2027.google_credits))) |
+    | **COGS** | **$(format_currency(financial_data.pnl_2027.cogs))** |
+    | | |
+    """
+
+    # Calculate Gross Margin %
+    gm_pct_2027 = financial_data.pnl_2027.revenue > 0 ?
+                  round((financial_data.pnl_2027.gross_profit / financial_data.pnl_2027.revenue) * 100, digits=1) : 0.0
+
+    output *= "| **Gross Margin** | **$(format_currency(financial_data.pnl_2027.gross_profit)) ($(gm_pct_2027)%)** |\n"
+    output *= "| | |\n"
+
+    output *= """
+    | Commission (25%) | $(format_currency(financial_data.pnl_2027.commission)) |
+    | Development Salaries | $(format_currency(financial_data.pnl_2027.dev)) |
+    | DevOps Salaries | $(format_currency(financial_data.pnl_2027.devops)) |
+    | G&A Salaries | $(format_currency(financial_data.pnl_2027.ga)) |
+    | **OpEx** | **$(format_currency(financial_data.pnl_2027.opex))** |
+    | | |
+    | **EBIT** | **$(format_currency(financial_data.pnl_2027.ebit))** |
+    | Interest | ($(format_currency(financial_data.pnl_2027.interest))) |
+    | Taxes | ($(format_currency(financial_data.pnl_2027.taxes))) |
+    | **Net Income** | **$(format_currency(financial_data.pnl_2027.net_income))** |
+
+    **Note:** Google Cloud credits (\$277K lifetime) applied sequentially starting 2025 until exhausted. Infrastructure rate is 20% (from cost_factors.csv).
+
+    ---
+
+    """
+
+    # Add Sources & Uses tables
+    output *= generate_sources_uses_tables(financial_data)
+
+    # Add Balance Sheets
+    output *= generate_balance_sheets(financial_data)
+
+    return output
+end
+
 # ============================================================================
 # MAIN FILE GENERATORS
 # ============================================================================
@@ -777,13 +1045,16 @@ function generate_three_year_projections_file(months::Vector{String}, nebula_f, 
     println("✅ Generated: NLU_Three_Year_Projections.md")
 end
 
-function generate_complete_strategic_plan_file(months::Vector{String}, nebula_f, disclosure_f, lingua_f, cost_factors_df, salaries_df, headcount_df)
+function generate_complete_strategic_plan_file(months::Vector{String}, nebula_f, disclosure_f, lingua_f, cost_factors_df, salaries_df, headcount_df, model_params, prob_params)
     nebula_map = Dict(f.month => f.revenue_k for f in nebula_f)
     disclosure_map = Dict(f.month => f.revenue_k for f in disclosure_f)
     lingua_map = Dict(f.month => f.revenue_k for f in lingua_f)
 
     financing_df = LoadFactors.load_financing("data/financing.csv")
     financial_data = FinancialStatements.generate_standard_financial_statements(months, nebula_f, disclosure_f, lingua_f, financing_df, cost_factors_df, salaries_df)
+
+    # Generate monthly P&L data for runway analysis
+    pnl_data = FinancialStatements.generate_monthly_pnl_table(months, nebula_f, disclosure_f, lingua_f, cost_factors_df, salaries_df)
 
     open("NLU_Strategic_Plan_Complete.md", "w") do file
         write(file, "# 🚀 NLU PORTFOLIO STRATEGIC PLAN\n\n")
@@ -807,13 +1078,13 @@ function generate_complete_strategic_plan_file(months::Vector{String}, nebula_f,
         write(file, generate_valuation_summary_section(months, nebula_map, disclosure_map, lingua_map, financial_data))
         write(file, generate_definitions_section())
         write(file, generate_hiring_schedule_section(months, salaries_df, headcount_df))
-        write(file, generate_probability_analysis_section())
+        write(file, generate_probability_analysis_section(model_params, prob_params))
         write(file, generate_activity_indicators_section(months, nebula_f, disclosure_f, lingua_f))
         write(file, generate_revenue_by_product_section(months, nebula_map, disclosure_map, lingua_map))
         write(file, generate_revenue_by_channel_section())
         write(file, generate_valuation_analysis_section(months, nebula_map, disclosure_map, lingua_map))
         write(file, generate_revenue_realizations_section(months, nebula_f, disclosure_f, lingua_f))
-        write(file, generate_financial_statements_section(financial_data))
+        write(file, generate_financial_statements_section(months, financial_data, financing_df, pnl_data))
 
         timestamp = Dates.format(Dates.now(), "yyyy-mm-dd HH:MM:SS")
         write(file, "*Generated: $timestamp*\n")

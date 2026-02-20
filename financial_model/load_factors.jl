@@ -11,7 +11,7 @@ function load_cost_factors(filepath::String="data/cost_factors.csv")
     return df
 end
 
-function load_model_parameters(filepath::String="config/model_parameters.csv")
+function load_model_parameters(filepath::String="data/model_parameters.csv")
     df = CSV.read(filepath, DataFrame, header=1, types=[String, String, String])
 
     params = Dict{String,Any}()
