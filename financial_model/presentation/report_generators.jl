@@ -4,6 +4,7 @@ using Dates
 using ..Formatting
 using ..FinancialStatements
 using ..LoadFactors
+using ..LongTermProjections
 
 export generate_executive_summary_file, generate_three_year_projections_file,
     generate_complete_strategic_plan_file, generate_founder_capitalization_file
@@ -816,14 +817,9 @@ function generate_balance_sheets(financial_data)
 end
 
 function generate_runway_analysis_2026(months::Vector{String}, pnl_data, financing_df)
-    # Get starting cash from financing.csv
-    starting_cash = 0.0
-    for row in eachrow(financing_df)
-        if row.FinancingType == "FounderCash" && row.Month == "Dec 2025"
-            starting_cash = Float64(row.Amount)
-            break
-        end
-    end
+    # Get starting cash from financing_df
+    starting_cash_row = filter(row -> row.FinancingType == "StartingCash" && row.Month == "Dec 2025", financing_df)
+    starting_cash = isempty(starting_cash_row) ? 0.0 : Float64(starting_cash_row[1, :Amount])
 
     output = """
     ### 2026 Runway Analysis
@@ -869,8 +865,8 @@ function generate_runway_analysis_2026(months::Vector{String}, pnl_data, financi
     output *= "**Cash Consumed:** Cumulative monthly EBIT (negative values reduce cash)\n"
     output *= "**Note:** 🔴 RED indicates runway exhausted - cash reserves depleted.\n\n"
     output *= "---\n\n"
-
     return output
+
 end
 
 function generate_financial_statements_section(months::Vector{String}, financial_data, financing_df, pnl_data)
@@ -994,6 +990,120 @@ function generate_financial_statements_section(months::Vector{String}, financial
     return output
 end
 
+function generate_longterm_forecast_section(longterm_forecast::Vector{LongTermProjections.AnnualForecast})
+    output = """
+    ## 12. Long-Term Strategic Forecast (2028-2030)
+
+    **Note:** Years 3-5 projections use annual granularity with strategic assumptions from `data_longterm/` CSV files.
+
+    ### Annual Revenue by Platform (2028-2030)
+
+    | Year | Disclosure | Lingua | Nebula | **Total** | YoY Growth |
+    |------|----------:|-------:|-------:|----------:|-----------:|
+    """
+
+    previous_total = 0.0
+    for forecast in longterm_forecast
+        yoy_growth = if previous_total > 0
+            growth_pct = ((forecast.total_revenue - previous_total) / previous_total) * 100
+            string(round(growth_pct, digits=1), "%")
+        else
+            "-"
+        end
+
+        output *= "| **$(forecast.year)** | $(format_currency(forecast.disclosure_revenue)) | $(format_currency(forecast.lingua_revenue)) | $(format_currency(forecast.nebula_revenue)) | **$(format_currency(forecast.total_revenue))** | **$yoy_growth** |\n"
+
+        previous_total = forecast.total_revenue
+    end
+
+    output *= """
+
+    ### Profitability Trajectory (2028-2030)
+
+    | Metric | 2028 | 2029 | 2030 | Trend |
+    |--------|-----:|-----:|-----:|-------|
+    """
+
+    output *= "| **Revenue** | $(format_currency(longterm_forecast[1].total_revenue)) | $(format_currency(longterm_forecast[2].total_revenue)) | $(format_currency(longterm_forecast[3].total_revenue)) | 📈 $(round(((longterm_forecast[3].total_revenue / longterm_forecast[1].total_revenue) ^ (1/2) - 1) * 100, digits=0))% CAGR |\n"
+
+    output *= "| **Gross Margin** | $(format_currency(longterm_forecast[1].gross_profit)) | $(format_currency(longterm_forecast[2].gross_profit)) | $(format_currency(longterm_forecast[3].gross_profit)) | $(round(longterm_forecast[1].gross_margin * 100, digits=0))% → $(round(longterm_forecast[3].gross_margin * 100, digits=0))% |\n"
+
+    output *= "| **EBITDA** | $(format_currency(longterm_forecast[1].ebitda)) | $(format_currency(longterm_forecast[2].ebitda)) | $(format_currency(longterm_forecast[3].ebitda)) | $(round(longterm_forecast[1].ebitda_margin * 100, digits=0))% → $(round(longterm_forecast[3].ebitda_margin * 100, digits=0))% margin |\n"
+
+    output *= "| **Net Income** | $(format_currency(longterm_forecast[1].net_income)) | $(format_currency(longterm_forecast[2].net_income)) | $(format_currency(longterm_forecast[3].net_income)) | Path to profitability |\n"
+
+    output *= "| **Headcount** | $(longterm_forecast[1].headcount) | $(longterm_forecast[2].headcount) | $(longterm_forecast[3].headcount) | $(longterm_forecast[3].headcount - longterm_forecast[1].headcount) new hires |\n"
+
+    output *= """
+
+    ### Operating Expense Breakdown (2028-2030)
+
+    | Category | 2028 | 2029 | 2030 | % of Revenue (2030) |
+    |----------|-----:|-----:|-----:|--------------------:|
+    """
+
+    output *= "| R&D | $(format_currency(longterm_forecast[1].rd_opex)) | $(format_currency(longterm_forecast[2].rd_opex)) | $(format_currency(longterm_forecast[3].rd_opex)) | $(round(longterm_forecast[3].rd_opex / longterm_forecast[3].total_revenue * 100, digits=1))% |\n"
+
+    output *= "| Sales & Marketing | $(format_currency(longterm_forecast[1].sm_opex)) | $(format_currency(longterm_forecast[2].sm_opex)) | $(format_currency(longterm_forecast[3].sm_opex)) | $(round(longterm_forecast[3].sm_opex / longterm_forecast[3].total_revenue * 100, digits=1))% |\n"
+
+    output *= "| G&A | $(format_currency(longterm_forecast[1].ga_opex)) | $(format_currency(longterm_forecast[2].ga_opex)) | $(format_currency(longterm_forecast[3].ga_opex)) | $(round(longterm_forecast[3].ga_opex / longterm_forecast[3].total_revenue * 100, digits=1))% |\n"
+
+    output *= "| Commissions | $(format_currency(longterm_forecast[1].commission_expense)) | $(format_currency(longterm_forecast[2].commission_expense)) | $(format_currency(longterm_forecast[3].commission_expense)) | $(round(longterm_forecast[3].commission_expense / longterm_forecast[3].total_revenue * 100, digits=1))% |\n"
+
+    output *= "| **Total OpEx** | **$(format_currency(longterm_forecast[1].total_opex))** | **$(format_currency(longterm_forecast[2].total_opex))** | **$(format_currency(longterm_forecast[3].total_opex))** | **$(round(longterm_forecast[3].total_opex / longterm_forecast[3].total_revenue * 100, digits=1))%** |\n"
+
+    output *= """
+
+    ### Platform Mix Evolution
+
+    | Year | Disclosure % | Lingua % | Nebula % | Strategic Milestone |
+    |------|-------------:|---------:|---------:|---------------------|
+    """
+
+    for forecast in longterm_forecast
+        disc_pct = round((forecast.disclosure_revenue / forecast.total_revenue) * 100, digits=1)
+        lingua_pct = round((forecast.lingua_revenue / forecast.total_revenue) * 100, digits=1)
+        nebula_pct = round((forecast.nebula_revenue / forecast.total_revenue) * 100, digits=1)
+
+        milestone = if forecast.year == 2028
+            "Series B deployment begins"
+        elseif forecast.year == 2029
+            "Multi-platform scale achieved"
+        elseif forecast.year == 2030
+            "Market leadership position"
+        else
+            "-"
+        end
+
+        output *= "| **$(forecast.year)** | $(disc_pct)% | $(lingua_pct)% | $(nebula_pct)% | $milestone |\n"
+    end
+
+    output *= """
+
+    ### Effective Growth Rates (After Strategic Events)
+
+    | Platform | 2028 CAGR | 2029 CAGR | 2030 CAGR | Key Events Applied |
+    |----------|----------:|----------:|----------:|-------------------|
+    """
+
+    output *= "| **Disclosure** | $(round(longterm_forecast[1].disclosure_cagr_effective * 100, digits=1))% | $(round(longterm_forecast[2].disclosure_cagr_effective * 100, digits=1))% | $(round(longterm_forecast[3].disclosure_cagr_effective * 100, digits=1))% | Harvey competition, market maturity |\n"
+
+    output *= "| **Lingua** | $(round(longterm_forecast[1].lingua_cagr_effective * 100, digits=1))% | $(round(longterm_forecast[2].lingua_cagr_effective * 100, digits=1))% | $(round(longterm_forecast[3].lingua_cagr_effective * 100, digits=1))% | Network effects, corporate partnerships |\n"
+
+    output *= "| **Nebula** | $(round(longterm_forecast[1].nebula_cagr_effective * 100, digits=1))% | $(round(longterm_forecast[2].nebula_cagr_effective * 100, digits=1))% | $(round(longterm_forecast[3].nebula_cagr_effective * 100, digits=1))% | Viral growth, content library expansion |\n"
+
+    output *= """
+
+    **Investor Insight:** Strategic events (competition, market dynamics, network effects) are encoded in `data_longterm/strategic_events.csv` and automatically applied to base CAGR assumptions.
+
+    ---
+
+    """
+
+    return output
+end
+
+
 # ============================================================================
 # MAIN FILE GENERATORS
 # ============================================================================
@@ -1045,7 +1155,18 @@ function generate_three_year_projections_file(months::Vector{String}, nebula_f, 
     println("✅ Generated: NLU_Three_Year_Projections.md")
 end
 
-function generate_complete_strategic_plan_file(months::Vector{String}, nebula_f, disclosure_f, lingua_f, cost_factors_df, salaries_df, headcount_df, model_params, prob_params)
+function generate_complete_strategic_plan_file(
+    months::Vector{String},
+    nebula_f,
+    disclosure_f,
+    lingua_f,
+    longterm_forecast::Vector{LongTermProjections.AnnualForecast},
+    cost_factors_df,
+    salaries_df,
+    headcount_df,
+    model_params,
+    prob_params
+)
     nebula_map = Dict(f.month => f.revenue_k for f in nebula_f)
     disclosure_map = Dict(f.month => f.revenue_k for f in disclosure_f)
     lingua_map = Dict(f.month => f.revenue_k for f in lingua_f)
@@ -1057,7 +1178,7 @@ function generate_complete_strategic_plan_file(months::Vector{String}, nebula_f,
     pnl_data = FinancialStatements.generate_monthly_pnl_table(months, nebula_f, disclosure_f, lingua_f, cost_factors_df, salaries_df)
 
     open("NLU_Strategic_Plan_Complete.md", "w") do file
-        write(file, "# 🚀 NLU PORTFOLIO STRATEGIC PLAN\n\n")
+        write(file, "# 🚀 NLU PORTFOLIO STRATEGIC PLAN (2026-2030)\n\n")
         write(file, "**For Investors & Prospective Employees**\n\n")
         write(file, "## TABLE OF CONTENTS\n\n")
         write(file, "1. Revenue Summary\n")
@@ -1070,7 +1191,9 @@ function generate_complete_strategic_plan_file(months::Vector{String}, nebula_f,
         write(file, "8. Revenue by Channel\n")
         write(file, "9. Valuation Analysis\n")
         write(file, "10. Revenue Realizations\n")
-        write(file, "11. Financial Statements\n\n")
+        write(file, "11. Financial Statements\n")
+        write(file, "12. Long-Term Strategic Forecast (2028-2030)\n")  # ← NEW
+        write(file, "13. 5-Year Cumulative Summary\n\n")  # ← NEW
         write(file, "---\n\n")
 
         # Generate all sections using functions
@@ -1086,10 +1209,145 @@ function generate_complete_strategic_plan_file(months::Vector{String}, nebula_f,
         write(file, generate_revenue_realizations_section(months, nebula_f, disclosure_f, lingua_f))
         write(file, generate_financial_statements_section(months, financial_data, financing_df, pnl_data))
 
+        # ✅ ADD THESE TWO NEW SECTIONS
+        write(file, generate_longterm_forecast_section(longterm_forecast))
+        write(file, generate_5year_cumulative_section(nebula_f, disclosure_f, lingua_f, longterm_forecast))
+
         timestamp = Dates.format(Dates.now(), "yyyy-mm-dd HH:MM:SS")
         write(file, "*Generated: $timestamp*\n")
     end
-    println("✅ Generated: NLU_Strategic_Plan_Complete.md (11 sections)")
+    println("✅ Generated: NLU_Strategic_Plan_Complete.md (13 sections)")
+end
+
+function generate_5year_cumulative_section(
+    nebula_f,
+    disclosure_f,
+    lingua_f,
+    longterm_forecast::Vector{LongTermProjections.AnnualForecast}
+)
+    output = """
+    ## 13. 5-Year Cumulative Summary (2026-2030)
+
+    ### Revenue Growth Trajectory
+
+    """
+
+    # Calculate 2026-2027 annual totals from detailed forecast
+    nebula_map = Dict(f.month => f.revenue_k for f in nebula_f)
+    disclosure_map = Dict(f.month => f.revenue_k for f in disclosure_f)
+    lingua_map = Dict(f.month => f.revenue_k for f in lingua_f)
+
+    yr2026_disclosure = sum(get(disclosure_map, "$(month) 2026", 0.0) for month in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]) * 1000
+    yr2026_lingua = sum(get(lingua_map, "$(month) 2026", 0.0) for month in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]) * 1000
+    yr2026_nebula = sum(get(nebula_map, "$(month) 2026", 0.0) for month in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]) * 1000
+    yr2026_total = yr2026_disclosure + yr2026_lingua + yr2026_nebula
+
+    yr2027_disclosure = sum(get(disclosure_map, "$(month) 2027", 0.0) for month in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]) * 1000
+    yr2027_lingua = sum(get(lingua_map, "$(month) 2027", 0.0) for month in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]) * 1000
+    yr2027_nebula = sum(get(nebula_map, "$(month) 2027", 0.0) for month in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]) * 1000
+    yr2027_total = yr2027_disclosure + yr2027_lingua + yr2027_nebula
+
+    output *= """
+    | Year | Disclosure | Lingua | Nebula | **Total** | YoY Growth |
+    |------|----------:|-------:|-------:|----------:|-----------:|
+    | **2026** | $(format_currency(yr2026_disclosure)) | $(format_currency(yr2026_lingua)) | $(format_currency(yr2026_nebula)) | **$(format_currency(yr2026_total))** | - |
+    | **2027** | $(format_currency(yr2027_disclosure)) | $(format_currency(yr2027_lingua)) | $(format_currency(yr2027_nebula)) | **$(format_currency(yr2027_total))** | **$(round((yr2027_total - yr2026_total) / yr2026_total * 100, digits=0))%** |
+    """
+
+    previous_total = yr2027_total
+    for forecast in longterm_forecast
+        yoy_growth = round((forecast.total_revenue - previous_total) / previous_total * 100, digits=0)
+
+        output *= "| **$(forecast.year)** | $(format_currency(forecast.disclosure_revenue)) | $(format_currency(forecast.lingua_revenue)) | $(format_currency(forecast.nebula_revenue)) | **$(format_currency(forecast.total_revenue))** | **$(yoy_growth)%** |\n"
+
+        previous_total = forecast.total_revenue
+    end
+
+    # Calculate cumulative totals
+    cumulative_revenue = yr2026_total + yr2027_total +
+                         longterm_forecast[1].total_revenue +
+                         longterm_forecast[2].total_revenue +
+                         longterm_forecast[3].total_revenue
+
+    cumulative_ebitda = longterm_forecast[1].ebitda +
+                        longterm_forecast[2].ebitda +
+                        longterm_forecast[3].ebitda
+
+    cumulative_net_income = longterm_forecast[1].net_income +
+                            longterm_forecast[2].net_income +
+                            longterm_forecast[3].net_income
+
+    # Calculate 5-year CAGR
+    cagr_5yr = (longterm_forecast[3].total_revenue / yr2026_total)^(1 / 4) - 1
+
+    output *= """
+
+    ### Key Performance Indicators (5-Year)
+
+    | Metric | Value | Notes |
+    |--------|------:|-------|
+    | **Total Revenue (2026-2030)** | **$(format_currency(cumulative_revenue))** | Cumulative across all platforms |
+    | **5-Year Revenue CAGR** | **$(round(cagr_5yr * 100, digits=0))%** | 2026 → 2030 compound growth |
+    | **Total EBITDA (2028-2030)** | **$(format_currency(cumulative_ebitda))** | Profitable years only |
+    | **Total Net Income (2028-2030)** | **$(format_currency(cumulative_net_income))** | After taxes |
+    | **Ending Headcount (2030)** | **$(longterm_forecast[3].headcount) FTEs** | From 8 FTEs in 2026 |
+    | **Final EBITDA Margin** | **$(round(longterm_forecast[3].ebitda_margin * 100, digits=0))%** | Target: 25%+ by 2030 |
+
+    ### Investment Returns Scenarios
+
+    **Assuming Series A investment at \$5M pre-money valuation (2026):**
+
+    | Exit Year | ARR at Exit | Conservative Multiple | Optimistic Multiple | ROI (Conservative) | ROI (Optimistic) |
+    |-----------|------------:|----------------------:|--------------------:|-------------------:|-----------------:|
+    """
+
+    # Calculate Dec 2027, Dec 2028, Dec 2029, Dec 2030 ARR
+    dec_2027_arr = yr2027_total  # Already annualized
+    dec_2028_arr = longterm_forecast[1].total_revenue
+    dec_2029_arr = longterm_forecast[2].total_revenue
+    dec_2030_arr = longterm_forecast[3].total_revenue
+
+    for (year, arr, conservative_mult, optimistic_mult) in [
+        (2027, dec_2027_arr, 8, 12),
+        (2028, dec_2028_arr, 10, 15),
+        (2029, dec_2029_arr, 12, 18),
+        (2030, dec_2030_arr, 12, 18)
+    ]
+        conservative_val = arr * conservative_mult
+        optimistic_val = arr * optimistic_mult
+
+        # ROI calculation: (Exit Value - Investment) / Investment
+        # Assuming 20% ownership for $5M investment at $5M pre ($10M post)
+        investment = 5_000_000
+        ownership = 0.20
+
+        conservative_return = (conservative_val * ownership - investment) / investment
+        optimistic_return = (optimistic_val * ownership - investment) / investment
+
+        output *= "| **$year** | $(format_currency(arr)) | $(conservative_mult)x | $(optimistic_mult)x | $(round(conservative_return * 100, digits=0))% | $(round(optimistic_return * 100, digits=0))% |\n"
+    end
+
+    output *= """
+
+    **Note:** Multiples based on SaaS industry benchmarks for companies with similar growth rates and margins.
+
+    ### Strategic Milestones Achieved
+
+    | Year | Milestone | Impact |
+    |------|-----------|--------|
+    | **2026** | Product launches complete | All three platforms revenue-generating |
+    | **2027** | Series A raised (\$5M) | Fuel sales team expansion |
+    | **2028** | Series B deployment begins | Scale operations to 75 FTEs |
+    | **2029** | Multi-platform profitability | EBITDA positive across portfolio |
+    | **2030** | Market leadership position | \$$(format_currency_abbreviated(dec_2030_arr)) ARR, $(round(longterm_forecast[3].ebitda_margin * 100, digits=0))% EBITDA margin |
+
+    ---
+
+    **End of Report**
+
+    """
+
+    return output
 end
 
 function generate_founder_capitalization_file(months::Vector{String}, nebula_f, disclosure_f, lingua_f)

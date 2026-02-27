@@ -100,8 +100,9 @@ function generate_sources_uses_table(months::Vector{String}, nebula_f, disclosur
         push!(months_by_year[year], month_str)
     end
 
-    # Calculate actual financials from pnl_data
-    financing_2025 = 0.0
+    # Separate Founder IP from Founder Cash for proper reporting
+    financing_2025_ip = 0.0
+    financing_2025_cash = 0.0
     financing_2026 = 0.0
     financing_2027 = 0.0
 
@@ -112,7 +113,12 @@ function generate_sources_uses_table(months::Vector{String}, nebula_f, disclosur
         end
 
         if year_of_financing == 2025
-            financing_2025 += row.Amount
+            if row.FinancingType == "Founder"
+                financing_2025_ip += row.Amount
+            end
+            if row.FinancingType == "StartingCash"
+                financing_2025_cash += row.Amount
+            end
         elseif year_of_financing == 2026
             financing_2026 += row.Amount
         elseif year_of_financing == 2027
@@ -141,32 +147,6 @@ function generate_sources_uses_table(months::Vector{String}, nebula_f, disclosur
     # ========================================
     # 2025 SOURCES & USES
     # ========================================
-    # Separate Founder IP from Founder Cash for proper reporting
-    financing_2025_ip = 0.0
-    financing_2025_cash = 0.0
-    financing_2026 = 0.0
-    financing_2027 = 0.0
-
-    for row in eachrow(financing_df)
-        year_of_financing = tryparse(Int, split(string(row.Month), " ")[2])
-        if year_of_financing === nothing
-            continue
-        end
-
-        if year_of_financing == 2025
-            if row.FinancingType == "Founder"
-                financing_2025_ip += row.Amount
-            end
-            if row.FinancingType == "FounderCash"
-                financing_2025_cash += row.Amount
-            end
-        elseif year_of_financing == 2026
-            financing_2026 += row.Amount
-        elseif year_of_financing == 2027
-            financing_2027 += row.Amount
-        end
-    end
-
     sources_2025 = []
     push!(sources_2025, ("Founder Investment (IP)", round(Int, financing_2025_ip)))
     push!(sources_2025, ("Founder Cash", round(Int, financing_2025_cash)))
@@ -246,7 +226,7 @@ function generate_balance_sheet_table(months::Vector{String}, pnl_data, financin
             if row.FinancingType == "Founder"
                 founder_ip = row.Amount
             end
-            if row.FinancingType == "FounderCash"
+            if row.FinancingType == "StartingCash"
                 founder_cash = row.Amount
             end
         end
@@ -291,7 +271,7 @@ function generate_balance_sheet_table(months::Vector{String}, pnl_data, financin
 
         # Assets
         cash_and_investments = round(Int, cumulative_cash)
-        total_assets = ip_assets + cash_and_investments
+        total_assets = round(Int, ip_assets) + cash_and_investments
 
         # Liabilities - calculate from actual OpEx
         year_ap = year == 2025 ? round(Int, year_opex) : round(Int, year_opex / 12)
