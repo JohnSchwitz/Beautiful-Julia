@@ -32,10 +32,10 @@ end
 
 println("plan.months length: ", length(plan.months))  # Should be 26
 println("nebula_f length: ", length(nebula_f))        # Should be 26
-println("disclosure_f length: ", length(disclosure_f))  # Should be 26
-println("lingua_f length: ", length(lingua_f))          # Should be 26
+println("discoverynlu_f length: ", length(discoverynlu_f))  # Should be 26
+println("noether_f length: ", length(noether_f))            # Should be 26
 
 # Run this and show me output:
-println("Lingua forecast fields: ", fieldnames(typeof(lingua_f[1])))
-println("Nov 2027 Lingua data: ", lingua_f[end-1])  # Assuming Nov is 2nd to last
-println("Oct 2027 Lingua data: ", lingua_f[end-2])
+println("Noether forecast fields: ", fieldnames(typeof(noether_f[1])))
+println("Nov 2027 Noether data: ", noether_f[end-1])  # Assuming Nov is 2nd to last
+println("Oct 2027 Noether data: ", noether_f[end-2])

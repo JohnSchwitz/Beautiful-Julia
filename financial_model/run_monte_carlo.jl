@@ -42,20 +42,20 @@ for sim in 1:100
 
     # Extract final month revenue (Dec 2027)
     nebula_final = results.nebula_forecast[end].revenue_k
-    disclosure_final = results.disclosure_forecast[end].revenue_k
-    lingua_final = results.lingua_forecast[end].revenue_k
-    total_final = nebula_final + disclosure_final + lingua_final
+    discoverynlu_final = results.discoverynlu_forecast[end].revenue_k
+    noether_final = results.noether_forecast[end].revenue_k
+    total_final = nebula_final + discoverynlu_final + noether_final
 
     # Store results
     push!(all_results, (
         simulation=sim,
-        nebula_revenue=nebula_final,
-        disclosure_revenue=disclosure_final,
-        lingua_revenue=lingua_final,
+        nebulaNLU_revenue=nebula_final,
+        discoverynlu_revenue=discoverynlu_final,
+        noether_revenue=noether_final,
         total_revenue=total_final,
-        nebula_customers=results.nebula_forecast[end].total_customers,
-        disclosure_clients=results.disclosure_forecast[end].total_clients,
-        lingua_pairs=results.lingua_forecast[end].active_pairs
+        nebulaNLU_customers=results.nebula_forecast[end].total_customers,
+        discoverynlu_clients=results.discoverynlu_forecast[end].total_clients,
+        noether_firms=results.noether_forecast[end].total_clients
     ))
 
     if sim % 10 == 0
@@ -75,9 +75,9 @@ println("\n💰 December 2027 Monthly Revenue Statistics (K):")
 println("  Platform          Mean      Std Dev    Min       Max       90% CI")
 println("  " * "-"^68)
 
-for (platform, col) in [("Nebula-NLU", :nebula_revenue),
-    ("Disclosure-NLU", :disclosure_revenue),
-    ("Lingua-NLU", :lingua_revenue),
+for (platform, col) in [("NebulaNLU", :nebulaNLU_revenue),
+    ("DiscoveryNLU", :discoverynlu_revenue),
+    ("Noether", :noether_revenue),
     ("TOTAL", :total_revenue)]
 
     data = results_df[!, col]
@@ -95,9 +95,9 @@ println("\n📈 Customer/Client Metrics (Dec 2027):")
 println("  Metric                    Mean      Std Dev    Min       Max")
 println("  " * "-"^68)
 
-for (label, col) in [("Nebula Customers", :nebula_customers),
-    ("Disclosure Clients", :disclosure_clients),
-    ("Lingua Pairs", :lingua_pairs)]
+for (label, col) in [("NebulaNLU Customers", :nebulaNLU_customers),
+    ("DiscoveryNLU Clients", :discoverynlu_clients),
+    ("Noether Firms", :noether_firms)]
 
     data = results_df[!, col]
     μ = mean(data)
@@ -150,9 +150,9 @@ open("output/monte_carlo_report.md", "w") do io
 """
     )
 
-    for (platform, col) in [("Nebula-NLU", :nebula_revenue),
-        ("Disclosure-NLU", :disclosure_revenue),
-        ("Lingua-NLU", :lingua_revenue),
+    for (platform, col) in [("NebulaNLU", :nebulaNLU_revenue),
+        ("DiscoveryNLU", :discoverynlu_revenue),
+        ("Noether", :noether_revenue),
         ("**TOTAL**", :total_revenue)]
 
         data = results_df[!, col]

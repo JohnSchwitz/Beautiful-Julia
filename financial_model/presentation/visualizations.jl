@@ -7,7 +7,7 @@ export generate_distribution_plots, generate_revenue_variability_plot
 
 function generate_distribution_plots(params::Dict{String,Dict{String,Float64}})
     Random.seed!(42)
-    nebula_p = params["Nebula-NLU"]
+    nebula_p = params["NebulaNLU"]
 
     poisson_customers = Poisson(nebula_p["lambda_dec_2025"])
     beta_purchase = Beta(nebula_p["alpha_purchase"], nebula_p["beta_purchase"])
@@ -34,40 +34,39 @@ function generate_distribution_plots(params::Dict{String,Dict{String,Float64}})
     scatter!(p3, churn_draws, [pdf(beta_churn, x) for x in churn_draws], ms=5, color=:red)
 
     display(plot(p1, p2, p3, layout=(1, 3), size=(1200, 350),
-        plot_title="Key Revenue Driver Distributions (Nebula-NLU)"))
+        plot_title="Key Revenue Driver Distributions (NebulaNLU.studio)"))
 end
 
-function generate_revenue_variability_plot(nebula_f, disclosure_f, lingua_f, params)
+function generate_revenue_variability_plot(nebula_f, discoverynlu_f, noether_f, params)
     Random.seed!(123)
     n_scenarios = 10
-    nebula_p = params["Nebula-NLU"]
-    disclosure_p = params["Disclosure-NLU"]
-    lingua_p = params["Lingua-NLU"]
+    nebula_p = params["NebulaNLU"]
+    discoverynlu_p = params["DiscoveryNLU"]
 
     final_nebula_customers = nebula_f[end].total_customers
-    final_disclosure_clients = disclosure_f[end]
-    final_lingua_users = round(Int, lingua_f[end].active_pairs / 0.67)
+    final_discoverynlu_clients = discoverynlu_f[end]
+    final_noether_firms = noether_f[end].total_clients
 
     scenarios = []
     for i in 1:n_scenarios
         nebula_revenue = final_nebula_customers * rand(Beta(nebula_p["alpha_purchase"], nebula_p["beta_purchase"])) * 10.0
-        disclosure_revenue = (final_disclosure_clients.total_solo * 1.0 +
-                              final_disclosure_clients.total_small * 3.0 +
-                              final_disclosure_clients.total_medium * 10.0) * 1500.0 * (1 + 0.1 * (rand() - 0.5))
-        lingua_revenue = final_lingua_users * rand(Beta(lingua_p["alpha_match_success"], lingua_p["beta_match_success"])) * 59.0
-        push!(scenarios, (nebula=nebula_revenue / 1000, disclosure=disclosure_revenue / 1000, lingua=lingua_revenue / 1000))
+        discoverynlu_revenue = (final_discoverynlu_clients.total_solo * 1.0 +
+                                final_discoverynlu_clients.total_small * 3.0 +
+                                final_discoverynlu_clients.total_medium * 10.0) * 1500.0 * (1 + 0.1 * (rand() - 0.5))
+        noether_revenue = final_noether_firms * 30_000.0 * (1 + 0.1 * (rand() - 0.5))
+        push!(scenarios, (nebula=nebula_revenue / 1000, discoverynlu=discoverynlu_revenue / 1000, noether=noether_revenue / 1000))
     end
 
     nebula_revs = [s.nebula for s in scenarios]
-    disclosure_revs = [s.disclosure for s in scenarios]
-    lingua_revs = [s.lingua for s in scenarios]
+    discoverynlu_revs = [s.discoverynlu for s in scenarios]
+    noether_revs = [s.noether for s in scenarios]
 
-    p = groupedbar([nebula_revs disclosure_revs lingua_revs],
+    p = groupedbar([nebula_revs discoverynlu_revs noether_revs],
         bar_position=:dodge,
         title="Revenue Variability - 10 Scenarios (Dec 2027)\n(Amounts in K)",
         xlabel="Scenario Number",
         ylabel="Revenue (K)",
-        labels=["Nebula-NLU" "Disclosure-NLU" "Lingua-NLU"],
+        labels=["NebulaNLU" "DiscoveryNLU" "Noether"],
         size=(1000, 500), lw=0)
     display(p)
 end

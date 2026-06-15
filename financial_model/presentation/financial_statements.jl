@@ -5,7 +5,7 @@ using Dates
 
 export generate_monthly_pnl_table, generate_sources_uses_table, generate_balance_sheet_table, generate_standard_financial_statements, format_standard_financial_statements
 
-function generate_monthly_pnl_table(months::Vector{String}, nebula_f, disclosure_f, lingua_f, cost_factors_df, salaries_df)
+function generate_monthly_pnl_table(months::Vector{String}, nebula_f, discoverynlu_f, noether_f, cost_factors_df, salaries_df)
     pnl_data = []
 
     # Read cost factors from CSV with correct column structure
@@ -35,10 +35,10 @@ function generate_monthly_pnl_table(months::Vector{String}, nebula_f, disclosure
     end
 
     for (i, month) in enumerate(months)
-        nebula_rev = i <= length(nebula_f) ? nebula_f[i].revenue_k * 1000 : 0.0
-        disclosure_rev = i <= length(disclosure_f) ? disclosure_f[i].revenue_k * 1000 : 0.0
-        lingua_rev = i <= length(lingua_f) ? lingua_f[i].revenue_k * 1000 : 0.0
-        total_rev = nebula_rev + disclosure_rev + lingua_rev
+        nebula_rev       = i <= length(nebula_f)       ? nebula_f[i].revenue_k       * 1000 : 0.0
+        discoverynlu_rev = i <= length(discoverynlu_f) ? discoverynlu_f[i].revenue_k * 1000 : 0.0
+        noether_rev      = i <= length(noether_f)      ? noether_f[i].revenue_k      * 1000 : 0.0
+        total_rev = nebula_rev + discoverynlu_rev + noether_rev
 
         # COGS calculation using rates from CSV
         gemini_cost = total_rev * gemini_rate
@@ -68,8 +68,8 @@ function generate_monthly_pnl_table(months::Vector{String}, nebula_f, disclosure
         push!(pnl_data, (
             month=month,
             nebula_rev=round(Int, nebula_rev),
-            disclosure_rev=round(Int, disclosure_rev),
-            lingua_rev=round(Int, lingua_rev),
+            discoverynlu_rev=round(Int, discoverynlu_rev),
+            noether_rev=round(Int, noether_rev),
             total_rev=round(Int, total_rev),
             gemini_cost=round(Int, gemini_cost),
             infra_cost=round(Int, infra_cost),
@@ -89,7 +89,7 @@ function generate_monthly_pnl_table(months::Vector{String}, nebula_f, disclosure
     return pnl_data
 end
 
-function generate_sources_uses_table(months::Vector{String}, nebula_f, disclosure_f, lingua_f, financing_df, pnl_data)
+function generate_sources_uses_table(months::Vector{String}, nebula_f, discoverynlu_f, noether_f, financing_df, pnl_data)
     # Dynamically group months by year from the timeline
     months_by_year = Dict{Int,Vector{String}}()
     for month_str in months
@@ -298,7 +298,7 @@ function generate_balance_sheet_table(months::Vector{String}, pnl_data, financin
     return balance_data
 end
 
-function generate_standard_financial_statements(months::Vector{String}, nebula_f, disclosure_f, lingua_f, financing_df, cost_factors_df, salaries_df)
+function generate_standard_financial_statements(months::Vector{String}, nebula_f, discoverynlu_f, noether_f, financing_df, cost_factors_df, salaries_df)
     # Dynamically group months by year from the timeline
     months_by_year = Dict{Int,Vector{String}}()
     for month_str in months
@@ -327,7 +327,7 @@ function generate_standard_financial_statements(months::Vector{String}, nebula_f
     revenue_2025 = 0.0
     revenue_2026 = 0.0
     revenue_2027 = 0.0
-    for f in vcat(nebula_f, disclosure_f, lingua_f)
+    for f in vcat(nebula_f, discoverynlu_f, noether_f)
         year_of_rev = tryparse(Int, split(string(f.month), " ")[2])
         if year_of_rev !== nothing && haskey(months_by_year, year_of_rev)
             if year_of_rev == 2025
@@ -369,7 +369,7 @@ function generate_standard_financial_statements(months::Vector{String}, nebula_f
     cogs_2027 = total_cogs_2027 - google_credits_2027
 
     # Generate monthly P&L data
-    pnl_data = generate_monthly_pnl_table(months, nebula_f, disclosure_f, lingua_f, cost_factors_df, salaries_df)
+    pnl_data = generate_monthly_pnl_table(months, nebula_f, discoverynlu_f, noether_f, cost_factors_df, salaries_df)
 
     # Calculate detailed OpEx breakdowns from pnl_data
     commission_2025 = sum(p.commission for p in pnl_data if parse(Int, split(p.month, " ")[2]) == 2025; init=0.0)
@@ -394,7 +394,7 @@ function generate_standard_financial_statements(months::Vector{String}, nebula_f
     opex_2027 = commission_2027 + dev_2027 + devops_2027 + ga_2027
 
     # Generate supporting tables
-    sources_uses = generate_sources_uses_table(months, nebula_f, disclosure_f, lingua_f, financing_df, pnl_data)
+    sources_uses = generate_sources_uses_table(months, nebula_f, discoverynlu_f, noether_f, financing_df, pnl_data)
     balance_sheets = generate_balance_sheet_table(months, pnl_data, financing_df)
 
     return (

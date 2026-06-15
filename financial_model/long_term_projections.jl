@@ -14,8 +14,8 @@ export AnnualForecast, update_assumptions_with_baseline
 
 struct AnnualForecast
     year::Int
-    disclosure_revenue::Float64
-    lingua_revenue::Float64
+    discoverynlu_revenue::Float64
+    noether_revenue::Float64
     nebula_revenue::Float64
     total_revenue::Float64
     cogs::Float64
@@ -30,8 +30,8 @@ struct AnnualForecast
     ebitda_margin::Float64
     net_income::Float64
     headcount::Int
-    disclosure_cagr_effective::Float64
-    lingua_cagr_effective::Float64
+    discovery_cagr_effective::Float64
+    noether_cagr_effective::Float64
     nebula_cagr_effective::Float64
 end
 
@@ -77,8 +77,8 @@ function project_years_3_to_5(
     println("Projecting 2029...")
     forecast_2029 = project_single_year(
         Dict(
-            "disclosure_revenue" => forecast_2028.disclosure_revenue,
-            "lingua_revenue" => forecast_2028.lingua_revenue,
+            "discoverynlu_revenue" => forecast_2028.discoverynlu_revenue,
+            "noether_revenue" => forecast_2028.noether_revenue,
             "nebula_revenue" => forecast_2028.nebula_revenue,
             "total_revenue" => forecast_2028.total_revenue
         ),
@@ -91,8 +91,8 @@ function project_years_3_to_5(
     println("Projecting 2030...")
     forecast_2030 = project_single_year(
         Dict(
-            "disclosure_revenue" => forecast_2029.disclosure_revenue,
-            "lingua_revenue" => forecast_2029.lingua_revenue,
+            "discoverynlu_revenue" => forecast_2029.discoverynlu_revenue,
+            "noether_revenue" => forecast_2029.noether_revenue,
             "nebula_revenue" => forecast_2029.nebula_revenue,
             "total_revenue" => forecast_2029.total_revenue
         ),
@@ -119,21 +119,21 @@ function project_single_year(
     # ========================================================================
 
     # Extract base CAGR from assumptions CSV
-    disclosure_cagr = get_param(assumptions, "disclosure_cagr")
-    lingua_cagr = get_param(assumptions, "lingua_cagr")
+    discovery_cagr = get_param(assumptions, "discovery_cagr")
+    noether_cagr = get_param(assumptions, "noether_cagr")
     nebula_cagr = get_param(assumptions, "nebula_cagr")
 
     # Apply strategic event multipliers (multiplicative)
-    disclosure_cagr = apply_event_multipliers(
-        disclosure_cagr,
+    discovery_cagr = apply_event_multipliers(
+        discovery_cagr,
         events,
-        "disclosure",
+        "discovery",
         ["revenue_acceleration", "revenue_headwind"]
     )
-    lingua_cagr = apply_event_multipliers(
-        lingua_cagr,
+    noether_cagr = apply_event_multipliers(
+        noether_cagr,
         events,
-        "lingua",
+        "noether",
         ["revenue_acceleration", "revenue_headwind"]
     )
     nebula_cagr = apply_event_multipliers(
@@ -144,10 +144,10 @@ function project_single_year(
     )
 
     # Calculate revenue for this year
-    disclosure_revenue = prior_year["disclosure_revenue"] * (1 + disclosure_cagr)
-    lingua_revenue = prior_year["lingua_revenue"] * (1 + lingua_cagr)
+    discoverynlu_revenue = prior_year["discoverynlu_revenue"] * (1 + discovery_cagr)
+    noether_revenue = prior_year["noether_revenue"] * (1 + noether_cagr)
     nebula_revenue = prior_year["nebula_revenue"] * (1 + nebula_cagr)
-    total_revenue = disclosure_revenue + lingua_revenue + nebula_revenue
+    total_revenue = discoverynlu_revenue + noether_revenue + nebula_revenue
 
     # ========================================================================
     # STEP 2: CALCULATE COGS
@@ -159,8 +159,8 @@ function project_single_year(
     # Apply margin improvement events (additive)
     margin_boost = 0.0
     margin_boost += sum_event_impacts(events, "margin_improvement", "all")
-    margin_boost += sum_event_impacts(events, "margin_improvement", "disclosure")
-    margin_boost += sum_event_impacts(events, "margin_improvement", "lingua")
+    margin_boost += sum_event_impacts(events, "margin_improvement", "discovery")
+    margin_boost += sum_event_impacts(events, "margin_improvement", "noether")
     margin_boost += sum_event_impacts(events, "margin_improvement", "nebula")
 
     adjusted_gross_margin = gross_margin + margin_boost
@@ -228,8 +228,8 @@ function project_single_year(
 
     return AnnualForecast(
         year,
-        disclosure_revenue,
-        lingua_revenue,
+        discoverynlu_revenue,
+        noether_revenue,
         nebula_revenue,
         total_revenue,
         cogs,
@@ -244,8 +244,8 @@ function project_single_year(
         ebitda_margin,
         net_income,
         headcount,
-        disclosure_cagr,  # Store effective CAGR (after events)
-        lingua_cagr,
+        discovery_cagr,  # Store effective CAGR (after events)
+        noether_cagr,
         nebula_cagr
     )
 end
@@ -587,24 +587,24 @@ function validate_longterm_assumptions(
     # ========================================================================
 
     required_params_2028 = [
-        "disclosure_revenue_2027", "lingua_revenue_2027", "nebula_revenue_2027",
-        "disclosure_cagr", "lingua_cagr", "nebula_cagr",
+        "discovery_revenue_2027", "noether_revenue_2027", "nebula_revenue_2027",
+        "discovery_cagr", "noether_cagr", "nebula_cagr",
         "gross_margin", "commission_rate",
         "rd_opex", "sm_opex", "ga_opex",
         "total_headcount"
     ]
 
     required_params_2029 = [
-        "disclosure_revenue_2028", "lingua_revenue_2028", "nebula_revenue_2028",
-        "disclosure_cagr", "lingua_cagr", "nebula_cagr",
+        "discovery_revenue_2028", "noether_revenue_2028", "nebula_revenue_2028",
+        "discovery_cagr", "noether_cagr", "nebula_cagr",
         "gross_margin", "commission_rate",
         "rd_opex", "sm_opex", "ga_opex",
         "total_headcount"
     ]
 
     required_params_2030 = [
-        "disclosure_revenue_2029", "lingua_revenue_2029", "nebula_revenue_2029",
-        "disclosure_cagr", "lingua_cagr", "nebula_cagr",
+        "discovery_revenue_2029", "noether_revenue_2029", "nebula_revenue_2029",
+        "discovery_cagr", "noether_cagr", "nebula_cagr",
         "gross_margin", "commission_rate",
         "rd_opex", "sm_opex", "ga_opex",
         "total_headcount"
@@ -680,12 +680,12 @@ function validate_longterm_assumptions(
 
     threshold = 0.05  # 5% variance allowed
 
-    for (platform, csv_param) in [
-        ("disclosure", "disclosure_revenue_2027"),
-        ("lingua", "lingua_revenue_2027"),
-        ("nebula", "nebula_revenue_2027")
+    for (platform, csv_param, dict_key) in [
+        ("discovery", "discovery_revenue_2027", "discoverynlu_revenue"),
+        ("noether",   "noether_revenue_2027",   "noether_revenue"),
+        ("nebula",    "nebula_revenue_2027",     "nebula_revenue")
     ]
-        baseline_value = baseline_2027["$(platform)_revenue"]
+        baseline_value = baseline_2027[dict_key]
 
         # Only validate if parameter exists and is numeric
         row = filter(r -> r.parameter == csv_param, assumptions_2028)
@@ -723,7 +723,7 @@ function validate_longterm_assumptions(
         (2029, assumptions_2029, "assumptions_2029.csv"),
         (2030, assumptions_2030, "assumptions_2030.csv")
     ]
-        for platform in ["disclosure", "lingua", "nebula"]
+        for platform in ["discovery", "noether", "nebula"]
             param_name = "$(platform)_cagr"
             row = filter(r -> r.parameter == param_name, assumptions)
             if !isempty(row)
@@ -827,48 +827,48 @@ function validate_longterm_assumptions(
 end
 
 """
-extract_2027_baseline(nebula_f, disclosure_f, lingua_f)
+extract_2027_baseline(nebula_f, discoverynlu_f, noether_f)
 
 Extract 2027 ending state from detailed model forecasts
 
 Arguments:
 - nebula_f: Vector of MonthlyForecast from StochasticModel
-- disclosure_f: Vector of DisclosureForecast from StochasticModel
-- lingua_f: Vector of LinguaForecast from StochasticModel
+- discoverynlu_f: Vector of DiscoveryForecast from StochasticModel
+- noether_f: Vector of NoetherForecast from StochasticModel
 
 Returns:
 - Dict with annualized 2027 ending revenue
 """
-function extract_2027_baseline(nebula_f, disclosure_f, lingua_f)
+function extract_2027_baseline(nebula_f, discoverynlu_f, noether_f)
     # Get Dec 2027 data
-    nebula_dec = filter(f -> f.month == "Dec 2027", nebula_f)
-    disclosure_dec = filter(f -> f.month == "Dec 2027", disclosure_f)
-    lingua_dec = filter(f -> f.month == "Dec 2027", lingua_f)
+    nebula_dec      = filter(f -> f.month == "Dec 2027", nebula_f)
+    discovery_dec   = filter(f -> f.month == "Dec 2027", discoverynlu_f)
+    noether_dec     = filter(f -> f.month == "Dec 2027", noether_f)
 
-    if isempty(nebula_dec) || isempty(disclosure_dec) || isempty(lingua_dec)
+    if isempty(nebula_dec) || isempty(discovery_dec) || isempty(noether_dec)
         error("❌ Could not find Dec 2027 data in forecast. Check that timeline extends through 2027.")
     end
 
-    nebula_dec = nebula_dec[1]
-    disclosure_dec = disclosure_dec[1]
-    lingua_dec = lingua_dec[1]
+    nebula_dec    = nebula_dec[1]
+    discovery_dec = discovery_dec[1]
+    noether_dec   = noether_dec[1]
 
     # Annualize monthly revenue (revenue_k is in thousands, monthly)
     baseline = Dict(
-        "disclosure_revenue" => disclosure_dec.revenue_k * 1000 * 12,
-        "lingua_revenue" => lingua_dec.revenue_k * 1000 * 12,
-        "nebula_revenue" => nebula_dec.revenue_k * 1000 * 12,
-        "total_revenue" => (disclosure_dec.revenue_k + lingua_dec.revenue_k + nebula_dec.revenue_k) * 1000 * 12,
-        "disclosure_customers" => disclosure_dec.total_clients,
-        "lingua_pairs" => lingua_dec.active_pairs,
-        "nebula_subscribers" => nebula_dec.total_customers
+        "discoverynlu_revenue" => discovery_dec.revenue_k * 1000 * 12,
+        "noether_revenue"      => noether_dec.revenue_k * 1000 * 12,
+        "nebula_revenue"       => nebula_dec.revenue_k * 1000 * 12,
+        "total_revenue"        => (discovery_dec.revenue_k + noether_dec.revenue_k + nebula_dec.revenue_k) * 1000 * 12,
+        "discovery_customers"  => discovery_dec.total_clients,
+        "noether_firms"        => noether_dec.total_clients,
+        "nebula_subscribers"   => nebula_dec.total_customers
     )
 
     println("\n📌 2027 Baseline Extracted:")
-    println("  Disclosure: \$$(round(baseline["disclosure_revenue"], digits=0)) ($(baseline["disclosure_customers"]) customers)")
-    println("  Lingua: \$$(round(baseline["lingua_revenue"], digits=0)) ($(baseline["lingua_pairs"]) pairs)")
-    println("  Nebula: \$$(round(baseline["nebula_revenue"], digits=0)) ($(baseline["nebula_subscribers"]) subscribers)")
-    println("  Total: \$$(round(baseline["total_revenue"], digits=0))")
+    println("  DiscoveryNLU.studio: \$$(round(baseline["discoverynlu_revenue"], digits=0)) ($(baseline["discovery_customers"]) firms)")
+    println("  Noether.studio:      \$$(round(baseline["noether_revenue"],      digits=0)) ($(baseline["noether_firms"]) firms)")
+    println("  NebulaNLU.studio:    \$$(round(baseline["nebula_revenue"],       digits=0)) ($(baseline["nebula_subscribers"]) subscribers)")
+    println("  Total:               \$$(round(baseline["total_revenue"],        digits=0))")
     println()
 
     return baseline
@@ -891,9 +891,9 @@ function update_assumptions_with_baseline(baseline_2027::Dict, assumptions_file:
 
     # Update the three revenue parameters
     for (param, key) in [
-        ("disclosure_revenue_2027", "disclosure_revenue"),
-        ("lingua_revenue_2027", "lingua_revenue"),
-        ("nebula_revenue_2027", "nebula_revenue")
+        ("discovery_revenue_2027", "discoverynlu_revenue"),
+        ("noether_revenue_2027",   "noether_revenue"),
+        ("nebula_revenue_2027",    "nebula_revenue")
     ]
         idx = findfirst(df.parameter .== param)
         if idx !== nothing

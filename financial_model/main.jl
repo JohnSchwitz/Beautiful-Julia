@@ -42,10 +42,10 @@ function main()
     results = StochasticModel.run_stochastic_analysis(months)
     println("✅ Detailed forecast complete.")
 
-    # Extract forecasts (FIX: use consistent variable names)
-    nebula_forecast = results.nebula_forecast      # ✅ Changed from nebula_f
-    disclosure_forecast = results.disclosure_forecast  # ✅ Changed from disclosure_f
-    lingua_forecast = results.lingua_forecast      # ✅ Changed from lingua_f
+    # Extract forecasts
+    nebula_forecast       = results.nebula_forecast
+    discoverynlu_forecast = results.discoverynlu_forecast
+    noether_forecast      = results.noether_forecast
 
     # ========================================================================
     # EXTRACT 2027 BASELINE
@@ -55,9 +55,9 @@ function main()
     println("="^80)
 
     baseline_2027 = LongTermProjections.extract_2027_baseline(
-        nebula_forecast,      # ✅ Using consistent name
-        disclosure_forecast,  # ✅ Using consistent name
-        lingua_forecast       # ✅ Using consistent name
+        nebula_forecast,
+        discoverynlu_forecast,
+        noether_forecast
     )
 
     # Auto-update assumptions with actual baseline
@@ -88,10 +88,10 @@ function main()
 
     ReportGenerators.generate_complete_strategic_plan_file(
         months,
-        nebula_forecast,      # ✅ Consistent naming
-        disclosure_forecast,  # ✅ Consistent naming
-        lingua_forecast,      # ✅ Consistent naming
-        longterm_forecasts,   # ✅ Correct variable name
+        nebula_forecast,
+        discoverynlu_forecast,
+        noether_forecast,
+        longterm_forecasts,
         cost_factors_df,
         salaries_df,
         headcount_df,

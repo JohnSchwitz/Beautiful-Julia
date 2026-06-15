@@ -45,14 +45,14 @@ end
 # SECTION GENERATORS
 # ============================================================================
 
-function generate_revenue_summary_section(months::Vector{String}, nebula_map, disclosure_map, lingua_map)
+function generate_revenue_summary_section(months::Vector{String}, nebula_map, discoverynlu_map, noether_map)
     output = """
     ## 1. Revenue Summary
 
     ### Quarterly Revenue Chart
 
-    | Quarter | Nebula | Disclosure | Lingua | Total | Growth |
-    |---------|--------|------------|--------|-------|--------|
+    | Quarter | Nebula | DiscoveryNLU | Noether | Total | Growth |
+    |---------|--------|--------------|---------|-------|--------|
     """
 
     # Group by quarters
@@ -88,37 +88,37 @@ function generate_revenue_summary_section(months::Vector{String}, nebula_map, di
         year = split(quarter_name, " ")[1]
 
         nebula_q = sum(get(nebula_map, m, 0.0) for m in quarter_months)
-        disclosure_q = sum(get(disclosure_map, m, 0.0) for m in quarter_months)
-        lingua_q = sum(get(lingua_map, m, 0.0) for m in quarter_months)
-        total_q = nebula_q + disclosure_q + lingua_q
+        discoverynlu_q = sum(get(discoverynlu_map, m, 0.0) for m in quarter_months)
+        noether_q = sum(get(noether_map, m, 0.0) for m in quarter_months)
+        total_q = nebula_q + discoverynlu_q + noether_q
 
         # Accumulate annual totals
         if !haskey(annual_totals, year)
-            annual_totals[year] = Dict("nebula" => 0.0, "disclosure" => 0.0, "lingua" => 0.0, "total" => 0.0)
+            annual_totals[year] = Dict("nebula" => 0.0, "discoverynlu" => 0.0, "noether" => 0.0, "total" => 0.0)
         end
         annual_totals[year]["nebula"] += nebula_q
-        annual_totals[year]["disclosure"] += disclosure_q
-        annual_totals[year]["lingua"] += lingua_q
+        annual_totals[year]["discoverynlu"] += discoverynlu_q
+        annual_totals[year]["noether"] += noether_q
         annual_totals[year]["total"] += total_q
 
         growth_str = previous_quarter_total > 0 ? string(round(((total_q - previous_quarter_total) / previous_quarter_total) * 100, digits=1), "%") : "-"
 
-        output *= "| $quarter_name | $(format_currency(nebula_q * 1000)) | $(format_currency(disclosure_q * 1000)) | $(format_currency(lingua_q * 1000)) | $(format_currency(total_q * 1000)) | $growth_str |\n"
+        output *= "| $quarter_name | $(format_currency(nebula_q * 1000)) | $(format_currency(discoverynlu_q * 1000)) | $(format_currency(noether_q * 1000)) | $(format_currency(total_q * 1000)) | $growth_str |\n"
 
         previous_quarter_total = total_q
     end
 
     # Add annual summary rows
     output *= "\n### Annual Totals\n\n"
-    output *= "| Year | Nebula | Disclosure | Lingua | **Total** | YoY Growth |\n"
-    output *= "|------|--------|------------|--------|-----------|------------|\n"
+    output *= "| Year | Nebula | DiscoveryNLU | Noether | **Total** | YoY Growth |\n"
+    output *= "|------|--------|--------------|---------|-----------|------------|\n"
 
     previous_year_total = 0.0
     for year in sort(collect(keys(annual_totals)))
         ann = annual_totals[year]
         yoy_growth = previous_year_total > 0 ? string(round(((ann["total"] - previous_year_total) / previous_year_total) * 100, digits=1), "%") : "-"
 
-        output *= "| **$year** | **$(format_currency(ann["nebula"] * 1000))** | **$(format_currency(ann["disclosure"] * 1000))** | **$(format_currency(ann["lingua"] * 1000))** | **$(format_currency(ann["total"] * 1000))** | **$yoy_growth** |\n"
+        output *= "| **$year** | **$(format_currency(ann["nebula"] * 1000))** | **$(format_currency(ann["discoverynlu"] * 1000))** | **$(format_currency(ann["noether"] * 1000))** | **$(format_currency(ann["total"] * 1000))** | **$yoy_growth** |\n"
 
         previous_year_total = ann["total"]
     end
@@ -127,7 +127,7 @@ function generate_revenue_summary_section(months::Vector{String}, nebula_map, di
     return output
 end
 
-function generate_valuation_summary_section(months::Vector{String}, nebula_map, disclosure_map, lingua_map, financial_data)
+function generate_valuation_summary_section(months::Vector{String}, nebula_map, discoverynlu_map, noether_map, financial_data)
     output = """
     ## 2. Valuation Summary
 
@@ -205,11 +205,11 @@ function generate_valuation_summary_section(months::Vector{String}, nebula_map, 
 
     # Valuation milestones table
     q4_2026_months = ["Oct 2026", "Nov 2026", "Dec 2026"]
-    q4_2026_total = sum(get(nebula_map, m, 0.0) + get(disclosure_map, m, 0.0) + get(lingua_map, m, 0.0) for m in q4_2026_months) / 3
+    q4_2026_total = sum(get(nebula_map, m, 0.0) + get(discoverynlu_map, m, 0.0) + get(noether_map, m, 0.0) for m in q4_2026_months) / 3
     q4_2026_arr = q4_2026_total * 12
 
     q4_2027_months = ["Oct 2027", "Nov 2027", "Dec 2027"]
-    q4_2027_total = sum(get(nebula_map, m, 0.0) + get(disclosure_map, m, 0.0) + get(lingua_map, m, 0.0) for m in q4_2027_months) / 3
+    q4_2027_total = sum(get(nebula_map, m, 0.0) + get(discoverynlu_map, m, 0.0) + get(noether_map, m, 0.0) for m in q4_2027_months) / 3
     q4_2027_arr = q4_2027_total * 12
 
     output *= """
@@ -264,7 +264,7 @@ function generate_hiring_schedule_section(months::Vector{String}, salaries_df, h
         headcount_lookup[row.Month] = (
             dev=row.Development,
             devops=row.DevOps,
-            marketing=row.Marketing,
+            sales_channel=row.Sales_Channel,
             ga=row.GA
         )
     end
@@ -279,11 +279,11 @@ function generate_hiring_schedule_section(months::Vector{String}, salaries_df, h
 
     for month in months[1:min(26, end)]
         salaries = get(salary_lookup, month, (dev=0, devops=0, ga=0))
-        headcounts = get(headcount_lookup, month, (dev=0, devops=0, marketing=0, ga=0))
+        headcounts = get(headcount_lookup, month, (dev=0, devops=0, sales_channel=0, ga=0))
 
         dev_str = "$(headcounts.dev) ($(format_currency_abbreviated(salaries.dev)))"
         devops_str = "$(headcounts.devops) ($(format_currency_abbreviated(salaries.devops)))"
-        marketing_str = "$(headcounts.marketing) (\$0)"  # Commission-based
+        marketing_str = "$(headcounts.sales_channel) (\$0)"  # Commission-based
         ga_str = "$(headcounts.ga) ($(format_currency_abbreviated(salaries.ga)))"
 
         total_salaries = salaries.dev + salaries.devops + salaries.ga
@@ -322,8 +322,8 @@ function generate_probability_analysis_section(model_params::Dict{String,Any}, p
 
     **All parameters dynamically loaded from CSV configuration files**
 
-    ### Nebula-NLU Freemium Model
-    - **Product Launch:** $(model_params["Nebula_Product_Launch"])
+    ### NebulaNLU.studio Freemium Model
+    - **Product Launch:** $(model_params["NebulaNLU_Product_Launch"])
     - **Revenue Start:** $(model_params["NebulaNLU_Revenue_Start"])
     - **Free Trial:** $(Int(model_params["FreeTrialStories"])) stories before paywall
     - **Conversion Rates:**
@@ -338,34 +338,35 @@ function generate_probability_analysis_section(model_params::Dict{String,Any}, p
       - Annual: $(round((1-model_params["AnnualRenewalRate"])*100, digits=1))%/year
     - **Upgrade Path:** $(round(model_params["MonthlyToAnnualUpgrade"]*100, digits=1))% of monthly subscribers upgrade to annual
     - **Growth Pattern:**
-      - $(model_params["Nebula_Product_Launch"]) - $(model_params["DoublingPhaseEndMonth"]): Exponential doubling
+      - $(model_params["NebulaNLU_Product_Launch"]) - $(model_params["DoublingPhaseEndMonth"]): Exponential doubling
       - $(model_params["LinearPhaseStartMonth"])+: Linear growth ($(Int(model_params["LinearMonthlyGrowth"])) trials/month)
 
-    ### Disclosure-NLU Model
-    - **Product Launch:** $(model_params["Disclosure_Product_Launch"])
-    - **Revenue Start:** $(model_params["DisclosureNLU_Revenue_Start"])
+    ### DiscoveryNLU.studio Model
+    - **Trial:** $(model_params["DiscoveryNLU_Trial_Start"]) | **Revenue Start:** $(model_params["DiscoveryNLU_Revenue_Start"])
     - **Pricing by Firm Size:**
-      - Solo: \$$(format_currency(model_params["SoloAnnualRevenue"], use_k_m=false))/year (λ=$(prob_params["Disclosure-NLU"]["lambda_solo_firms"]) firms/month)
-      - Small: \$$(format_currency(model_params["SmallAnnualRevenue"], use_k_m=false))/year (λ=$(prob_params["Disclosure-NLU"]["lambda_small_firms"]) firms/month)
-      - Medium: \$$(format_currency(model_params["MediumAnnualRevenue"], use_k_m=false))/year (λ=$(prob_params["Disclosure-NLU"]["lambda_medium_firms"]) firms/month)
-      - Large: \$$(format_currency(model_params["LargeAnnualRevenue"], use_k_m=false))/year (λ=$(get(prob_params["Disclosure-NLU"], "lambda_large_firms", 0.1)) firms/month, starts $(model_params["LargeStartMonth"]))
-      - BigLaw: \$$(format_currency(model_params["BigLawAnnualRevenue"], use_k_m=false))/year (λ=$(get(prob_params["Disclosure-NLU"], "lambda_biglaw_firms", 0.1)) firms/month, starts $(model_params["BigLawStartMonth"]))
-    - **Distribution:** Poisson process for new client acquisition
-    - **Churn:** Beta(1,15) distribution (low churn for legal professionals)
+      - Solo: \$$(format_currency(model_params["DiscoverySoloAnnualRevenue"], use_k_m=false))/year (λ=$(prob_params["DiscoveryNLU"]["lambda_solo_firms"]) firms/month)
+      - Small: \$$(format_currency(model_params["DiscoverySmallAnnualRevenue"], use_k_m=false))/year (λ=$(prob_params["DiscoveryNLU"]["lambda_small_firms"]) firms/month)
+      - Medium: \$$(format_currency(model_params["DiscoveryMediumAnnualRevenue"], use_k_m=false))/year (λ=$(prob_params["DiscoveryNLU"]["lambda_medium_firms"]) firms/month)
+      - Large: \$$(format_currency(model_params["DiscoveryLargeAnnualRevenue"], use_k_m=false))/year (λ=$(get(prob_params["DiscoveryNLU"], "lambda_large_firms", 0.1)) firms/month, starts $(model_params["DiscoveryLargeStartMonth"]))
+      - BigLaw: \$$(format_currency(model_params["DiscoveryBigLawAnnualRevenue"], use_k_m=false))/year (λ=$(get(prob_params["DiscoveryNLU"], "lambda_biglaw_firms", 0.1)) firms/month, starts $(model_params["DiscoveryBigLawStartMonth"]))
+    - **Distribution:** Poisson(λ) arrival process with 5-month major-markets ramp
+    - **Churn:** Beta(1,15) ≈ 6.25% mean monthly churn (low for institutional legal clients)
 
-    ### Lingua-NLU Model
-    - **Product Launch:** $(model_params["Lingua_Product_Launch"])
-    - **Revenue Start:** $(model_params["LinguaNLU_Revenue_Start"])
-    - **B2B-to-Consumer Strategy:**
-      - Sales approach: Corporate contracts with Fortune 5000 companies
-      - Target: Companies with 500-10,000 employees needing language training
-      - Value proposition: Replace \$10K/employee traditional training with \$500/employee peer matching
-      - Corporate pricing: \$250K-\$3M annual contracts (tiered by company size)
-    - **Individual User Economics:**
-      - Match price: \$$(Int(model_params["LinguaMatchPrice"])) per successful pairing
-      - Match success rate: $(round(prob_params["Lingua-NLU"]["alpha_match_success"]/(prob_params["Lingua-NLU"]["alpha_match_success"]+prob_params["Lingua-NLU"]["beta_match_success"])*100, digits=1))% (Beta distribution α=$(prob_params["Lingua-NLU"]["alpha_match_success"]), β=$(prob_params["Lingua-NLU"]["beta_match_success"]))
-      - User acquisition: Through corporate partnerships
-      - Launch ramp: $(Int(prob_params["Lingua-NLU"]["lambda_premium_users_jul"])) users (Jul 2026) → $(Int(prob_params["Lingua-NLU"]["lambda_premium_users_dec"])) users (Dec 2026)
+    ### Noether.studio Model
+    - **Trial:** $(model_params["NoetherNLU_Trial_Start"]) | **Revenue Start:** $(model_params["NoetherNLU_Revenue_Start"])
+    - **USPTO Patent Corpus Analysis — NLU, not generative AI:**
+      - Conserves (retrieves from corpus) — never halluccinates
+      - Citation-traceable to the sentence; deterministic findings
+      - 12M+ patents, updated weekly; pre-indexed before engagement
+      - Both-sides symmetric (plaintiff AND defense) — doubles effective TAM
+    - **Pricing by Tier:**
+      - Solo: \$$(format_currency(model_params["NoetherSoloAnnualRevenue"], use_k_m=false))/year (λ=$(prob_params["Noether"]["lambda_solo_firms"]) firms/month)
+      - Small: \$$(format_currency(model_params["NoetherSmallAnnualRevenue"], use_k_m=false))/year (λ=$(prob_params["Noether"]["lambda_small_firms"]) firms/month)
+      - Medium: \$$(format_currency(model_params["NoetherMediumAnnualRevenue"], use_k_m=false))/year (λ=$(prob_params["Noether"]["lambda_medium_firms"]) firms/month)
+      - Large: \$$(format_currency(model_params["NoetherLargeAnnualRevenue"], use_k_m=false))/year (λ=$(get(prob_params["Noether"], "lambda_large_firms", 0.1)) firms/month, starts $(model_params["NoetherLargeStartMonth"]))
+      - BigLaw: \$$(format_currency(model_params["NoetherBigLawAnnualRevenue"], use_k_m=false))/year (λ=$(get(prob_params["Noether"], "lambda_biglaw_firms", 0.1)) firms/month, starts $(model_params["NoetherBigLawStartMonth"]))
+      - Corp (in-house GC): \$$(format_currency(model_params["NoetherCorpAnnualRevenue"], use_k_m=false))/year (λ=$(get(prob_params["Noether"], "lambda_corp_firms", 0.15)) firms/month, starts $(model_params["NoetherCorpStartMonth"]))
+    - **Distribution:** Poisson(λ) arrival process; same Beta(1,15) churn model as DiscoveryNLU
 
     ---
 
@@ -374,11 +375,11 @@ function generate_probability_analysis_section(model_params::Dict{String,Any}, p
     return output
 end
 
-function generate_activity_indicators_section(months::Vector{String}, nebula_f, disclosure_f, lingua_f)
+function generate_activity_indicators_section(months::Vector{String}, nebula_f, discoverynlu_f, noether_f)
     output = """
     ## 6. Activity Indicators
 
-    ### Nebula-NLU Customers
+    ### NebulaNLU.studio Customers
 
     | Month | New | Total | Revenue |
     |-------|-----|-------|---------|
@@ -396,17 +397,17 @@ function generate_activity_indicators_section(months::Vector{String}, nebula_f, 
         output *= "| $(f.month) | $new_cust | $total_cust | $revenue |\n"
     end
 
-    output *= "\n### Disclosure-NLU Firms\n\n"
+    output *= "\n### DiscoveryNLU.studio Firms\n\n"
     output *= "| Month | Solo | Small | Medium | Large | BigLaw | Total | Revenue |\n"
     output *= "|-------|------|-------|--------|-------|--------|-------|---------|"
     output *= "\n"
 
-    disclosure_start_idx = findfirst(f -> f.revenue_k > 0, disclosure_f)
+    disclosure_start_idx = findfirst(f -> f.revenue_k > 0, discoverynlu_f)
     if disclosure_start_idx === nothing
-        disclosure_start_idx = length(disclosure_f) + 1
+        disclosure_start_idx = length(discoverynlu_f) + 1
     end
 
-    for (i, f) in enumerate(disclosure_f[1:min(26, end)])
+    for (i, f) in enumerate(discoverynlu_f[1:min(26, end)])
         solo = i < disclosure_start_idx ? "" : add_commas(f.total_solo)
         small = i < disclosure_start_idx ? "" : add_commas(f.total_small)
         medium = i < disclosure_start_idx ? "" : add_commas(f.total_medium)
@@ -417,23 +418,29 @@ function generate_activity_indicators_section(months::Vector{String}, nebula_f, 
         output *= "| $(f.month) | $solo | $small | $medium | $large | $biglaw | $total | $revenue |\n"
     end
 
-    output *= "\n### Lingua-NLU Pairs\n\n"
-    output *= "| Month | Active Pairs | Revenue |\n"
-    output *= "|-------|--------------|---------|"
+    output *= "\n### Noether.studio Firms\n\n"
+    output *= "| Month | Solo | Small | Medium | Large | BigLaw | Corp | Total | Revenue |\n"
+    output *= "|-------|------|-------|--------|-------|--------|------|-------|---------|"
     output *= "\n"
 
-    lingua_map_full = Dict(f.month => f for f in lingua_f)
-    lingua_start_idx = findfirst(f -> f.revenue_k > 0, lingua_f)
-    if lingua_start_idx === nothing
-        lingua_start_idx = length(lingua_f) + 1
+    noether_map_full = Dict(f.month => f for f in noether_f)
+    noether_start_idx = findfirst(f -> f.revenue_k > 0, noether_f)
+    if noether_start_idx === nothing
+        noether_start_idx = length(noether_f) + 1
     end
 
     for (i, month_name) in enumerate(months[1:min(26, end)])
-        if haskey(lingua_map_full, month_name)
-            f = lingua_map_full[month_name]
-            pairs = i < lingua_start_idx ? "" : add_commas(f.active_pairs)
-            revenue = i < lingua_start_idx ? "" : format_currency(f.revenue_k * 1000)
-            output *= "| $month_name | $pairs | $revenue |\n"
+        if haskey(noether_map_full, month_name)
+            f = noether_map_full[month_name]
+            solo   = i < noether_start_idx ? "" : add_commas(f.total_solo)
+            small  = i < noether_start_idx ? "" : add_commas(f.total_small)
+            medium = i < noether_start_idx ? "" : add_commas(f.total_medium)
+            large  = i < noether_start_idx ? "" : add_commas(f.total_large)
+            biglaw = i < noether_start_idx ? "" : add_commas(f.total_biglaw)
+            corp   = i < noether_start_idx ? "" : add_commas(f.total_corp)
+            total  = i < noether_start_idx ? "" : add_commas(f.total_clients)
+            revenue = i < noether_start_idx ? "" : format_currency(f.revenue_k * 1000)
+            output *= "| $month_name | $solo | $small | $medium | $large | $biglaw | $corp | $total | $revenue |\n"
         end
     end
 
@@ -441,14 +448,14 @@ function generate_activity_indicators_section(months::Vector{String}, nebula_f, 
     return output
 end
 
-function generate_revenue_by_product_section(months::Vector{String}, nebula_map, disclosure_map, lingua_map)
+function generate_revenue_by_product_section(months::Vector{String}, nebula_map, discoverynlu_map, noether_map)
     output = """
     ## 7. Revenue by Product
 
     ### Monthly Revenue Detail
 
-    | Month | Nebula | Disclosure | Lingua | Total |
-    |-------|--------|------------|--------|-------|
+    | Month | Nebula | DiscoveryNLU | Noether | Total |
+    |-------|--------|--------------|---------|-------|
     """
 
     # Track annual totals
@@ -456,8 +463,8 @@ function generate_revenue_by_product_section(months::Vector{String}, nebula_map,
 
     for month_name in months[1:min(26, end)]
         neb_rev = get(nebula_map, month_name, 0.0)
-        dis_rev = get(disclosure_map, month_name, 0.0)
-        lin_rev = get(lingua_map, month_name, 0.0)
+        dis_rev = get(discoverynlu_map, month_name, 0.0)
+        lin_rev = get(noether_map, month_name, 0.0)
         total_rev = neb_rev + dis_rev + lin_rev
 
         output *= "| $month_name | $(format_currency(neb_rev * 1000)) | $(format_currency(dis_rev * 1000)) | $(format_currency(lin_rev * 1000)) | $(format_currency(total_rev * 1000)) |\n"
@@ -465,11 +472,11 @@ function generate_revenue_by_product_section(months::Vector{String}, nebula_map,
         # Accumulate annual totals
         year = split(month_name, " ")[2]
         if !haskey(annual_totals, year)
-            annual_totals[year] = Dict("nebula" => 0.0, "disclosure" => 0.0, "lingua" => 0.0)
+            annual_totals[year] = Dict("nebula" => 0.0, "discoverynlu" => 0.0, "noether" => 0.0)
         end
         annual_totals[year]["nebula"] += neb_rev
-        annual_totals[year]["disclosure"] += dis_rev
-        annual_totals[year]["lingua"] += lin_rev
+        annual_totals[year]["discoverynlu"] += dis_rev
+        annual_totals[year]["noether"] += lin_rev
     end
 
     # Add annual summary table
@@ -477,14 +484,14 @@ function generate_revenue_by_product_section(months::Vector{String}, nebula_map,
 
     ### Annual Revenue Summary
 
-    | Year | Nebula | Disclosure | Lingua | **Total** | YoY Growth |
-    |------|--------|------------|--------|-----------|------------|
+    | Year | Nebula | DiscoveryNLU | Noether | **Total** | YoY Growth |
+    |------|--------|--------------|---------|-----------|------------|
     """
 
     previous_year_total = 0.0
     for year in sort(collect(keys(annual_totals)))
         ann = annual_totals[year]
-        total = ann["nebula"] + ann["disclosure"] + ann["lingua"]
+        total = ann["nebula"] + ann["discoverynlu"] + ann["noether"]
 
         yoy_growth = if previous_year_total > 0
             growth_pct = ((total - previous_year_total) / previous_year_total) * 100
@@ -493,7 +500,7 @@ function generate_revenue_by_product_section(months::Vector{String}, nebula_map,
             "-"
         end
 
-        output *= "| **$year** | **$(format_currency(ann["nebula"] * 1000))** | **$(format_currency(ann["disclosure"] * 1000))** | **$(format_currency(ann["lingua"] * 1000))** | **$(format_currency(total * 1000))** | **$yoy_growth** |\n"
+        output *= "| **$year** | **$(format_currency(ann["nebula"] * 1000))** | **$(format_currency(ann["discoverynlu"] * 1000))** | **$(format_currency(ann["noether"] * 1000))** | **$(format_currency(total * 1000))** | **$yoy_growth** |\n"
 
         previous_year_total = total
     end
@@ -505,19 +512,19 @@ function generate_revenue_by_product_section(months::Vector{String}, nebula_map,
 
     """
 
-    output *= "| Year | Nebula % | Disclosure % | Lingua % |\n"
-    output *= "|------|----------|--------------|----------|\n"
+    output *= "| Year | NebulaNLU % | DiscoveryNLU % | Noether % |\n"
+    output *= "|------|-------------|----------------|----------|\n"
 
     for year in sort(collect(keys(annual_totals)))
         ann = annual_totals[year]
-        total = ann["nebula"] + ann["disclosure"] + ann["lingua"]
+        total = ann["nebula"] + ann["discoverynlu"] + ann["noether"]
 
         if total > 0
             nebula_pct = round((ann["nebula"] / total) * 100, digits=1)
-            disclosure_pct = round((ann["disclosure"] / total) * 100, digits=1)
-            lingua_pct = round((ann["lingua"] / total) * 100, digits=1)
+            discoverynlu_pct = round((ann["discoverynlu"] / total) * 100, digits=1)
+            noether_pct = round((ann["noether"] / total) * 100, digits=1)
 
-            output *= "| $year | $(nebula_pct)% | $(disclosure_pct)% | $(lingua_pct)% |\n"
+            output *= "| $year | $(nebula_pct)% | $(discoverynlu_pct)% | $(noether_pct)% |\n"
         else
             output *= "| $year | 0% | 0% | 0% |\n"
         end
@@ -537,7 +544,7 @@ function generate_revenue_by_channel_section()
     - Direct Marketing (Facebook/Instagram targeting parents & grandparents)
     - Referrals & Word-of-Mouth
 
-    ### Disclosure Channels
+    ### DiscoveryNLU.studio Channels
 
     | Type | Value | Cycle | Rep | Target/Year |
     |------|-------|-------|-----|-------------|
@@ -554,31 +561,37 @@ function generate_revenue_by_channel_section()
     - Legal publications & webinars
     - Referral program (existing clients)
 
-    ### Lingua Channels
-    - LinkedIn Marketing (B2B targeting HR/L&D professionals)
-    - Corporate Partnerships (Fortune 5000 companies)
-    - Professional Networks (SHRM, ATD)
-    - Enterprise Sales Team (5 dedicated reps)
-    - Referrals & Case Studies
+    ### Noether.studio Channels
 
-    **B2B Corporate Strategy:**
-    - Target: Companies with 500-10,000 employees
-    - Sales cycle: 3-6 months for mid-market, 6-12 months for enterprise
-    - Contract value: \$250K-\$3M annually
-    - User acquisition: Through corporate employee benefits programs
+    | Tier | ACV | Sales Cycle | Rep | Target/Year |
+    |------|-----|-------------|-----|-------------|
+    | Solo | \$30K | 14d | SDR | 120 |
+    | Small | \$95K | 30d | AE Mid | 60 |
+    | Medium | \$275K | 60d | AE Mid | 18 |
+    | Large | \$550K | 90d | AE Ent | 4 |
+    | BigLaw | \$1.5M | 120d | AE Ent | 2 |
+    | Corp | \$500K | 90d | AE Ent | 3 |
+
+    **Patent Attorney Channel Strategy:**
+    - USPTO data API partnerships (direct integration hook)
+    - AmLaw 200 IP practice group outreach
+    - IP-specific conferences (LES, IPO, AIPLA)
+    - Patent bar association partnerships
+    - In-house GC / tech-company legal ops (Corp tier, Mar 2027+)
+    - Referral network seeded via BigLaw anchor clients
 
     ---
 
     """
 end
 
-function generate_valuation_analysis_section(months::Vector{String}, nebula_map, disclosure_map, lingua_map)
+function generate_valuation_analysis_section(months::Vector{String}, nebula_map, discoverynlu_map, noether_map)
     output = """
     ## 9. Valuation Analysis
 
     """
 
-    dec_2026_total = get(nebula_map, "Dec 2026", 0.0) + get(disclosure_map, "Dec 2026", 0.0) + get(lingua_map, "Dec 2026", 0.0)
+    dec_2026_total = get(nebula_map, "Dec 2026", 0.0) + get(discoverynlu_map, "Dec 2026", 0.0) + get(noether_map, "Dec 2026", 0.0)
     dec_2026_arr = dec_2026_total * 12
 
     output *= """
@@ -590,7 +603,7 @@ function generate_valuation_analysis_section(months::Vector{String}, nebula_map,
 
     """
 
-    dec_2027_total = get(nebula_map, "Dec 2027", 0.0) + get(disclosure_map, "Dec 2027", 0.0) + get(lingua_map, "Dec 2027", 0.0)
+    dec_2027_total = get(nebula_map, "Dec 2027", 0.0) + get(discoverynlu_map, "Dec 2027", 0.0) + get(noether_map, "Dec 2027", 0.0)
     dec_2027_arr = dec_2027_total * 12
 
     output *= """
@@ -607,7 +620,7 @@ function generate_valuation_analysis_section(months::Vector{String}, nebula_map,
     return output
 end
 
-function generate_revenue_realizations_section(months::Vector{String}, nebula_f, disclosure_f, lingua_f)
+function generate_revenue_realizations_section(months::Vector{String}, nebula_f, discoverynlu_f, noether_f)
     output = """
     ## 10. Revenue Scenarios (Deterministic)
 
@@ -620,8 +633,8 @@ function generate_revenue_realizations_section(months::Vector{String}, nebula_f,
 
     # Create maps for easy lookup
     nebula_map = Dict(f.month => f.revenue_k for f in nebula_f)
-    disclosure_map = Dict(f.month => f.revenue_k for f in disclosure_f)
-    lingua_map = Dict(f.month => f.revenue_k for f in lingua_f)
+    discoverynlu_map = Dict(f.month => f.revenue_k for f in discoverynlu_f)
+    noether_map = Dict(f.month => f.revenue_k for f in noether_f)
 
     # Monthly table with three scenarios
     output *= "| Month | Conservative | Base Case | Aggressive |\n"
@@ -629,10 +642,10 @@ function generate_revenue_realizations_section(months::Vector{String}, nebula_f,
 
     for month in months[1:min(26, end)]
         nebula_rev = get(nebula_map, month, 0.0)
-        disclosure_rev = get(disclosure_map, month, 0.0)
-        lingua_rev = get(lingua_map, month, 0.0)
+        discoverynlu_rev = get(discoverynlu_map, month, 0.0)
+        noether_rev = get(noether_map, month, 0.0)
 
-        total_base = nebula_rev + disclosure_rev + lingua_rev
+        total_base = nebula_rev + discoverynlu_rev + noether_rev
         total_conservative = total_base * 0.8
         total_aggressive = total_base * 1.2
 
@@ -650,22 +663,22 @@ function generate_revenue_realizations_section(months::Vector{String}, nebula_f,
 
     """
 
-    output *= "| Month | Nebula-NLU | Disclosure-NLU | Lingua-NLU | **Total** |\n"
+    output *= "| Month | NebulaNLU.studio | DiscoveryNLU.studio | Noether.studio | **Total** |\n"
     output *= "|-------|------------|----------------|------------|----------|\n"
 
     for month in months[1:min(26, end)]
         nebula_rev = get(nebula_map, month, 0.0)
-        disclosure_rev = get(disclosure_map, month, 0.0)
-        lingua_rev = get(lingua_map, month, 0.0)
+        discoverynlu_rev = get(discoverynlu_map, month, 0.0)
+        noether_rev = get(noether_map, month, 0.0)
 
-        total = nebula_rev + disclosure_rev + lingua_rev
+        total = nebula_rev + discoverynlu_rev + noether_rev
 
         nebula_str = format_currency_abbreviated(nebula_rev * 1000)
-        disclosure_str = format_currency_abbreviated(disclosure_rev * 1000)
-        lingua_str = format_currency_abbreviated(lingua_rev * 1000)
+        discoverynlu_str = format_currency_abbreviated(discoverynlu_rev * 1000)
+        noether_str = format_currency_abbreviated(noether_rev * 1000)
         total_str = format_currency_abbreviated(total * 1000)
 
-        output *= "| $month | $nebula_str | $disclosure_str | $lingua_str | **$total_str** |\n"
+        output *= "| $month | $nebula_str | $discoverynlu_str | $noether_str | **$total_str** |\n"
     end
 
     output *= """
@@ -680,19 +693,19 @@ function generate_revenue_realizations_section(months::Vector{String}, nebula_f,
     for month in months
         year = parse(Int, split(month, " ")[2])
         if !haskey(years, year)
-            years[year] = Dict("nebula" => 0.0, "disclosure" => 0.0, "lingua" => 0.0)
+            years[year] = Dict("nebula" => 0.0, "discoverynlu" => 0.0, "noether" => 0.0)
         end
 
         years[year]["nebula"] += get(nebula_map, month, 0.0)
-        years[year]["disclosure"] += get(disclosure_map, month, 0.0)
-        years[year]["lingua"] += get(lingua_map, month, 0.0)
+        years[year]["discoverynlu"] += get(discoverynlu_map, month, 0.0)
+        years[year]["noether"] += get(noether_map, month, 0.0)
     end
 
     output *= "| Year | Conservative | Base Case | Aggressive |\n"
     output *= "|------|--------------|-----------|------------|\n"
 
     for year in sort(collect(keys(years)))
-        total_base = years[year]["nebula"] + years[year]["disclosure"] + years[year]["lingua"]
+        total_base = years[year]["nebula"] + years[year]["discoverynlu"] + years[year]["noether"]
         total_conservative = total_base * 0.8
         total_aggressive = total_base * 1.2
 
@@ -998,8 +1011,8 @@ function generate_longterm_forecast_section(longterm_forecast::Vector{LongTermPr
 
     ### Annual Revenue by Platform (2028-2030)
 
-    | Year | Disclosure | Lingua | Nebula | **Total** | YoY Growth |
-    |------|----------:|-------:|-------:|----------:|-----------:|
+    | Year | DiscoveryNLU | Noether | Nebula | **Total** | YoY Growth |
+    |------|------------:|--------:|-------:|----------:|-----------:|
     """
 
     previous_total = 0.0
@@ -1011,7 +1024,7 @@ function generate_longterm_forecast_section(longterm_forecast::Vector{LongTermPr
             "-"
         end
 
-        output *= "| **$(forecast.year)** | $(format_currency(forecast.disclosure_revenue)) | $(format_currency(forecast.lingua_revenue)) | $(format_currency(forecast.nebula_revenue)) | **$(format_currency(forecast.total_revenue))** | **$yoy_growth** |\n"
+        output *= "| **$(forecast.year)** | $(format_currency(forecast.discoverynlu_revenue)) | $(format_currency(forecast.noether_revenue)) | $(format_currency(forecast.nebula_revenue)) | **$(format_currency(forecast.total_revenue))** | **$yoy_growth** |\n"
 
         previous_total = forecast.total_revenue
     end
@@ -1056,13 +1069,13 @@ function generate_longterm_forecast_section(longterm_forecast::Vector{LongTermPr
 
     ### Platform Mix Evolution
 
-    | Year | Disclosure % | Lingua % | Nebula % | Strategic Milestone |
-    |------|-------------:|---------:|---------:|---------------------|
+    | Year | DiscoveryNLU % | Noether % | Nebula % | Strategic Milestone |
+    |------|---------------:|----------:|---------:|---------------------|
     """
 
     for forecast in longterm_forecast
-        disc_pct = round((forecast.disclosure_revenue / forecast.total_revenue) * 100, digits=1)
-        lingua_pct = round((forecast.lingua_revenue / forecast.total_revenue) * 100, digits=1)
+        discoverynlu_pct = round((forecast.discoverynlu_revenue / forecast.total_revenue) * 100, digits=1)
+        noether_pct = round((forecast.noether_revenue / forecast.total_revenue) * 100, digits=1)
         nebula_pct = round((forecast.nebula_revenue / forecast.total_revenue) * 100, digits=1)
 
         milestone = if forecast.year == 2028
@@ -1075,7 +1088,7 @@ function generate_longterm_forecast_section(longterm_forecast::Vector{LongTermPr
             "-"
         end
 
-        output *= "| **$(forecast.year)** | $(disc_pct)% | $(lingua_pct)% | $(nebula_pct)% | $milestone |\n"
+        output *= "| **$(forecast.year)** | $(discoverynlu_pct)% | $(noether_pct)% | $(nebula_pct)% | $milestone |\n"
     end
 
     output *= """
@@ -1086,11 +1099,11 @@ function generate_longterm_forecast_section(longterm_forecast::Vector{LongTermPr
     |----------|----------:|----------:|----------:|-------------------|
     """
 
-    output *= "| **Disclosure** | $(round(longterm_forecast[1].disclosure_cagr_effective * 100, digits=1))% | $(round(longterm_forecast[2].disclosure_cagr_effective * 100, digits=1))% | $(round(longterm_forecast[3].disclosure_cagr_effective * 100, digits=1))% | Harvey competition, market maturity |\n"
+    output *= "| **DiscoveryNLU** | $(round(longterm_forecast[1].discovery_cagr_effective * 100, digits=1))% | $(round(longterm_forecast[2].discovery_cagr_effective * 100, digits=1))% | $(round(longterm_forecast[3].discovery_cagr_effective * 100, digits=1))% | Harvey AI competition, securities disclosure market |\n"
 
-    output *= "| **Lingua** | $(round(longterm_forecast[1].lingua_cagr_effective * 100, digits=1))% | $(round(longterm_forecast[2].lingua_cagr_effective * 100, digits=1))% | $(round(longterm_forecast[3].lingua_cagr_effective * 100, digits=1))% | Network effects, corporate partnerships |\n"
+    output *= "| **Noether** | $(round(longterm_forecast[1].noether_cagr_effective * 100, digits=1))% | $(round(longterm_forecast[2].noether_cagr_effective * 100, digits=1))% | $(round(longterm_forecast[3].noether_cagr_effective * 100, digits=1))% | AmLaw 200 referral network; BigLaw/Corp tier expansion |\n"
 
-    output *= "| **Nebula** | $(round(longterm_forecast[1].nebula_cagr_effective * 100, digits=1))% | $(round(longterm_forecast[2].nebula_cagr_effective * 100, digits=1))% | $(round(longterm_forecast[3].nebula_cagr_effective * 100, digits=1))% | Viral growth, content library expansion |\n"
+    output *= "| **NebulaNLU** | $(round(longterm_forecast[1].nebula_cagr_effective * 100, digits=1))% | $(round(longterm_forecast[2].nebula_cagr_effective * 100, digits=1))% | $(round(longterm_forecast[3].nebula_cagr_effective * 100, digits=1))% | Retirement Community Corporation renewals |\n"
 
     output *= """
 
@@ -1108,15 +1121,15 @@ end
 # MAIN FILE GENERATORS
 # ============================================================================
 
-function generate_executive_summary_file(months::Vector{String}, nebula_f, disclosure_f, lingua_f)
+function generate_executive_summary_file(months::Vector{String}, nebula_f, discoverynlu_f, noether_f)
     nebula_map = Dict(f.month => f.revenue_k for f in nebula_f)
-    disclosure_map = Dict(f.month => f.revenue_k for f in disclosure_f)
-    lingua_map = Dict(f.month => f.revenue_k for f in lingua_f)
+    discoverynlu_map = Dict(f.month => f.revenue_k for f in discoverynlu_f)
+    noether_map = Dict(f.month => f.revenue_k for f in noether_f)
 
     months_by_year = group_months_by_year(months)
-    total_by_year = Dict(year => sum(get(nebula_map, m, 0.0) + get(disclosure_map, m, 0.0) + get(lingua_map, m, 0.0) for m in year_months) for (year, year_months) in months_by_year)
+    total_by_year = Dict(year => sum(get(nebula_map, m, 0.0) + get(discoverynlu_map, m, 0.0) + get(noether_map, m, 0.0) for m in year_months) for (year, year_months) in months_by_year)
 
-    sep_2027_total = get(nebula_map, "Sep 2027", 0.0) + get(disclosure_map, "Sep 2027", 0.0) + get(lingua_map, "Sep 2027", 0.0)
+    sep_2027_total = get(nebula_map, "Sep 2027", 0.0) + get(discoverynlu_map, "Sep 2027", 0.0) + get(noether_map, "Sep 2027", 0.0)
     sep_2027_arr = sep_2027_total * 12
 
     open("NLU_Executive_Summary.md", "w") do file
@@ -1133,19 +1146,19 @@ function generate_executive_summary_file(months::Vector{String}, nebula_f, discl
     println("✅ Generated: NLU_Executive_Summary.md")
 end
 
-function generate_three_year_projections_file(months::Vector{String}, nebula_f, disclosure_f, lingua_f)
+function generate_three_year_projections_file(months::Vector{String}, nebula_f, discoverynlu_f, noether_f)
     nebula_map = Dict(f.month => f.revenue_k for f in nebula_f)
-    disclosure_map = Dict(f.month => f.revenue_k for f in disclosure_f)
-    lingua_map = Dict(f.month => f.revenue_k for f in lingua_f)
+    discoverynlu_map = Dict(f.month => f.revenue_k for f in discoverynlu_f)
+    noether_map = Dict(f.month => f.revenue_k for f in noether_f)
 
     months_by_year = group_months_by_year(months)
-    yearly_revenue = Dict{String,Dict{Int,Float64}}("Nebula" => Dict(), "Disclosure" => Dict(), "Lingua" => Dict(), "Total" => Dict())
+    yearly_revenue = Dict{String,Dict{Int,Float64}}("Nebula" => Dict(), "DiscoveryNLU" => Dict(), "Noether" => Dict(), "Total" => Dict())
 
     for (year, year_months) in months_by_year
         yearly_revenue["Nebula"][year] = sum(get(nebula_map, m, 0.0) for m in year_months)
-        yearly_revenue["Disclosure"][year] = sum(get(disclosure_map, m, 0.0) for m in year_months)
-        yearly_revenue["Lingua"][year] = sum(get(lingua_map, m, 0.0) for m in year_months)
-        yearly_revenue["Total"][year] = yearly_revenue["Nebula"][year] + yearly_revenue["Disclosure"][year] + yearly_revenue["Lingua"][year]
+        yearly_revenue["DiscoveryNLU"][year] = sum(get(discoverynlu_map, m, 0.0) for m in year_months)
+        yearly_revenue["Noether"][year] = sum(get(noether_map, m, 0.0) for m in year_months)
+        yearly_revenue["Total"][year] = yearly_revenue["Nebula"][year] + yearly_revenue["DiscoveryNLU"][year] + yearly_revenue["Noether"][year]
     end
 
     open("NLU_Three_Year_Projections.md", "w") do file
@@ -1158,8 +1171,8 @@ end
 function generate_complete_strategic_plan_file(
     months::Vector{String},
     nebula_f,
-    disclosure_f,
-    lingua_f,
+    discoverynlu_f,
+    noether_f,
     longterm_forecast::Vector{LongTermProjections.AnnualForecast},
     cost_factors_df,
     salaries_df,
@@ -1168,14 +1181,14 @@ function generate_complete_strategic_plan_file(
     prob_params
 )
     nebula_map = Dict(f.month => f.revenue_k for f in nebula_f)
-    disclosure_map = Dict(f.month => f.revenue_k for f in disclosure_f)
-    lingua_map = Dict(f.month => f.revenue_k for f in lingua_f)
+    discoverynlu_map = Dict(f.month => f.revenue_k for f in discoverynlu_f)
+    noether_map = Dict(f.month => f.revenue_k for f in noether_f)
 
     financing_df = LoadFactors.load_financing("data/financing.csv")
-    financial_data = FinancialStatements.generate_standard_financial_statements(months, nebula_f, disclosure_f, lingua_f, financing_df, cost_factors_df, salaries_df)
+    financial_data = FinancialStatements.generate_standard_financial_statements(months, nebula_f, discoverynlu_f, noether_f, financing_df, cost_factors_df, salaries_df)
 
     # Generate monthly P&L data for runway analysis
-    pnl_data = FinancialStatements.generate_monthly_pnl_table(months, nebula_f, disclosure_f, lingua_f, cost_factors_df, salaries_df)
+    pnl_data = FinancialStatements.generate_monthly_pnl_table(months, nebula_f, discoverynlu_f, noether_f, cost_factors_df, salaries_df)
 
     open("NLU_Strategic_Plan_Complete.md", "w") do file
         write(file, "# 🚀 NLU PORTFOLIO STRATEGIC PLAN (2026-2030)\n\n")
@@ -1197,21 +1210,21 @@ function generate_complete_strategic_plan_file(
         write(file, "---\n\n")
 
         # Generate all sections using functions
-        write(file, generate_revenue_summary_section(months, nebula_map, disclosure_map, lingua_map))
-        write(file, generate_valuation_summary_section(months, nebula_map, disclosure_map, lingua_map, financial_data))
+        write(file, generate_revenue_summary_section(months, nebula_map, discoverynlu_map, noether_map))
+        write(file, generate_valuation_summary_section(months, nebula_map, discoverynlu_map, noether_map, financial_data))
         write(file, generate_definitions_section())
         write(file, generate_hiring_schedule_section(months, salaries_df, headcount_df))
         write(file, generate_probability_analysis_section(model_params, prob_params))
-        write(file, generate_activity_indicators_section(months, nebula_f, disclosure_f, lingua_f))
-        write(file, generate_revenue_by_product_section(months, nebula_map, disclosure_map, lingua_map))
+        write(file, generate_activity_indicators_section(months, nebula_f, discoverynlu_f, noether_f))
+        write(file, generate_revenue_by_product_section(months, nebula_map, discoverynlu_map, noether_map))
         write(file, generate_revenue_by_channel_section())
-        write(file, generate_valuation_analysis_section(months, nebula_map, disclosure_map, lingua_map))
-        write(file, generate_revenue_realizations_section(months, nebula_f, disclosure_f, lingua_f))
+        write(file, generate_valuation_analysis_section(months, nebula_map, discoverynlu_map, noether_map))
+        write(file, generate_revenue_realizations_section(months, nebula_f, discoverynlu_f, noether_f))
         write(file, generate_financial_statements_section(months, financial_data, financing_df, pnl_data))
 
         # ✅ ADD THESE TWO NEW SECTIONS
         write(file, generate_longterm_forecast_section(longterm_forecast))
-        write(file, generate_5year_cumulative_section(nebula_f, disclosure_f, lingua_f, longterm_forecast))
+        write(file, generate_5year_cumulative_section(nebula_f, discoverynlu_f, noether_f, longterm_forecast))
 
         timestamp = Dates.format(Dates.now(), "yyyy-mm-dd HH:MM:SS")
         write(file, "*Generated: $timestamp*\n")
@@ -1221,8 +1234,8 @@ end
 
 function generate_5year_cumulative_section(
     nebula_f,
-    disclosure_f,
-    lingua_f,
+    discoverynlu_f,
+    noether_f,
     longterm_forecast::Vector{LongTermProjections.AnnualForecast}
 )
     output = """
@@ -1234,31 +1247,31 @@ function generate_5year_cumulative_section(
 
     # Calculate 2026-2027 annual totals from detailed forecast
     nebula_map = Dict(f.month => f.revenue_k for f in nebula_f)
-    disclosure_map = Dict(f.month => f.revenue_k for f in disclosure_f)
-    lingua_map = Dict(f.month => f.revenue_k for f in lingua_f)
+    discoverynlu_map = Dict(f.month => f.revenue_k for f in discoverynlu_f)
+    noether_map = Dict(f.month => f.revenue_k for f in noether_f)
 
-    yr2026_disclosure = sum(get(disclosure_map, "$(month) 2026", 0.0) for month in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]) * 1000
-    yr2026_lingua = sum(get(lingua_map, "$(month) 2026", 0.0) for month in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]) * 1000
+    yr2026_discoverynlu = sum(get(discoverynlu_map, "$(month) 2026", 0.0) for month in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]) * 1000
+    yr2026_noether = sum(get(noether_map, "$(month) 2026", 0.0) for month in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]) * 1000
     yr2026_nebula = sum(get(nebula_map, "$(month) 2026", 0.0) for month in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]) * 1000
-    yr2026_total = yr2026_disclosure + yr2026_lingua + yr2026_nebula
+    yr2026_total = yr2026_discoverynlu + yr2026_noether + yr2026_nebula
 
-    yr2027_disclosure = sum(get(disclosure_map, "$(month) 2027", 0.0) for month in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]) * 1000
-    yr2027_lingua = sum(get(lingua_map, "$(month) 2027", 0.0) for month in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]) * 1000
+    yr2027_discoverynlu = sum(get(discoverynlu_map, "$(month) 2027", 0.0) for month in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]) * 1000
+    yr2027_noether = sum(get(noether_map, "$(month) 2027", 0.0) for month in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]) * 1000
     yr2027_nebula = sum(get(nebula_map, "$(month) 2027", 0.0) for month in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]) * 1000
-    yr2027_total = yr2027_disclosure + yr2027_lingua + yr2027_nebula
+    yr2027_total = yr2027_discoverynlu + yr2027_noether + yr2027_nebula
 
     output *= """
-    | Year | Disclosure | Lingua | Nebula | **Total** | YoY Growth |
-    |------|----------:|-------:|-------:|----------:|-----------:|
-    | **2026** | $(format_currency(yr2026_disclosure)) | $(format_currency(yr2026_lingua)) | $(format_currency(yr2026_nebula)) | **$(format_currency(yr2026_total))** | - |
-    | **2027** | $(format_currency(yr2027_disclosure)) | $(format_currency(yr2027_lingua)) | $(format_currency(yr2027_nebula)) | **$(format_currency(yr2027_total))** | **$(round((yr2027_total - yr2026_total) / yr2026_total * 100, digits=0))%** |
+    | Year | DiscoveryNLU | Noether | Nebula | **Total** | YoY Growth |
+    |------|------------:|--------:|-------:|----------:|-----------:|
+    | **2026** | $(format_currency(yr2026_discoverynlu)) | $(format_currency(yr2026_noether)) | $(format_currency(yr2026_nebula)) | **$(format_currency(yr2026_total))** | - |
+    | **2027** | $(format_currency(yr2027_discoverynlu)) | $(format_currency(yr2027_noether)) | $(format_currency(yr2027_nebula)) | **$(format_currency(yr2027_total))** | **$(round((yr2027_total - yr2026_total) / yr2026_total * 100, digits=0))%** |
     """
 
     previous_total = yr2027_total
     for forecast in longterm_forecast
         yoy_growth = round((forecast.total_revenue - previous_total) / previous_total * 100, digits=0)
 
-        output *= "| **$(forecast.year)** | $(format_currency(forecast.disclosure_revenue)) | $(format_currency(forecast.lingua_revenue)) | $(format_currency(forecast.nebula_revenue)) | **$(format_currency(forecast.total_revenue))** | **$(yoy_growth)%** |\n"
+        output *= "| **$(forecast.year)** | $(format_currency(forecast.discoverynlu_revenue)) | $(format_currency(forecast.noether_revenue)) | $(format_currency(forecast.nebula_revenue)) | **$(format_currency(forecast.total_revenue))** | **$(yoy_growth)%** |\n"
 
         previous_total = forecast.total_revenue
     end
@@ -1350,7 +1363,7 @@ function generate_5year_cumulative_section(
     return output
 end
 
-function generate_founder_capitalization_file(months::Vector{String}, nebula_f, disclosure_f, lingua_f)
+function generate_founder_capitalization_file(months::Vector{String}, nebula_f, discoverynlu_f, noether_f)
     # [Keep existing implementation - it's already well-structured]
     open("NLU_Founder_Capitalization.md", "w") do file
         write(file, "# 🔒 NLU PORTFOLIO - FOUNDER CAPITALIZATION\n\n")

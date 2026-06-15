@@ -24,25 +24,25 @@
 
 ### Quarterly Revenue Chart
 
-| Quarter | Nebula | Disclosure | Lingua | Total | Growth |
-|---------|--------|------------|--------|-------|--------|
+| Quarter | Nebula | DiscoveryNLU | Noether | Total | Growth |
+|---------|--------|--------------|---------|-------|--------|
 | 2025 Q4 | $0 | $0 | $0 | $0 | - |
 | 2026 Q1 | $0 | $0 | $0 | $0 | - |
-| 2026 Q2 | $20.4K | $297.5K | $0 | $317.9K | - |
-| 2026 Q3 | $81.7K | $1.0M | $0 | $1.1M | 241.0% |
-| 2026 Q4 | $86.8K | $2.1M | $42.0K | $2.2M | 103.1% |
-| 2027 Q1 | $97.1K | $2.9M | $102.0K | $3.1M | 43.0% |
-| 2027 Q2 | $105.7K | $3.5M | $132.2K | $3.7M | 18.5% |
-| 2027 Q3 | $114.5K | $4.1M | $99.7K | $4.3M | 15.7% |
-| 2027 Q4 | $80.2K | $3.5M | $85.6K | $3.7M | -15.0% |
+| 2026 Q2 | $0 | $0 | $0 | $0 | - |
+| 2026 Q3 | $10.2K | $287.9K | $59.2K | $357.3K | - |
+| 2026 Q4 | $30.8K | $1.0M | $550.9K | $1.6M | 352.3% |
+| 2027 Q1 | $45.9K | $2.0M | $1.3M | $3.4M | 108.8% |
+| 2027 Q2 | $59.2K | $2.7M | $2.1M | $4.8M | 42.8% |
+| 2027 Q3 | $72.9K | $3.4M | $3.0M | $6.5M | 34.6% |
+| 2027 Q4 | $55.1K | $2.8M | $2.3M | $5.1M | -21.0% |
 
 ### Annual Totals
 
-| Year | Nebula | Disclosure | Lingua | **Total** | YoY Growth |
-|------|--------|------------|--------|-----------|------------|
+| Year | Nebula | DiscoveryNLU | Noether | **Total** | YoY Growth |
+|------|--------|--------------|---------|-----------|------------|
 | **2025** | **$0** | **$0** | **$0** | **$0** | **-** |
-| **2026** | **$188.8K** | **$3.4M** | **$42.0K** | **$3.6M** | **-** |
-| **2027** | **$397.6K** | **$14.0M** | **$419.5K** | **$14.9M** | **312.5%** |
+| **2026** | **$41.1K** | **$1.3M** | **$610.1K** | **$2.0M** | **-** |
+| **2027** | **$233.0K** | **$10.9M** | **$8.7M** | **$19.8M** | **903.9%** |
 
 ---
 
@@ -69,49 +69,49 @@
 
 ### 2026 Financial Summary
 
-**Revenue:** $3.6M
+**Revenue:** $2.0M
 **COGS:** $0 (Google Credits: $277.0K)
-**Gross Margin:** $2.4M
+**Gross Margin:** $1.5M
 
 **Operating Expenses:**
-- Commission: $900.7K
-- Development Salaries: $290.4K ← **R&D Tax Credit Eligible**
+- Commission: $493.3K
+- Development Salaries: $108.0K ← **R&D Tax Credit Eligible**
 - DevOps Salaries: $30.0K
-- G&A Salaries: $45.0K
-- **Total OpEx:** $1.3M
+- G&A Salaries: $0
+- **Total OpEx:** $631.3K
 
-**EBIT:** $1.2M
+**EBIT:** $829.6K
 **Interest:** $5.0K
-**Net Income:** $1.2M
+**Net Income:** $824.6K
 
-**R&D Tax Credit:** $58.1K
+**R&D Tax Credit:** $21.6K
 
 ### 2027 Financial Summary
 
-**Revenue:** $16.8M
+**Revenue:** $22.6M
 **COGS:** $0 (Google Credits: $0)
-**Gross Margin:** $10.1M
+**Gross Margin:** $13.5M
 
 **Operating Expenses:**
-- Commission: $4.2M
-- Development Salaries: $480.0K ← **R&D Tax Credit Eligible**
-- DevOps Salaries: $120.0K
-- G&A Salaries: $240.0K
-- **Total OpEx:** $5.0M
+- Commission: $5.6M
+- Development Salaries: $418.0K ← **R&D Tax Credit Eligible**
+- DevOps Salaries: $100.0K
+- G&A Salaries: $200.0K
+- **Total OpEx:** $6.4M
 
-**EBIT:** $5.0M
+**EBIT:** $7.2M
 **Interest:** $15.0K
-**Taxes:** $1.3M
-**Net Income:** $3.8M
+**Taxes:** $1.8M
+**Net Income:** $5.4M
 
-**R&D Tax Credit:** $96.0K
+**R&D Tax Credit:** $83.6K
 
 ### Company Valuation Milestones
 
 | Milestone | Monthly Rev | ARR | Conservative | Optimistic | 1% Equity |
 |-----------|-------------|-----|--------------|------------|----------|
-| Q4 2026 | $733.7K | $8.8M | $88.0M | $132.1M | $880.5K - $1.3M |
-| Q4 2027 | $1.9M | $22.5M | $270.0M | $405.0M | $2.7M - $4.1M |
+| Q4 2026 | $538.7K | $6.5M | $64.6M | $97.0M | $646.4K - $969.6K |
+| Q4 2027 | $2.6M | $31.6M | $379.0M | $568.5M | $3.8M - $5.7M |
 
 ---
 
@@ -133,30 +133,30 @@
 | Month | Development | Dev/Ops | Marketing | G&A | Total Monthly Salaries |
 |-------|-------------|---------|-----------|-----|------------------------|
 | Dec 2025 | 0 ($0) | 0 ($0) | 0 ($0) | 0 ($0) | $0 |
-| Jan 2026 | 5 ($2.7K) | 0 ($0) | 0 ($0) | 0 ($0) | $2.7K |
-| Feb 2026 | 5 ($6.3K) | 0 ($0) | 1 ($0) | 0 ($0) | $6.3K |
-| Mar 2026 | 8 ($9.1K) | 0 ($0) | 1 ($0) | 0 ($0) | $9.1K |
-| Apr 2026 | 8 ($16.0K) | 0 ($0) | 3 ($0) | 0 ($0) | $16.0K |
-| May 2026 | 8 ($22.0K) | 0 ($0) | 3 ($0) | 0 ($0) | $22.0K |
-| Jun 2026 | 8 ($23.5K) | 0 ($0) | 3 ($0) | 0 ($0) | $23.5K |
-| Jul 2026 | 8 ($25.1K) | 1 ($5.0K) | 3 ($0) | 0 ($0) | $30.1K |
-| Aug 2026 | 8 ($37.1K) | 1 ($5.0K) | 3 ($0) | 0 ($0) | $42.1K |
-| Sep 2026 | 8 ($37.1K) | 1 ($5.0K) | 3 ($0) | 0 ($0) | $42.1K |
-| Oct 2026 | 8 ($37.1K) | 1 ($5.0K) | 3 ($0) | 3 ($15.0K) | $57.1K |
-| Nov 2026 | 8 ($37.1K) | 1 ($5.0K) | 3 ($0) | 3 ($15.0K) | $57.1K |
-| Dec 2026 | 8 ($37.2K) | 1 ($5.0K) | 3 ($0) | 3 ($15.0K) | $57.2K |
-| Jan 2027 | 8 ($40.0K) | 2 ($10.0K) | 4 ($0) | 4 ($20.0K) | $70.0K |
-| Feb 2027 | 8 ($40.0K) | 2 ($10.0K) | 4 ($0) | 4 ($20.0K) | $70.0K |
-| Mar 2027 | 8 ($40.0K) | 2 ($10.0K) | 4 ($0) | 4 ($20.0K) | $70.0K |
-| Apr 2027 | 8 ($40.0K) | 2 ($10.0K) | 4 ($0) | 4 ($20.0K) | $70.0K |
-| May 2027 | 8 ($40.0K) | 2 ($10.0K) | 4 ($0) | 4 ($20.0K) | $70.0K |
-| Jun 2027 | 8 ($40.0K) | 2 ($10.0K) | 4 ($0) | 4 ($20.0K) | $70.0K |
-| Jul 2027 | 8 ($40.0K) | 2 ($10.0K) | 4 ($0) | 4 ($20.0K) | $70.0K |
-| Aug 2027 | 8 ($40.0K) | 2 ($10.0K) | 4 ($0) | 4 ($20.0K) | $70.0K |
-| Sep 2027 | 8 ($40.0K) | 2 ($10.0K) | 4 ($0) | 4 ($20.0K) | $70.0K |
-| Oct 2027 | 8 ($40.0K) | 2 ($10.0K) | 4 ($0) | 4 ($20.0K) | $70.0K |
-| Nov 2027 | 8 ($40.0K) | 2 ($10.0K) | 4 ($0) | 4 ($20.0K) | $70.0K |
-| Dec 2027 | 8 ($40.0K) | 2 ($10.0K) | 4 ($0) | 4 ($20.0K) | $70.0K |
+| Jan 2026 | 6 ($9.0K) | 0 ($0) | 0 ($0) | 0 ($0) | $9.0K |
+| Feb 2026 | 6 ($9.0K) | 0 ($0) | 0 ($0) | 0 ($0) | $9.0K |
+| Mar 2026 | 6 ($9.0K) | 0 ($0) | 0 ($0) | 0 ($0) | $9.0K |
+| Apr 2026 | 6 ($9.0K) | 0 ($0) | 0 ($0) | 0 ($0) | $9.0K |
+| May 2026 | 6 ($9.0K) | 0 ($0) | 0 ($0) | 0 ($0) | $9.0K |
+| Jun 2026 | 6 ($9.0K) | 0 ($0) | 0 ($0) | 0 ($0) | $9.0K |
+| Jul 2026 | 6 ($9.0K) | 0 ($10.0K) | 6 ($0) | 0 ($0) | $19.0K |
+| Aug 2026 | 6 ($9.0K) | 0 ($10.0K) | 6 ($0) | 0 ($0) | $19.0K |
+| Sep 2026 | 6 ($9.0K) | 0 ($10.0K) | 6 ($0) | 0 ($0) | $19.0K |
+| Oct 2026 | 6 ($9.0K) | 0 ($0) | 6 ($0) | 0 ($0) | $9.0K |
+| Nov 2026 | 6 ($9.0K) | 0 ($0) | 6 ($0) | 0 ($0) | $9.0K |
+| Dec 2026 | 6 ($9.0K) | 0 ($0) | 6 ($0) | 0 ($0) | $9.0K |
+| Jan 2027 | 6 ($9.0K) | 0 ($0) | 6 ($0) | 0 ($0) | $9.0K |
+| Feb 2027 | 6 ($9.0K) | 0 ($0) | 6 ($0) | 0 ($0) | $9.0K |
+| Mar 2027 | 8 ($40.0K) | 1 ($10.0K) | 8 ($0) | 3 ($20.0K) | $70.0K |
+| Apr 2027 | 8 ($40.0K) | 1 ($10.0K) | 8 ($0) | 3 ($20.0K) | $70.0K |
+| May 2027 | 8 ($40.0K) | 1 ($10.0K) | 8 ($0) | 3 ($20.0K) | $70.0K |
+| Jun 2027 | 8 ($40.0K) | 1 ($10.0K) | 8 ($0) | 3 ($20.0K) | $70.0K |
+| Jul 2027 | 8 ($40.0K) | 1 ($10.0K) | 8 ($0) | 3 ($20.0K) | $70.0K |
+| Aug 2027 | 8 ($40.0K) | 1 ($10.0K) | 8 ($0) | 3 ($20.0K) | $70.0K |
+| Sep 2027 | 8 ($40.0K) | 1 ($10.0K) | 8 ($0) | 3 ($20.0K) | $70.0K |
+| Oct 2027 | 8 ($40.0K) | 1 ($10.0K) | 10 ($0) | 3 ($20.0K) | $70.0K |
+| Nov 2027 | 8 ($40.0K) | 1 ($10.0K) | 10 ($0) | 3 ($20.0K) | $70.0K |
+| Dec 2027 | 8 ($40.0K) | 1 ($10.0K) | 10 ($0) | 4 ($20.0K) | $70.0K |
 
 **Note:** Marketing compensation is 25% commission on revenue (not included in salary table).
 
@@ -165,8 +165,8 @@
 Development salaries qualify for federal R&D tax credits (estimated 20% credit rate):
 
 - **2025:** $0 (Est. credit: $0)
-- **2026:** $290.4K (Est. credit: $58.1K)
-- **2027:** $480.0K (Est. credit: $96.0K)
+- **2026:** $108.0K (Est. credit: $21.6K)
+- **2027:** $418.0K (Est. credit: $83.6K)
 
 ---
 
@@ -174,9 +174,9 @@ Development salaries qualify for federal R&D tax credits (estimated 20% credit r
 
 **All parameters dynamically loaded from CSV configuration files**
 
-### Nebula-NLU Freemium Model
-- **Product Launch:** Mar 2026
-- **Revenue Start:** Apr 2026
+### NebulaNLU.studio Freemium Model
+- **Product Launch:** Jul 2026
+- **Revenue Start:** Jul 2026
 - **Free Trial:** 5 stories before paywall
 - **Conversion Rates:**
   - Free → Monthly: 22.0%
@@ -190,40 +190,41 @@ Development salaries qualify for federal R&D tax credits (estimated 20% credit r
   - Annual: 25.0%/year
 - **Upgrade Path:** 35.0% of monthly subscribers upgrade to annual
 - **Growth Pattern:**
-  - Mar 2026 - Jul 2026: Exponential doubling
-  - Aug 2026+: Linear growth (533 trials/month)
+  - Jul 2026 - Sep 2026: Exponential doubling
+  - Oct 2026+: Linear growth (533 trials/month)
 
-### Disclosure-NLU Model
-- **Product Launch:** Apr 2026
-- **Revenue Start:** May 2026
+### DiscoveryNLU.studio Model
+- **Trial:** Jul 2026 | **Revenue Start:** Aug 2026
 - **Pricing by Firm Size:**
   - Solo: $$15,000/year (λ=10.0 firms/month)
   - Small: $$50,000/year (λ=10.0 firms/month)
   - Medium: $$150,000/year (λ=3.0 firms/month)
   - Large: $$300,000/year (λ=0.1 firms/month, starts Jan 2027)
   - BigLaw: $$750,000/year (λ=0.1 firms/month, starts Jan 2027)
-- **Distribution:** Poisson process for new client acquisition
-- **Churn:** Beta(1,15) distribution (low churn for legal professionals)
+- **Distribution:** Poisson(λ) arrival process with 5-month major-markets ramp
+- **Churn:** Beta(1,15) ≈ 6.25% mean monthly churn (low for institutional legal clients)
 
-### Lingua-NLU Model
-- **Product Launch:** Sep 2026
-- **Revenue Start:** Oct 2026
-- **B2B-to-Consumer Strategy:**
-  - Sales approach: Corporate contracts with Fortune 5000 companies
-  - Target: Companies with 500-10,000 employees needing language training
-  - Value proposition: Replace $10K/employee traditional training with $500/employee peer matching
-  - Corporate pricing: $250K-$3M annual contracts (tiered by company size)
-- **Individual User Economics:**
-  - Match price: $59 per successful pairing
-  - Match success rate: 66.7% (Beta distribution α=4.0, β=2.0)
-  - User acquisition: Through corporate partnerships
-  - Launch ramp: 400 users (Jul 2026) → 1000 users (Dec 2026)
+### Noether.studio Model
+- **Trial:** Aug 2026 | **Revenue Start:** Sep 2026
+- **USPTO Patent Corpus Analysis — NLU, not generative AI:**
+  - Conserves (retrieves from corpus) — never halluccinates
+  - Citation-traceable to the sentence; deterministic findings
+  - 12M+ patents, updated weekly; pre-indexed before engagement
+  - Both-sides symmetric (plaintiff AND defense) — doubles effective TAM
+- **Pricing by Tier:**
+  - Solo: $$30,000/year (λ=4.0 firms/month)
+  - Small: $$95,000/year (λ=4.0 firms/month)
+  - Medium: $$275,000/year (λ=1.5 firms/month)
+  - Large: $$550,000/year (λ=0.1 firms/month, starts Jan 2027)
+  - BigLaw: $$1,500,000/year (λ=0.1 firms/month, starts Jan 2027)
+  - Corp (in-house GC): $$500,000/year (λ=0.15 firms/month, starts Mar 2027)
+- **Distribution:** Poisson(λ) arrival process; same Beta(1,15) churn model as DiscoveryNLU
 
 ---
 
 ## 6. Activity Indicators
 
-### Nebula-NLU Customers
+### NebulaNLU.studio Customers
 
 | Month | New | Total | Revenue |
 |-------|-----|-------|---------|
@@ -231,29 +232,29 @@ Development salaries qualify for federal R&D tax credits (estimated 20% credit r
 | Jan 2026 |  |  |  |
 | Feb 2026 |  |  |  |
 | Mar 2026 |  |  |  |
-| Apr 2026 | 402 | 121 | $1.9K |
-| May 2026 | 726 | 334 | $5.2K |
-| Jun 2026 | 1,759 | 849 | $13.3K |
-| Jul 2026 | 2,977 | 1,710 | $26.5K |
-| Aug 2026 | 512 | 1,799 | $27.3K |
-| Sep 2026 | 577 | 1,907 | $27.9K |
-| Oct 2026 | 525 | 1,998 | $27.6K |
-| Nov 2026 | 586 | 2,110 | $29.0K |
-| Dec 2026 | 579 | 2,217 | $30.3K |
-| Jan 2027 | 533 | 2,308 | $31.3K |
-| Feb 2027 | 521 | 2,393 | $32.3K |
-| Mar 2027 | 578 | 2,492 | $33.5K |
-| Apr 2027 | 485 | 2,562 | $34.2K |
-| May 2027 | 535 | 2,645 | $35.2K |
-| Jun 2027 | 574 | 2,737 | $36.3K |
-| Jul 2027 | 581 | 2,829 | $37.4K |
-| Aug 2027 | 521 | 2,901 | $38.2K |
-| Sep 2027 | 486 | 2,961 | $38.8K |
-| Oct 2027 | 569 | 3,044 | $39.8K |
-| Nov 2027 | 496 | 3,104 | $40.4K |
-| Dec 2027 | 501 | 3,164 | $41.1K |
+| Apr 2026 |  |  |  |
+| May 2026 |  |  |  |
+| Jun 2026 |  |  |  |
+| Jul 2026 | 196 | 59 | $922 |
+| Aug 2026 | 418 | 182 | $2.8K |
+| Sep 2026 | 795 | 414 | $6.5K |
+| Oct 2026 | 539 | 560 | $8.6K |
+| Nov 2026 | 494 | 687 | $10.3K |
+| Dec 2026 | 525 | 820 | $11.9K |
+| Jan 2027 | 549 | 956 | $13.7K |
+| Feb 2027 | 507 | 1,076 | $15.3K |
+| Mar 2027 | 531 | 1,200 | $16.9K |
+| Apr 2027 | 516 | 1,315 | $18.3K |
+| May 2027 | 505 | 1,425 | $19.7K |
+| Jun 2027 | 528 | 1,537 | $21.1K |
+| Jul 2027 | 580 | 1,663 | $22.8K |
+| Aug 2027 | 572 | 1,782 | $24.3K |
+| Sep 2027 | 561 | 1,895 | $25.8K |
+| Oct 2027 | 524 | 1,993 | $26.9K |
+| Nov 2027 | 552 | 2,097 | $28.2K |
+| Dec 2027 | 565 | 2,202 | $29.5K |
 
-### Disclosure-NLU Firms
+### DiscoveryNLU.studio Firms
 
 | Month | Solo | Small | Medium | Large | BigLaw | Total | Revenue |
 |-------|------|-------|--------|-------|--------|-------|---------|
@@ -262,56 +263,56 @@ Development salaries qualify for federal R&D tax credits (estimated 20% credit r
 | Feb 2026 |  |  |  |  |  |  |  |
 | Mar 2026 |  |  |  |  |  |  |  |
 | Apr 2026 |  |  |  |  |  |  |  |
-| May 2026 | 9 | 10 | 5 | 0 | 0 | 24 | $115.4K |
-| Jun 2026 | 24 | 19 | 6 | 0 | 0 | 49 | $182.1K |
-| Jul 2026 | 37 | 31 | 6 | 0 | 0 | 73 | $247.7K |
-| Aug 2026 | 46 | 37 | 10 | 0 | 0 | 92 | $332.3K |
-| Sep 2026 | 52 | 51 | 12 | 0 | 0 | 115 | $422.2K |
-| Oct 2026 | 62 | 67 | 20 | 0 | 0 | 149 | $600.8K |
-| Nov 2026 | 70 | 75 | 24 | 0 | 0 | 169 | $695.8K |
-| Dec 2026 | 78 | 85 | 26 | 0 | 0 | 188 | $775.8K |
-| Jan 2027 | 87 | 103 | 29 | 1 | 0 | 220 | $926.1K |
-| Feb 2027 | 93 | 113 | 30 | 1 | 0 | 236 | $981.8K |
-| Mar 2027 | 106 | 117 | 32 | 1 | 0 | 256 | $1.0M |
-| Apr 2027 | 111 | 130 | 32 | 1 | 0 | 274 | $1.1M |
-| May 2027 | 117 | 140 | 34 | 1 | 0 | 291 | $1.2M |
-| Jun 2027 | 129 | 145 | 34 | 1 | 0 | 309 | $1.2M |
-| Jul 2027 | 138 | 150 | 35 | 1 | 0 | 325 | $1.3M |
-| Aug 2027 | 151 | 161 | 37 | 1 | 0 | 350 | $1.3M |
-| Sep 2027 | 157 | 172 | 44 | 1 | 0 | 374 | $1.5M |
-| Oct 2027 | 162 | 178 | 48 | 1 | 2 | 391 | $1.7M |
-| Nov 2027 | 172 | 190 | 52 | 1 | 2 | 418 | $1.8M |
-| Dec 2027 | 182 | 201 | 54 | 1 | 2 | 439 | $1.9M |
+| May 2026 |  |  |  |  |  |  |  |
+| Jun 2026 |  |  |  |  |  |  |  |
+| Jul 2026 |  |  |  |  |  |  |  |
+| Aug 2026 | 10 | 13 | 3 | 0 | 0 | 26 | $104.2K |
+| Sep 2026 | 17 | 24 | 5 | 0 | 0 | 46 | $183.7K |
+| Oct 2026 | 28 | 36 | 6 | 0 | 0 | 70 | $259.8K |
+| Nov 2026 | 36 | 49 | 8 | 0 | 0 | 92 | $346.7K |
+| Dec 2026 | 45 | 57 | 11 | 0 | 0 | 112 | $427.8K |
+| Jan 2027 | 53 | 63 | 18 | 0 | 1 | 135 | $616.0K |
+| Feb 2027 | 62 | 72 | 19 | 0 | 1 | 154 | $676.0K |
+| Mar 2027 | 72 | 77 | 23 | 0 | 1 | 173 | $756.1K |
+| Apr 2027 | 79 | 85 | 25 | 0 | 1 | 190 | $822.7K |
+| May 2027 | 87 | 94 | 25 | 0 | 1 | 207 | $869.9K |
+| Jun 2027 | 100 | 108 | 27 | 0 | 1 | 236 | $974.6K |
+| Jul 2027 | 108 | 119 | 29 | 0 | 1 | 257 | $1.1M |
+| Aug 2027 | 120 | 128 | 32 | 0 | 1 | 281 | $1.1M |
+| Sep 2027 | 124 | 134 | 36 | 0 | 1 | 295 | $1.2M |
+| Oct 2027 | 132 | 143 | 40 | 0 | 1 | 316 | $1.3M |
+| Nov 2027 | 142 | 156 | 44 | 0 | 1 | 344 | $1.4M |
+| Dec 2027 | 155 | 166 | 47 | 1 | 1 | 370 | $1.6M |
 
-### Lingua-NLU Pairs
+### Noether.studio Firms
 
-| Month | Active Pairs | Revenue |
-|-------|--------------|---------|
-| Dec 2025 |  |  |
-| Jan 2026 |  |  |
-| Feb 2026 |  |  |
-| Mar 2026 |  |  |
-| Apr 2026 |  |  |
-| May 2026 |  |  |
-| Jun 2026 |  |  |
-| Jul 2026 |  |  |
-| Aug 2026 |  |  |
-| Sep 2026 |  |  |
-| Oct 2026 |  |  |
-| Nov 2026 |  |  |
-| Dec 2026 | 711 | $42.0K |
-| Jan 2027 | 646 | $38.1K |
-| Feb 2027 | 620 | $36.6K |
-| Mar 2027 | 462 | $27.3K |
-| Apr 2027 | 851 | $50.2K |
-| May 2027 | 600 | $35.4K |
-| Jun 2027 | 790 | $46.6K |
-| Jul 2027 | 560 | $33.0K |
-| Aug 2027 | 716 | $42.2K |
-| Sep 2027 | 414 | $24.4K |
-| Oct 2027 | 635 | $37.4K |
-| Nov 2027 | 817 | $48.2K |
-| Dec 2027 | 511 | $30.1K |
+| Month | Solo | Small | Medium | Large | BigLaw | Corp | Total | Revenue |
+|-------|------|-------|--------|-------|--------|------|-------|---------|
+| Dec 2025 |  |  |  |  |  |  |  |  |
+| Jan 2026 |  |  |  |  |  |  |  |  |
+| Feb 2026 |  |  |  |  |  |  |  |  |
+| Mar 2026 |  |  |  |  |  |  |  |  |
+| Apr 2026 |  |  |  |  |  |  |  |  |
+| May 2026 |  |  |  |  |  |  |  |  |
+| Jun 2026 |  |  |  |  |  |  |  |  |
+| Jul 2026 |  |  |  |  |  |  |  |  |
+| Aug 2026 |  |  |  |  |  |  |  |  |
+| Sep 2026 | 5 | 3 | 1 | 0 | 0 | 0 | 9 | $59.2K |
+| Oct 2026 | 11 | 8 | 3 | 0 | 0 | 0 | 22 | $159.3K |
+| Nov 2026 | 12 | 9 | 3 | 0 | 0 | 0 | 24 | $168.6K |
+| Dec 2026 | 18 | 14 | 3 | 0 | 0 | 0 | 35 | $223.0K |
+| Jan 2027 | 23 | 20 | 6 | 0 | 0 | 0 | 49 | $351.3K |
+| Feb 2027 | 24 | 24 | 7 | 0 | 0 | 0 | 55 | $407.9K |
+| Mar 2027 | 28 | 28 | 10 | 0 | 0 | 0 | 67 | $521.5K |
+| Apr 2027 | 34 | 31 | 11 | 0 | 0 | 0 | 76 | $580.8K |
+| May 2027 | 39 | 37 | 14 | 0 | 0 | 0 | 90 | $705.1K |
+| Jun 2027 | 42 | 44 | 16 | 0 | 0 | 0 | 101 | $806.4K |
+| Jul 2027 | 43 | 56 | 18 | 0 | 0 | 0 | 117 | $949.8K |
+| Aug 2027 | 47 | 61 | 19 | 0 | 0 | 0 | 126 | $1.0M |
+| Sep 2027 | 52 | 61 | 18 | 0 | 0 | 0 | 130 | $1.0M |
+| Oct 2027 | 56 | 65 | 20 | 0 | 0 | 0 | 141 | $1.1M |
+| Nov 2027 | 60 | 71 | 21 | 0 | 0 | 0 | 152 | $1.2M |
+| Dec 2027 | 62 | 70 | 20 | 0 | 0 | 0 | 153 | $1.2M |
 
 ---
 
@@ -319,49 +320,49 @@ Development salaries qualify for federal R&D tax credits (estimated 20% credit r
 
 ### Monthly Revenue Detail
 
-| Month | Nebula | Disclosure | Lingua | Total |
-|-------|--------|------------|--------|-------|
+| Month | Nebula | DiscoveryNLU | Noether | Total |
+|-------|--------|--------------|---------|-------|
 | Dec 2025 | $0 | $0 | $0 | $0 |
 | Jan 2026 | $0 | $0 | $0 | $0 |
 | Feb 2026 | $0 | $0 | $0 | $0 |
 | Mar 2026 | $0 | $0 | $0 | $0 |
-| Apr 2026 | $1.9K | $0 | $0 | $1.9K |
-| May 2026 | $5.2K | $115.4K | $0 | $120.6K |
-| Jun 2026 | $13.3K | $182.1K | $0 | $195.3K |
-| Jul 2026 | $26.5K | $247.7K | $0 | $274.1K |
-| Aug 2026 | $27.3K | $332.3K | $0 | $359.6K |
-| Sep 2026 | $27.9K | $422.2K | $0 | $450.1K |
-| Oct 2026 | $27.6K | $600.8K | $0 | $628.4K |
-| Nov 2026 | $29.0K | $695.8K | $0 | $724.8K |
-| Dec 2026 | $30.3K | $775.8K | $42.0K | $848.0K |
-| Jan 2027 | $31.3K | $926.1K | $38.1K | $995.5K |
-| Feb 2027 | $32.3K | $981.8K | $36.6K | $1.1M |
-| Mar 2027 | $33.5K | $1.0M | $27.3K | $1.1M |
-| Apr 2027 | $34.2K | $1.1M | $50.2K | $1.2M |
-| May 2027 | $35.2K | $1.2M | $35.4K | $1.2M |
-| Jun 2027 | $36.3K | $1.2M | $46.6K | $1.3M |
-| Jul 2027 | $37.4K | $1.3M | $33.0K | $1.3M |
-| Aug 2027 | $38.2K | $1.3M | $42.2K | $1.4M |
-| Sep 2027 | $38.8K | $1.5M | $24.4K | $1.5M |
-| Oct 2027 | $39.8K | $1.7M | $37.4K | $1.8M |
-| Nov 2027 | $40.4K | $1.8M | $48.2K | $1.9M |
-| Dec 2027 | $41.1K | $1.9M | $30.1K | $2.0M |
+| Apr 2026 | $0 | $0 | $0 | $0 |
+| May 2026 | $0 | $0 | $0 | $0 |
+| Jun 2026 | $0 | $0 | $0 | $0 |
+| Jul 2026 | $922 | $0 | $0 | $922 |
+| Aug 2026 | $2.8K | $104.2K | $0 | $107.0K |
+| Sep 2026 | $6.5K | $183.7K | $59.2K | $249.3K |
+| Oct 2026 | $8.6K | $259.8K | $159.3K | $427.7K |
+| Nov 2026 | $10.3K | $346.7K | $168.6K | $525.6K |
+| Dec 2026 | $11.9K | $427.8K | $223.0K | $662.7K |
+| Jan 2027 | $13.7K | $616.0K | $351.3K | $981.0K |
+| Feb 2027 | $15.3K | $676.0K | $407.9K | $1.1M |
+| Mar 2027 | $16.9K | $756.1K | $521.5K | $1.3M |
+| Apr 2027 | $18.3K | $822.7K | $580.8K | $1.4M |
+| May 2027 | $19.7K | $869.9K | $705.1K | $1.6M |
+| Jun 2027 | $21.1K | $974.6K | $806.4K | $1.8M |
+| Jul 2027 | $22.8K | $1.1M | $949.8K | $2.0M |
+| Aug 2027 | $24.3K | $1.1M | $1.0M | $2.2M |
+| Sep 2027 | $25.8K | $1.2M | $1.0M | $2.3M |
+| Oct 2027 | $26.9K | $1.3M | $1.1M | $2.5M |
+| Nov 2027 | $28.2K | $1.4M | $1.2M | $2.7M |
+| Dec 2027 | $29.5K | $1.6M | $1.2M | $2.8M |
 
 ### Annual Revenue Summary
 
-| Year | Nebula | Disclosure | Lingua | **Total** | YoY Growth |
-|------|--------|------------|--------|-----------|------------|
+| Year | Nebula | DiscoveryNLU | Noether | **Total** | YoY Growth |
+|------|--------|--------------|---------|-----------|------------|
 | **2025** | **$0** | **$0** | **$0** | **$0** | **-** |
-| **2026** | **$188.8K** | **$3.4M** | **$42.0K** | **$3.6M** | **-** |
-| **2027** | **$438.7K** | **$15.9M** | **$449.7K** | **$16.8M** | **366.7%** |
+| **2026** | **$41.1K** | **$1.3M** | **$610.1K** | **$2.0M** | **-** |
+| **2027** | **$262.5K** | **$12.5M** | **$9.9M** | **$22.6M** | **1044.2%** |
 
 ### Product Mix Analysis
 
-| Year | Nebula % | Disclosure % | Lingua % |
-|------|----------|--------------|----------|
+| Year | NebulaNLU % | DiscoveryNLU % | Noether % |
+|------|-------------|----------------|----------|
 | 2025 | 0% | 0% | 0% |
-| 2026 | 5.2% | 93.6% | 1.2% |
-| 2027 | 2.6% | 94.7% | 2.7% |
+| 2026 | 2.1% | 67.0% | 30.9% |
+| 2027 | 1.2% | 55.2% | 43.7% |
 
 ---
 
@@ -373,7 +374,7 @@ Development salaries qualify for federal R&D tax credits (estimated 20% credit r
 - Direct Marketing (Facebook/Instagram targeting parents & grandparents)
 - Referrals & Word-of-Mouth
 
-### Disclosure Channels
+### DiscoveryNLU.studio Channels
 
 | Type | Value | Cycle | Rep | Target/Year |
 |------|-------|-------|-----|-------------|
@@ -390,34 +391,40 @@ Development salaries qualify for federal R&D tax credits (estimated 20% credit r
 - Legal publications & webinars
 - Referral program (existing clients)
 
-### Lingua Channels
-- LinkedIn Marketing (B2B targeting HR/L&D professionals)
-- Corporate Partnerships (Fortune 5000 companies)
-- Professional Networks (SHRM, ATD)
-- Enterprise Sales Team (5 dedicated reps)
-- Referrals & Case Studies
+### Noether.studio Channels
 
-**B2B Corporate Strategy:**
-- Target: Companies with 500-10,000 employees
-- Sales cycle: 3-6 months for mid-market, 6-12 months for enterprise
-- Contract value: $250K-$3M annually
-- User acquisition: Through corporate employee benefits programs
+| Tier | ACV | Sales Cycle | Rep | Target/Year |
+|------|-----|-------------|-----|-------------|
+| Solo | $30K | 14d | SDR | 120 |
+| Small | $95K | 30d | AE Mid | 60 |
+| Medium | $275K | 60d | AE Mid | 18 |
+| Large | $550K | 90d | AE Ent | 4 |
+| BigLaw | $1.5M | 120d | AE Ent | 2 |
+| Corp | $500K | 90d | AE Ent | 3 |
+
+**Patent Attorney Channel Strategy:**
+- USPTO data API partnerships (direct integration hook)
+- AmLaw 200 IP practice group outreach
+- IP-specific conferences (LES, IPO, AIPLA)
+- Patent bar association partnerships
+- In-house GC / tech-company legal ops (Corp tier, Mar 2027+)
+- Referral network seeded via BigLaw anchor clients
 
 ---
 
 ## 9. Valuation Analysis
 
 ### December 2026
-- Monthly: $848.0K
-- ARR: $10.2M
-- Conservative (10x): $101.8M
-- Optimistic (15x): $152.6M
+- Monthly: $662.7K
+- ARR: $8.0M
+- Conservative (10x): $79.5M
+- Optimistic (15x): $119.3M
 
 ### December 2027
-- Monthly: $2.0M
-- ARR: $23.5M
-- Conservative (12x): $281.6M
-- Optimistic (18x): $422.3M
+- Monthly: $2.8M
+- ARR: $33.2M
+- Conservative (12x): $398.6M
+- Optimistic (18x): $598.0M
 
 ---
 
@@ -434,65 +441,65 @@ Three scenarios based on adjusted growth assumptions:
 | Jan 2026 | $0 | $0 | $0 |
 | Feb 2026 | $0 | $0 | $0 |
 | Mar 2026 | $0 | $0 | $0 |
-| Apr 2026 | $1.5K | $1.9K | $2.3K |
-| May 2026 | $96.5K | $120.6K | $144.8K |
-| Jun 2026 | $156.3K | $195.3K | $234.4K |
-| Jul 2026 | $219.3K | $274.1K | $329.0K |
-| Aug 2026 | $287.7K | $359.6K | $431.5K |
-| Sep 2026 | $360.1K | $450.1K | $540.1K |
-| Oct 2026 | $502.7K | $628.4K | $754.1K |
-| Nov 2026 | $579.8K | $724.8K | $869.7K |
-| Dec 2026 | $678.4K | $848.0K | $1.0M |
-| Jan 2027 | $796.4K | $995.5K | $1.2M |
-| Feb 2027 | $840.5K | $1.1M | $1.3M |
-| Mar 2027 | $880.6K | $1.1M | $1.3M |
-| Apr 2027 | $947.7K | $1.2M | $1.4M |
-| May 2027 | $994.0K | $1.2M | $1.5M |
-| Jun 2027 | $1.0M | $1.3M | $1.6M |
-| Jul 2027 | $1.1M | $1.3M | $1.6M |
-| Aug 2027 | $1.1M | $1.4M | $1.7M |
-| Sep 2027 | $1.2M | $1.5M | $1.9M |
-| Oct 2027 | $1.4M | $1.8M | $2.1M |
-| Nov 2027 | $1.5M | $1.9M | $2.3M |
-| Dec 2027 | $1.6M | $2.0M | $2.3M |
+| Apr 2026 | $0 | $0 | $0 |
+| May 2026 | $0 | $0 | $0 |
+| Jun 2026 | $0 | $0 | $0 |
+| Jul 2026 | $738 | $922 | $1.1K |
+| Aug 2026 | $85.6K | $107.0K | $128.4K |
+| Sep 2026 | $199.5K | $249.3K | $299.2K |
+| Oct 2026 | $342.2K | $427.7K | $513.3K |
+| Nov 2026 | $420.4K | $525.6K | $630.7K |
+| Dec 2026 | $530.2K | $662.7K | $795.2K |
+| Jan 2027 | $784.8K | $981.0K | $1.2M |
+| Feb 2027 | $879.4K | $1.1M | $1.3M |
+| Mar 2027 | $1.0M | $1.3M | $1.6M |
+| Apr 2027 | $1.1M | $1.4M | $1.7M |
+| May 2027 | $1.3M | $1.6M | $1.9M |
+| Jun 2027 | $1.4M | $1.8M | $2.2M |
+| Jul 2027 | $1.6M | $2.0M | $2.4M |
+| Aug 2027 | $1.8M | $2.2M | $2.6M |
+| Sep 2027 | $1.8M | $2.3M | $2.7M |
+| Oct 2027 | $2.0M | $2.5M | $3.0M |
+| Nov 2027 | $2.1M | $2.7M | $3.2M |
+| Dec 2027 | $2.2M | $2.8M | $3.3M |
 
 ### Platform Revenue Breakdown (Base Case)
 
-| Month | Nebula-NLU | Disclosure-NLU | Lingua-NLU | **Total** |
+| Month | NebulaNLU.studio | DiscoveryNLU.studio | Noether.studio | **Total** |
 |-------|------------|----------------|------------|----------|
 | Dec 2025 | $0 | $0 | $0 | **$0** |
 | Jan 2026 | $0 | $0 | $0 | **$0** |
 | Feb 2026 | $0 | $0 | $0 | **$0** |
 | Mar 2026 | $0 | $0 | $0 | **$0** |
-| Apr 2026 | $1.9K | $0 | $0 | **$1.9K** |
-| May 2026 | $5.2K | $115.4K | $0 | **$120.6K** |
-| Jun 2026 | $13.3K | $182.1K | $0 | **$195.3K** |
-| Jul 2026 | $26.5K | $247.7K | $0 | **$274.1K** |
-| Aug 2026 | $27.3K | $332.3K | $0 | **$359.6K** |
-| Sep 2026 | $27.9K | $422.2K | $0 | **$450.1K** |
-| Oct 2026 | $27.6K | $600.8K | $0 | **$628.4K** |
-| Nov 2026 | $29.0K | $695.8K | $0 | **$724.8K** |
-| Dec 2026 | $30.3K | $775.8K | $42.0K | **$848.0K** |
-| Jan 2027 | $31.3K | $926.1K | $38.1K | **$995.5K** |
-| Feb 2027 | $32.3K | $981.8K | $36.6K | **$1.1M** |
-| Mar 2027 | $33.5K | $1.0M | $27.3K | **$1.1M** |
-| Apr 2027 | $34.2K | $1.1M | $50.2K | **$1.2M** |
-| May 2027 | $35.2K | $1.2M | $35.4K | **$1.2M** |
-| Jun 2027 | $36.3K | $1.2M | $46.6K | **$1.3M** |
-| Jul 2027 | $37.4K | $1.3M | $33.0K | **$1.3M** |
-| Aug 2027 | $38.2K | $1.3M | $42.2K | **$1.4M** |
-| Sep 2027 | $38.8K | $1.5M | $24.4K | **$1.5M** |
-| Oct 2027 | $39.8K | $1.7M | $37.4K | **$1.8M** |
-| Nov 2027 | $40.4K | $1.8M | $48.2K | **$1.9M** |
-| Dec 2027 | $41.1K | $1.9M | $30.1K | **$2.0M** |
+| Apr 2026 | $0 | $0 | $0 | **$0** |
+| May 2026 | $0 | $0 | $0 | **$0** |
+| Jun 2026 | $0 | $0 | $0 | **$0** |
+| Jul 2026 | $922 | $0 | $0 | **$922** |
+| Aug 2026 | $2.8K | $104.2K | $0 | **$107.0K** |
+| Sep 2026 | $6.5K | $183.7K | $59.2K | **$249.3K** |
+| Oct 2026 | $8.6K | $259.8K | $159.3K | **$427.7K** |
+| Nov 2026 | $10.3K | $346.7K | $168.6K | **$525.6K** |
+| Dec 2026 | $11.9K | $427.8K | $223.0K | **$662.7K** |
+| Jan 2027 | $13.7K | $616.0K | $351.3K | **$981.0K** |
+| Feb 2027 | $15.3K | $676.0K | $407.9K | **$1.1M** |
+| Mar 2027 | $16.9K | $756.1K | $521.5K | **$1.3M** |
+| Apr 2027 | $18.3K | $822.7K | $580.8K | **$1.4M** |
+| May 2027 | $19.7K | $869.9K | $705.1K | **$1.6M** |
+| Jun 2027 | $21.1K | $974.6K | $806.4K | **$1.8M** |
+| Jul 2027 | $22.8K | $1.1M | $949.8K | **$2.0M** |
+| Aug 2027 | $24.3K | $1.1M | $1.0M | **$2.2M** |
+| Sep 2027 | $25.8K | $1.2M | $1.0M | **$2.3M** |
+| Oct 2027 | $26.9K | $1.3M | $1.1M | **$2.5M** |
+| Nov 2027 | $28.2K | $1.4M | $1.2M | **$2.7M** |
+| Dec 2027 | $29.5K | $1.6M | $1.2M | **$2.8M** |
 
 ### Annual Totals by Scenario
 
 | Year | Conservative | Base Case | Aggressive |
 |------|--------------|-----------|------------|
 | 2025 | $0 | $0 | $0 |
-| 2026 | $2.9M | $3.6M | $4.3M |
-| 2027 | $13.5M | $16.8M | $20.2M |
+| 2026 | $1.6M | $2.0M | $2.4M |
+| 2027 | $18.1M | $22.6M | $27.1M |
 
 ### Scenario Assumptions
 
@@ -508,18 +515,18 @@ Three scenarios based on adjusted growth assumptions:
 
 | Month | Revenue | COGS | Gross Margin | OpEx | EBIT | Cash Consumed | Cash Remaining |
 |-------|---------|------|--------------|------|------|---------------|----------------|
-| Jan 2026 | $0 | $0 | $0 | $2.7K | $-2.7K | $-2.7K | $37.3K |
-| Feb 2026 | $0 | $0 | $0 | $6.3K | $-6.3K | $-9.1K | $30.9K |
-| Mar 2026 | $0 | $0 | $0 | $9.1K | $-9.1K | $-18.1K | $21.9K |
-| Apr 2026 | $1.9K | $0 | $1.9K | $16.4K | $-14.5K | $-32.7K | $7.3K |
-| May 2026 | $120.6K | $0 | $120.6K | $52.2K | $68.5K | $35.8K | $75.8K |
-| Jun 2026 | $195.3K | $0 | $195.3K | $72.4K | $123.0K | $158.7K | $198.7K |
-| Jul 2026 | $274.1K | $0 | $274.1K | $98.6K | $175.5K | $334.2K | $374.2K |
-| Aug 2026 | $359.6K | $103.6K | $256.0K | $132.0K | $124.0K | $458.2K | $498.2K |
-| Sep 2026 | $450.1K | $180.0K | $270.1K | $154.6K | $115.4K | $573.6K | $613.6K |
-| Oct 2026 | $628.4K | $251.4K | $377.0K | $214.2K | $162.8K | $736.4K | $776.4K |
-| Nov 2026 | $724.8K | $289.9K | $434.9K | $238.3K | $196.5K | $933.0K | $973.0K |
-| Dec 2026 | $848.0K | $339.2K | $508.8K | $269.2K | $239.6K | $1.2M | $1.2M |
+| Jan 2026 | $0 | $0 | $0 | $9.0K | $-9.0K | $-9.0K | $31.0K |
+| Feb 2026 | $0 | $0 | $0 | $9.0K | $-9.0K | $-18.0K | $22.0K |
+| Mar 2026 | $0 | $0 | $0 | $9.0K | $-9.0K | $-27.0K | $13.0K |
+| Apr 2026 | $0 | $0 | $0 | $9.0K | $-9.0K | $-36.0K | $4.0K |
+| May 2026 | $0 | $0 | $0 | $9.0K | $-9.0K | $-45.0K | **🔴 $-5.0K** |
+| Jun 2026 | $0 | $0 | $0 | $9.0K | $-9.0K | $-54.0K | **🔴 $-14.0K** |
+| Jul 2026 | $922 | $0 | $922 | $19.2K | $-18.3K | $-72.3K | **🔴 $-32.3K** |
+| Aug 2026 | $107.0K | $0 | $107.0K | $45.8K | $61.3K | $-11.0K | $29.0K |
+| Sep 2026 | $249.3K | $0 | $249.3K | $81.3K | $168.0K | $157.0K | $197.0K |
+| Oct 2026 | $427.7K | $37.0K | $390.7K | $115.9K | $274.8K | $431.7K | $471.7K |
+| Nov 2026 | $525.6K | $210.2K | $315.3K | $140.4K | $174.9K | $606.7K | $646.7K |
+| Dec 2026 | $662.7K | $265.1K | $397.6K | $174.7K | $222.9K | $829.6K | $869.6K |
 
 **Starting Cash (December 2025):** $40.0K
 **Cash Consumed:** Cumulative monthly EBIT (negative values reduce cash)
@@ -555,49 +562,49 @@ Three scenarios based on adjusted growth assumptions:
 
 | Item | Amount |
 |------|-------:|
-| **Revenue** | **$3.6M** |
+| **Revenue** | **$2.0M** |
 | | |
-| Gemini LLM (20%) | $720.6K |
-| Infrastructure (20%) | $720.6K |
+| Gemini LLM (20%) | $394.6K |
+| Infrastructure (20%) | $394.6K |
 | Google Credits (Limited to $277K lifetime) | ($277.0K) |
-| **COGS** | **$1.2M** |
+| **COGS** | **$512.3K** |
 | | |
-| **Gross Margin** | **$2.4M (67.7%)** |
+| **Gross Margin** | **$1.5M (74.0%)** |
 | | |
-| Commission (25%) | $900.7K |
-| Development Salaries | $290.4K |
+| Commission (25%) | $493.3K |
+| Development Salaries | $108.0K |
 | DevOps Salaries | $30.0K |
-| G&A Salaries | $45.0K |
-| **OpEx** | **$1.3M** |
+| G&A Salaries | $0 |
+| **OpEx** | **$631.3K** |
 | | |
-| **EBIT** | **$1.2M** |
+| **EBIT** | **$829.6K** |
 | Interest | ($5.0K) |
 | Taxes | ($0) |
-| **Net Income** | **$1.2M** |
+| **Net Income** | **$824.6K** |
 
 ### Profit & Loss Statement - 2027
 
 | Item | Amount |
 |------|-------:|
-| **Revenue** | **$16.8M** |
+| **Revenue** | **$22.6M** |
 | | |
-| Gemini LLM (20%) | $3.4M |
-| Infrastructure (20%) | $3.4M |
+| Gemini LLM (20%) | $4.5M |
+| Infrastructure (20%) | $4.5M |
 | Google Credits (Exhausted) | ($0) |
-| **COGS** | **$6.7M** |
+| **COGS** | **$9.0M** |
 | | |
-| **Gross Margin** | **$10.1M (60.0%)** |
+| **Gross Margin** | **$13.5M (60.0%)** |
 | | |
-| Commission (25%) | $4.2M |
-| Development Salaries | $480.0K |
-| DevOps Salaries | $120.0K |
-| G&A Salaries | $240.0K |
-| **OpEx** | **$5.0M** |
+| Commission (25%) | $5.6M |
+| Development Salaries | $418.0K |
+| DevOps Salaries | $100.0K |
+| G&A Salaries | $200.0K |
+| **OpEx** | **$6.4M** |
 | | |
-| **EBIT** | **$5.0M** |
+| **EBIT** | **$7.2M** |
 | Interest | ($15.0K) |
-| Taxes | ($1.3M) |
-| **Net Income** | **$3.8M** |
+| Taxes | ($1.8M) |
+| **Net Income** | **$5.4M** |
 
 **Note:** Google Cloud credits ($277K lifetime) applied sequentially starting 2025 until exhausted. Infrastructure rate is 20% (from cost_factors.csv).
 
@@ -617,19 +624,19 @@ Three scenarios based on adjusted growth assumptions:
 
 | Sources | Amount | Uses | Amount |
 |---------|-------:|------|-------:|
-| EBIT | $1.2M | Interest | $5.0K |
+| EBIT | $829.6K | Interest | $5.0K |
 | Angel Financing | $250.0K | Taxes | $0 |
-| **Total Sources** | $1.4M | **Total Uses** | $5.0K |
-|  |  | **Change in Nebula Valuation** | $1.4M |
+| **Total Sources** | $1.1M | **Total Uses** | $5.0K |
+|  |  | **Change in Nebula Valuation** | $1.1M |
 
 ### Sources & Uses of Funds - 2027
 
 | Sources | Amount | Uses | Amount |
 |---------|-------:|------|-------:|
-| EBIT | $5.0M | Interest | $15.0K |
-| Series A Financing | $2.5M | Taxes | $1.3M |
-| **Total Sources** | $7.5M | **Total Uses** | $1.3M |
-|  |  | **Change in Nebula Valuation** | $6.3M |
+| EBIT | $7.2M | Interest | $15.0K |
+| Series A Financing | $2.5M | Taxes | $1.8M |
+| **Total Sources** | $9.7M | **Total Uses** | $1.8M |
+|  |  | **Change in Nebula Valuation** | $7.9M |
 
 ---
 
@@ -651,21 +658,21 @@ Three scenarios based on adjusted growth assumptions:
 
 | Assets | Amount | Liabilities & Equity | Amount |
 |--------|-------:|----------------------|-------:|
-| Cash & Investments | $1.5M | Accounts Payable | $105.5K |
+| Cash & Investments | $1.1M | Accounts Payable | $52.6K |
 | Intellectual Property | $923.0K | Deferred Revenue | $0 |
-| **Total Assets** | **$2.4M** | **Total Liabilities** | **$105.5K** |
-| | | Nebula Valuation | $2.3M |
-| | | **Total Equity** | **$2.3M** |
+| **Total Assets** | **$2.0M** | **Total Liabilities** | **$52.6K** |
+| | | Nebula Valuation | $2.0M |
+| | | **Total Equity** | **$2.0M** |
 
 #### December 31, 2027
 
 | Assets | Amount | Liabilities & Equity | Amount |
 |--------|-------:|----------------------|-------:|
-| Cash & Investments | $7.7M | Accounts Payable | $420.3K |
+| Cash & Investments | $9.0M | Accounts Payable | $530.2K |
 | Intellectual Property | $923.0K | Deferred Revenue | $0 |
-| **Total Assets** | **$8.7M** | **Total Liabilities** | **$420.3K** |
-| | | Nebula Valuation | $8.2M |
-| | | **Total Equity** | **$8.2M** |
+| **Total Assets** | **$9.9M** | **Total Liabilities** | **$530.2K** |
+| | | Nebula Valuation | $9.4M |
+| | | **Total Equity** | **$9.4M** |
 
 ---
 
@@ -675,47 +682,47 @@ Three scenarios based on adjusted growth assumptions:
 
 ### Annual Revenue by Platform (2028-2030)
 
-| Year | Disclosure | Lingua | Nebula | **Total** | YoY Growth |
-|------|----------:|-------:|-------:|----------:|-----------:|
-| **2028** | $41.8M | $1.5M | $2.0M | **$45.3M** | **-** |
-| **2029** | $75.0M | $4.0M | $5.0M | **$84.0M** | **85.4%** |
-| **2030** | $116.2M | $7.0M | $5.5M | **$128.8M** | **53.3%** |
+| Year | DiscoveryNLU | Noether | Nebula | **Total** | YoY Growth |
+|------|------------:|--------:|-------:|----------:|-----------:|
+| **2028** | $32.3M | $28.3M | $1.2M | **$61.8M** | **-** |
+| **2029** | $52.3M | $52.7M | $2.7M | **$107.7M** | **74.2%** |
+| **2030** | $77.0M | $81.0M | $3.5M | **$161.6M** | **50.0%** |
 
 ### Profitability Trajectory (2028-2030)
 
 | Metric | 2028 | 2029 | 2030 | Trend |
 |--------|-----:|-----:|-----:|-------|
-| **Revenue** | $45.3M | $84.0M | $128.8M | 📈 69.0% CAGR |
-| **Gross Margin** | $30.8M | $68.9M | $108.2M | 68.0% → 84.0% |
-| **EBITDA** | -$7.3M | -$979.2K | $26.2M | -16.0% → 20.0% margin |
-| **Net Income** | -$5.8M | -$773.5K | $20.7M | Path to profitability |
-| **Headcount** | 28 | 50 | 75 | 47 new hires |
+| **Revenue** | $61.8M | $107.7M | $161.6M | 📈 62.0% CAGR |
+| **Gross Margin** | $42.0M | $88.3M | $138.9M | 68.0% → 86.0% |
+| **EBITDA** | -$762.7K | $12.1M | $49.8M | -1.0% → 31.0% margin |
+| **Net Income** | -$602.5K | $9.6M | $39.4M | Path to profitability |
+| **Headcount** | 30 | 52 | 77 | 47 new hires |
 
 ### Operating Expense Breakdown (2028-2030)
 
 | Category | 2028 | 2029 | 2030 | % of Revenue (2030) |
 |----------|-----:|-----:|-----:|--------------------:|
-| R&D | $10.4M | $19.1M | $24.0M | 18.6% |
-| Sales & Marketing | $16.1M | $29.0M | $32.4M | 25.2% |
-| G&A | $4.3M | $8.2M | $9.6M | 7.5% |
-| Commissions | $7.2M | $13.6M | $16.0M | 12.4% |
-| **Total OpEx** | **$38.1M** | **$69.9M** | **$82.0M** | **63.7%** |
+| R&D | $11.1M | $20.0M | $25.0M | 15.5% |
+| Sales & Marketing | $17.1M | $30.1M | $34.0M | 21.0% |
+| G&A | $4.8M | $8.6M | $10.0M | 6.2% |
+| Commissions | $9.9M | $17.4M | $20.1M | 12.4% |
+| **Total OpEx** | **$42.8M** | **$76.2M** | **$89.1M** | **55.2%** |
 
 ### Platform Mix Evolution
 
-| Year | Disclosure % | Lingua % | Nebula % | Strategic Milestone |
-|------|-------------:|---------:|---------:|---------------------|
-| **2028** | 92.3% | 3.2% | 4.5% | Series B deployment begins |
-| **2029** | 89.2% | 4.8% | 6.0% | Multi-platform scale achieved |
-| **2030** | 90.3% | 5.5% | 4.3% | Market leadership position |
+| Year | DiscoveryNLU % | Noether % | Nebula % | Strategic Milestone |
+|------|---------------:|----------:|---------:|---------------------|
+| **2028** | 52.3% | 45.8% | 2.0% | Series B deployment begins |
+| **2029** | 48.6% | 48.9% | 2.5% | Multi-platform scale achieved |
+| **2030** | 47.7% | 50.1% | 2.2% | Market leadership position |
 
 ### Effective Growth Rates (After Strategic Events)
 
 | Platform | 2028 CAGR | 2029 CAGR | 2030 CAGR | Key Events Applied |
 |----------|----------:|----------:|----------:|-------------------|
-| **Disclosure** | 85.0% | 79.2% | 55.1% | Harvey competition, market maturity |
-| **Lingua** | 303.6% | 174.8% | 75.4% | Network effects, corporate partnerships |
-| **Nebula** | 309.6% | 150.0% | 9.4% | Viral growth, content library expansion |
+| **DiscoveryNLU** | 72.4% | 61.8% | 47.3% | Harvey AI competition, securities disclosure market |
+| **Noether** | 100.3% | 86.1% | 53.8% | AmLaw 200 referral network; BigLaw/Corp tier expansion |
+| **NebulaNLU** | 243.8% | 125.0% | 28.1% | Retirement Community Corporation renewals |
 
 **Investor Insight:** Strategic events (competition, market dynamics, network effects) are encoded in `data_longterm/strategic_events.csv` and automatically applied to base CAGR assumptions.
 
@@ -725,24 +732,24 @@ Three scenarios based on adjusted growth assumptions:
 
 ### Revenue Growth Trajectory
 
-| Year | Disclosure | Lingua | Nebula | **Total** | YoY Growth |
-|------|----------:|-------:|-------:|----------:|-----------:|
-| **2026** | $3.4M | $42.0K | $188.8K | **$3.6M** | - |
-| **2027** | $15.9M | $449.7K | $438.7K | **$16.8M** | **367.0%** |
-| **2028** | $41.8M | $1.5M | $2.0M | **$45.3M** | **169.0%** |
-| **2029** | $75.0M | $4.0M | $5.0M | **$84.0M** | **85.0%** |
-| **2030** | $116.2M | $7.0M | $5.5M | **$128.8M** | **53.0%** |
+| Year | DiscoveryNLU | Noether | Nebula | **Total** | YoY Growth |
+|------|------------:|--------:|-------:|----------:|-----------:|
+| **2026** | $1.3M | $610.1K | $41.1K | **$2.0M** | - |
+| **2027** | $12.5M | $9.9M | $262.5K | **$22.6M** | **1044.0%** |
+| **2028** | $32.3M | $28.3M | $1.2M | **$61.8M** | **174.0%** |
+| **2029** | $52.3M | $52.7M | $2.7M | **$107.7M** | **74.0%** |
+| **2030** | $77.0M | $81.0M | $3.5M | **$161.6M** | **50.0%** |
 
 ### Key Performance Indicators (5-Year)
 
 | Metric | Value | Notes |
 |--------|------:|-------|
-| **Total Revenue (2026-2030)** | **$278.5M** | Cumulative across all platforms |
-| **5-Year Revenue CAGR** | **145.0%** | 2026 → 2030 compound growth |
-| **Total EBITDA (2028-2030)** | **$17.9M** | Profitable years only |
-| **Total Net Income (2028-2030)** | **$14.1M** | After taxes |
-| **Ending Headcount (2030)** | **75 FTEs** | From 8 FTEs in 2026 |
-| **Final EBITDA Margin** | **20.0%** | Target: 25%+ by 2030 |
+| **Total Revenue (2026-2030)** | **$355.6M** | Cumulative across all platforms |
+| **5-Year Revenue CAGR** | **201.0%** | 2026 → 2030 compound growth |
+| **Total EBITDA (2028-2030)** | **$61.2M** | Profitable years only |
+| **Total Net Income (2028-2030)** | **$48.3M** | After taxes |
+| **Ending Headcount (2030)** | **77 FTEs** | From 8 FTEs in 2026 |
+| **Final EBITDA Margin** | **31.0%** | Target: 25%+ by 2030 |
 
 ### Investment Returns Scenarios
 
@@ -750,10 +757,10 @@ Three scenarios based on adjusted growth assumptions:
 
 | Exit Year | ARR at Exit | Conservative Multiple | Optimistic Multiple | ROI (Conservative) | ROI (Optimistic) |
 |-----------|------------:|----------------------:|--------------------:|-------------------:|-----------------:|
-| **2027** | $16.8M | 8x | 12x | 438.0% | 707.0% |
-| **2028** | $45.3M | 10x | 15x | 1712.0% | 2618.0% |
-| **2029** | $84.0M | 12x | 18x | 3933.0% | 5949.0% |
-| **2030** | $128.8M | 12x | 18x | 6082.0% | 9173.0% |
+| **2027** | $22.6M | 8x | 12x | 622.0% | 984.0% |
+| **2028** | $61.8M | 10x | 15x | 2373.0% | 3610.0% |
+| **2029** | $107.7M | 12x | 18x | 5070.0% | 7655.0% |
+| **2030** | $161.6M | 12x | 18x | 7655.0% | 11533.0% |
 
 **Note:** Multiples based on SaaS industry benchmarks for companies with similar growth rates and margins.
 
@@ -765,10 +772,10 @@ Three scenarios based on adjusted growth assumptions:
 | **2027** | Series A raised ($5M) | Fuel sales team expansion |
 | **2028** | Series B deployment begins | Scale operations to 75 FTEs |
 | **2029** | Multi-platform profitability | EBITDA positive across portfolio |
-| **2030** | Market leadership position | $$128.8M ARR, 20.0% EBITDA margin |
+| **2030** | Market leadership position | $$161.6M ARR, 31.0% EBITDA margin |
 
 ---
 
 **End of Report**
 
-*Generated: 2026-02-27 13:48:49*
+*Generated: 2026-06-14 18:51:06*
