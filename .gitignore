@@ -9,7 +9,8 @@ deps/deps.jl
 /docs/site/
 
 # Output files
-output/
+financial_model/output/*
+!financial_model/output/monte_carlo_report.md
 *.csv
 *.png
 *.pdf
