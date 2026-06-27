@@ -1,4 +1,4 @@
-# 🚀 NLU PORTFOLIO STRATEGIC PLAN (2026-2030)
+# 🚀 NOETHER.STUDIO STRATEGIC PLAN (2026-2030)
 
 **For Investors & Prospective Employees**
 
@@ -17,6 +17,7 @@
 11. Financial Statements
 12. Long-Term Strategic Forecast (2028-2030)
 13. 5-Year Cumulative Summary
+14. Addendum — Pharma Product Portfolio (2028–2030)
 
 ---
 
@@ -24,7 +25,7 @@
 
 ### Quarterly Revenue Chart
 
-| Quarter | Nebula | DiscoveryNLU | Noether | Total | Growth |
+| Quarter | NebulaNLU.studio | verarubin.studio | noether.studio | Total | Growth |
 |---------|--------|--------------|---------|-------|--------|
 | 2025 Q4 | $0 | $0 | $0 | $0 | - |
 | 2026 Q1 | $0 | $0 | $0 | $0 | - |
@@ -36,9 +37,10 @@
 | 2027 Q3 | $73.4K | $3.7M | $3.6M | $7.4M | 47.2% |
 | 2027 Q4 | $55.6K | $2.9M | $2.9M | $5.9M | -20.5% |
 
+<div style="page-break-before: always;"></div>
 ### Annual Totals
 
-| Year | Nebula | DiscoveryNLU | Noether | **Total** | YoY Growth |
+| Year | NebulaNLU.studio | verarubin.studio | noether.studio | **Total** | YoY Growth |
 |------|--------|--------------|---------|-----------|------------|
 | **2025** | **$0** | **$0** | **$0** | **$0** | **-** |
 | **2026** | **$41.9K** | **$1.1M** | **$527.2K** | **$1.7M** | **-** |
@@ -85,7 +87,7 @@
 **Net Income:** $715.8K
 
 **R&D Tax Credit:** $21.6K
-
+<div style="page-break-before: always;"></div>
 ### 2027 Financial Summary
 
 **Revenue:** $24.4M
@@ -126,9 +128,8 @@
 
 ---
 
+<div style="page-break-before: always;"></div>
 ## 4. Hiring & Resource Schedule
-
-### Staffing Plan
 
 | Month | Development | Dev/Ops | Marketing | G&A | Total Monthly Salaries |
 |-------|-------------|---------|-----------|-----|------------------------|
@@ -159,7 +160,7 @@
 | Dec 2027 | 8 ($40.0K) | 1 ($10.0K) | 10 ($0) | 4 ($20.0K) | $70.0K |
 
 **Note:** Marketing compensation is 25% commission on revenue (not included in salary table).
-
+<div style="page-break-before: always;"></div>
 ### R&D Tax Credit Eligible Expenses
 
 Development salaries qualify for federal R&D tax credits (estimated 20% credit rate):
@@ -167,8 +168,6 @@ Development salaries qualify for federal R&D tax credits (estimated 20% credit r
 - **2025:** $0 (Est. credit: $0)
 - **2026:** $108.0K (Est. credit: $21.6K)
 - **2027:** $418.0K (Est. credit: $83.6K)
-
----
 
 ## 5. Probability Analysis
 
@@ -193,7 +192,7 @@ Development salaries qualify for federal R&D tax credits (estimated 20% credit r
   - Jul 2026 - Sep 2026: Exponential doubling
   - Oct 2026+: Linear growth (533 trials/month)
 
-### DiscoveryNLU.studio Model
+### verarubin.studio Model
 - **Trial:** Jul 2026 | **Revenue Start:** Aug 2026
 - **Pricing by Firm Size:**
   - Solo: $$15,000/year (λ=10.0 firms/month)
@@ -203,7 +202,7 @@ Development salaries qualify for federal R&D tax credits (estimated 20% credit r
   - BigLaw: $$750,000/year (λ=0.1 firms/month, starts Jan 2027)
 - **Distribution:** Poisson(λ) arrival process with 5-month major-markets ramp
 - **Churn:** Beta(1,15) ≈ 6.25% mean monthly churn (low for institutional legal clients)
-
+<div style="page-break-before: always;"></div>
 ### Noether.studio Model
 - **Trial:** Aug 2026 | **Revenue Start:** Sep 2026
 - **USPTO Patent Corpus Analysis — NLU, not generative AI:**
@@ -218,10 +217,12 @@ Development salaries qualify for federal R&D tax credits (estimated 20% credit r
   - Large: $$550,000/year (λ=0.1 firms/month, starts Jan 2027)
   - BigLaw: $$1,500,000/year (λ=0.1 firms/month, starts Jan 2027)
   - Corp (in-house GC): $$500,000/year (λ=0.15 firms/month, starts Mar 2027)
-- **Distribution:** Poisson(λ) arrival process; same Beta(1,15) churn model as DiscoveryNLU
+- **Distribution:** Poisson(λ) arrival process; same Beta(1,15) churn model as verarubin.studio
 
 ---
 
+
+<div style="page-break-before: always;"></div>
 ## 6. Activity Indicators
 
 ### NebulaNLU.studio Customers
@@ -253,8 +254,8 @@ Development salaries qualify for federal R&D tax credits (estimated 20% credit r
 | Oct 2027 | 578 | 2,020 | $27.3K |
 | Nov 2027 | 494 | 2,106 | $28.3K |
 | Dec 2027 | 490 | 2,189 | $29.2K |
-
-### DiscoveryNLU.studio Firms
+<div style="page-break-before: always;"></div>
+### verarubin.studio Firms
 
 | Month | Solo | Small | Medium | Large | BigLaw | Total | Revenue |
 |-------|------|-------|--------|-------|--------|-------|---------|
@@ -283,7 +284,7 @@ Development salaries qualify for federal R&D tax credits (estimated 20% credit r
 | Oct 2027 | 161 | 141 | 35 | 2 | 2 | 341 | $1.4M |
 | Nov 2027 | 175 | 149 | 38 | 2 | 2 | 365 | $1.5M |
 | Dec 2027 | 189 | 158 | 41 | 2 | 2 | 391 | $1.6M |
-
+<div style="page-break-before: always;"></div>
 ### Noether.studio Firms
 
 | Month | Solo | Small | Medium | Large | BigLaw | Corp | Total | Revenue |
@@ -316,11 +317,13 @@ Development salaries qualify for federal R&D tax credits (estimated 20% credit r
 
 ---
 
+<div style="page-break-before: always;"></div>
+
 ## 7. Revenue by Product
 
 ### Monthly Revenue Detail
 
-| Month | Nebula | DiscoveryNLU | Noether | Total |
+| Month | NebulaNLU.studio | verarubin.studio | noether.studio | Total |
 |-------|--------|--------------|---------|-------|
 | Dec 2025 | $0 | $0 | $0 | $0 |
 | Jan 2026 | $0 | $0 | $0 | $0 |
@@ -347,10 +350,10 @@ Development salaries qualify for federal R&D tax credits (estimated 20% credit r
 | Oct 2027 | $27.3K | $1.4M | $1.4M | $2.9M |
 | Nov 2027 | $28.3K | $1.5M | $1.5M | $3.0M |
 | Dec 2027 | $29.2K | $1.6M | $1.6M | $3.2M |
-
+<div style="page-break-before: always;"></div>
 ### Annual Revenue Summary
 
-| Year | Nebula | DiscoveryNLU | Noether | **Total** | YoY Growth |
+| Year | NebulaNLU.studio | verarubin.studio | noether.studio | **Total** | YoY Growth |
 |------|--------|--------------|---------|-----------|------------|
 | **2025** | **$0** | **$0** | **$0** | **$0** | **-** |
 | **2026** | **$41.9K** | **$1.1M** | **$527.2K** | **$1.7M** | **-** |
@@ -358,7 +361,7 @@ Development salaries qualify for federal R&D tax credits (estimated 20% credit r
 
 ### Product Mix Analysis
 
-| Year | NebulaNLU % | DiscoveryNLU % | Noether % |
+| Year | NebulaNLU.studio % | verarubin.studio % | noether.studio % |
 |------|-------------|----------------|----------|
 | 2025 | 0% | 0% | 0% |
 | 2026 | 2.5% | 65.8% | 31.7% |
@@ -368,13 +371,13 @@ Development salaries qualify for federal R&D tax credits (estimated 20% credit r
 
 ## 8. Revenue by Channel
 
-### Nebula Channels
+### NebulaNLU.studio Channels
 - Retirement Communities: 1,920+ facilities
 - Public Libraries: 17,000+ branches
 - Direct Marketing (Facebook/Instagram targeting parents & grandparents)
 - Referrals & Word-of-Mouth
-
-### DiscoveryNLU.studio Channels
+<div style="page-break-before: always;"></div>
+### verarubin.studio Channels
 
 | Type | Value | Cycle | Rep | Target/Year |
 |------|-------|-------|-----|-------------|
@@ -412,6 +415,8 @@ Development salaries qualify for federal R&D tax credits (estimated 20% credit r
 
 ---
 
+<div style="page-break-before: always;"></div>
+
 ## 9. Valuation Analysis
 
 ### December 2026
@@ -427,6 +432,8 @@ Development salaries qualify for federal R&D tax credits (estimated 20% credit r
 - Optimistic (18x): $685.5M
 
 ---
+
+<div style="page-break-before: always;"></div>
 
 ## 10. Revenue Scenarios (Deterministic)
 
@@ -462,10 +469,10 @@ Three scenarios based on adjusted growth assumptions:
 | Oct 2027 | $2.3M | $2.9M | $3.4M |
 | Nov 2027 | $2.4M | $3.0M | $3.6M |
 | Dec 2027 | $2.5M | $3.2M | $3.8M |
-
+<div style="page-break-before: always;"></div>
 ### Platform Revenue Breakdown (Base Case)
 
-| Month | NebulaNLU.studio | DiscoveryNLU.studio | Noether.studio | **Total** |
+| Month | NebulaNLU.studio | verarubin.studio | Noether.studio | **Total** |
 |-------|------------|----------------|------------|----------|
 | Dec 2025 | $0 | $0 | $0 | **$0** |
 | Jan 2026 | $0 | $0 | $0 | **$0** |
@@ -492,7 +499,7 @@ Three scenarios based on adjusted growth assumptions:
 | Oct 2027 | $27.3K | $1.4M | $1.4M | **$2.9M** |
 | Nov 2027 | $28.3K | $1.5M | $1.5M | **$3.0M** |
 | Dec 2027 | $29.2K | $1.6M | $1.6M | **$3.2M** |
-
+<div style="page-break-before: always;"></div>
 ### Annual Totals by Scenario
 
 | Year | Conservative | Base Case | Aggressive |
@@ -508,6 +515,8 @@ Three scenarios based on adjusted growth assumptions:
 - **Aggressive (120%):** Faster adoption, lower churn, shorter sales cycles
 
 ---
+
+<div style="page-break-before: always;"></div>
 
 ## 11. Financial Statements
 
@@ -533,7 +542,7 @@ Three scenarios based on adjusted growth assumptions:
 **Note:** 🔴 RED indicates runway exhausted - cash reserves depleted.
 
 ---
-
+<div style="page-break-before: always;"></div>
 ### Profit & Loss Statement - 2025
 
 | Item | Amount |
@@ -557,7 +566,7 @@ Three scenarios based on adjusted growth assumptions:
 | Interest | ($0) |
 | Taxes | ($0) |
 | **Net Income** | **$0** |
-
+<div style="page-break-before: always;"></div>
 ### Profit & Loss Statement - 2026
 
 | Item | Amount |
@@ -581,7 +590,7 @@ Three scenarios based on adjusted growth assumptions:
 | Interest | ($5.0K) |
 | Taxes | ($0) |
 | **Net Income** | **$715.8K** |
-
+<div style="page-break-before: always;"></div>
 ### Profit & Loss Statement - 2027
 
 | Item | Amount |
@@ -609,7 +618,7 @@ Three scenarios based on adjusted growth assumptions:
 **Note:** Google Cloud credits ($277K lifetime) applied sequentially starting 2025 until exhausted. Infrastructure rate is 20% (from cost_factors.csv).
 
 ---
-
+<div style="page-break-before: always;"></div>
 ### Sources & Uses of Funds - 2025
 
 | Sources | Amount | Uses | Amount |
@@ -618,7 +627,7 @@ Three scenarios based on adjusted growth assumptions:
 | Founder Cash | $40,000 | Interest | $0 |
 | **Total Sources** | $963,000 | Taxes | $0 |
 |  |  | **Total Uses** | $0 |
-|  |  | **Change in Nebula Valuation** | $963,000 |
+|  |  | **Change in Company Valuation** | $963,000 |
 
 ### Sources & Uses of Funds - 2026
 
@@ -627,7 +636,7 @@ Three scenarios based on adjusted growth assumptions:
 | EBIT | $720.8K | Interest | $5.0K |
 | Angel Financing | $250.0K | Taxes | $0 |
 | **Total Sources** | $970.8K | **Total Uses** | $5.0K |
-|  |  | **Change in Nebula Valuation** | $965.8K |
+|  |  | **Change in Company Valuation** | $965.8K |
 
 ### Sources & Uses of Funds - 2027
 
@@ -636,10 +645,10 @@ Three scenarios based on adjusted growth assumptions:
 | EBIT | $7.8M | Interest | $15.0K |
 | Series A Financing | $2.5M | Taxes | $2.0M |
 | **Total Sources** | $10.3M | **Total Uses** | $2.0M |
-|  |  | **Change in Nebula Valuation** | $8.4M |
+|  |  | **Change in Company Valuation** | $8.4M |
 
 ---
-
+<div style="page-break-before: always;"></div>
 ### Balance Sheets
 
 #### December 31, 2025
@@ -649,7 +658,7 @@ Three scenarios based on adjusted growth assumptions:
 | Cash & Investments | $40,000 | Accounts Payable | $0 |
 | Intellectual Property* | $923,000 | Deferred Revenue | $0 |
 | **Total Assets** | **$963,000** | **Total Liabilities** | **$0** |
-| | | Nebula Valuation | $963,000 |
+| | | Company Valuation | $963,000 |
 | | | **Total Equity** | **$963,000** |
 
 *Pre-existing software platform contributed at formation
@@ -661,7 +670,7 @@ Three scenarios based on adjusted growth assumptions:
 | Cash & Investments | $1.0M | Accounts Payable | $46.1K |
 | Intellectual Property | $923.0K | Deferred Revenue | $0 |
 | **Total Assets** | **$1.9M** | **Total Liabilities** | **$46.1K** |
-| | | Nebula Valuation | $1.9M |
+| | | Company Valuation | $1.9M |
 | | | **Total Equity** | **$1.9M** |
 
 #### December 31, 2027
@@ -671,10 +680,12 @@ Three scenarios based on adjusted growth assumptions:
 | Cash & Investments | $9.4M | Accounts Payable | $568.3K |
 | Intellectual Property | $923.0K | Deferred Revenue | $0 |
 | **Total Assets** | **$10.3M** | **Total Liabilities** | **$568.3K** |
-| | | Nebula Valuation | $9.7M |
+| | | Company Valuation | $9.7M |
 | | | **Total Equity** | **$9.7M** |
 
 ---
+
+<div style="page-break-before: always;"></div>
 
 ## 12. Long-Term Strategic Forecast (2028-2030)
 
@@ -682,7 +693,7 @@ Three scenarios based on adjusted growth assumptions:
 
 ### Annual Revenue by Platform (2028-2030)
 
-| Year | DiscoveryNLU | Noether | Nebula | **Total** | YoY Growth |
+| Year | verarubin.studio | noether.studio | NebulaNLU.studio | **Total** | YoY Growth |
 |------|------------:|--------:|-------:|----------:|-----------:|
 | **2028** | $32.5M | $37.8M | $1.2M | **$71.5M** | **-** |
 | **2029** | $52.6M | $70.4M | $2.7M | **$125.7M** | **75.8%** |
@@ -707,10 +718,10 @@ Three scenarios based on adjusted growth assumptions:
 | G&A | $4.8M | $8.6M | $10.0M | 5.3% |
 | Commissions | $11.4M | $20.4M | $23.6M | 12.4% |
 | **Total OpEx** | **$44.4M** | **$79.1M** | **$92.6M** | **48.9%** |
-
+<div style="page-break-before: always;"></div>
 ### Platform Mix Evolution
 
-| Year | DiscoveryNLU % | Noether % | Nebula % | Strategic Milestone |
+| Year | verarubin.studio % | noether.studio % | NebulaNLU.studio % | Strategic Milestone |
 |------|---------------:|----------:|---------:|---------------------|
 | **2028** | 45.4% | 52.9% | 1.7% | Series B deployment begins |
 | **2029** | 41.8% | 56.0% | 2.2% | Multi-platform scale achieved |
@@ -720,19 +731,21 @@ Three scenarios based on adjusted growth assumptions:
 
 | Platform | 2028 CAGR | 2029 CAGR | 2030 CAGR | Key Events Applied |
 |----------|----------:|----------:|----------:|-------------------|
-| **DiscoveryNLU** | 72.4% | 61.8% | 47.3% | Harvey AI competition, securities disclosure market |
+| **verarubin.studio** | 72.4% | 61.8% | 47.3% | Harvey AI competition, securities disclosure market |
 | **Noether** | 100.3% | 86.1% | 53.8% | AmLaw 200 referral network; BigLaw/Corp tier expansion |
-| **NebulaNLU** | 243.8% | 125.0% | 28.1% | Retirement Community Corporation renewals |
+| **NebulaNLU.studio** | 243.8% | 125.0% | 28.1% | Retirement Community Corporation renewals |
 
 **Investor Insight:** Strategic events (competition, market dynamics, network effects) are encoded in `data_longterm/strategic_events.csv` and automatically applied to base CAGR assumptions.
 
 ---
 
+<div style="page-break-before: always;"></div>
+
 ## 13. 5-Year Cumulative Summary (2026-2030)
 
 ### Revenue Growth Trajectory
 
-| Year | DiscoveryNLU | Noether | Nebula | **Total** | YoY Growth |
+| Year | verarubin.studio | noether.studio | NebulaNLU.studio | **Total** | YoY Growth |
 |------|------------:|--------:|-------:|----------:|-----------:|
 | **2026** | $1.1M | $527.2K | $41.9K | **$1.7M** | - |
 | **2027** | $12.5M | $11.6M | $266.6K | **$24.4M** | **1368.0%** |
@@ -763,12 +776,12 @@ Three scenarios based on adjusted growth assumptions:
 | **2030** | $189.3M | 12x | 18x | 8986.0% | 13528.0% |
 
 **Note:** Multiples based on SaaS industry benchmarks for companies with similar growth rates and margins.
-
+<div style="page-break-before: always;"></div>
 ### Strategic Milestones Achieved
 
 | Year | Milestone | Impact |
 |------|-----------|--------|
-| **2026** | Product launches complete | All three platforms revenue-generating |
+| **2026** | Product launches complete | NebulaNLU.studio, verarubin.studio, noether.studio revenue-generating; sophuslie.studio and katiekariko.studio in development |
 | **2027** | Series A raised ($5M) | Fuel sales team expansion |
 | **2028** | Series B deployment begins | Scale operations to 75 FTEs |
 | **2029** | Multi-platform profitability | EBITDA positive across portfolio |
@@ -776,6 +789,66 @@ Three scenarios based on adjusted growth assumptions:
 
 ---
 
+<div style="page-break-before: always;"></div>
+
+## 14. Addendum — Pharma Product Portfolio (2028–2030)
+
+Two products — **sophuslie.studio** (drug development decision intelligence) and **katiekariko.studio** (synthesis route planning) — enter commercial availability beginning 2028 and are not included in Sections 1–13. This addendum shows their incremental contribution to total company revenue and enterprise value.
+
+### Revenue Forecast
+
+<table>
+  <thead>
+    <tr>
+      <th>Year</th>
+      <th>Ending ARR</th>
+      <th>Calendar Year Revenue</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td colspan="3"><strong>NebulaNLU.studio, verarubin.studio, and noether.studio</strong></td></tr>
+    <tr><td>2028</td><td>$71.5M</td><td>$71.5M</td></tr>
+    <tr><td>2029</td><td>$125.7M</td><td>$125.7M</td></tr>
+    <tr><td>2030</td><td>$189.3M</td><td>$189.3M</td></tr>
+    <tr><td colspan="3"><strong>sophuslie.studio</strong></td></tr>
+    <tr><td>2028</td><td>$4.0M</td><td>$2.6M</td></tr>
+    <tr><td>2029</td><td>$12.0M</td><td>$8.0M</td></tr>
+    <tr><td>2030</td><td>$22.0M</td><td>$17.0M</td></tr>
+    <tr><td colspan="3"><strong>katiekariko.studio</strong></td></tr>
+    <tr><td>2028</td><td>$1.5M</td><td>$0.7M</td></tr>
+    <tr><td>2029</td><td>$6.0M</td><td>$3.75M</td></tr>
+    <tr><td>2030</td><td>$13.0M</td><td>$9.5M</td></tr>
+    <tr><td colspan="3"><strong>Total Revenue</strong></td></tr>
+    <tr><td>2028</td><td>$77.0M</td><td>$74.8M</td></tr>
+    <tr><td>2029</td><td>$143.7M</td><td>$137.5M</td></tr>
+    <tr><td>2030</td><td>$224.3M</td><td>$215.8M</td></tr>
+  </tbody>
+</table>
+
+*Original 3 Products Ending ARR shown as annual revenue proxy (Section 12–13 base case). Pharma products represent base-case scenario.*
+
+### Incremental Valuation — sophuslie.studio + katiekariko.studio
+
+<table>
+  <thead>
+    <tr>
+      <th>Year</th>
+      <th>Original Valuation (15–20×)</th>
+      <th>Combined Pharma Ending ARR</th>
+      <th>Incremental Enterprise Value (15–20×)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>2028</td><td>$1.07B – $1.43B</td><td>$5.5M</td><td>$83M – $110M</td></tr>
+    <tr><td>2029</td><td>$1.89B – $2.51B</td><td>$18.0M</td><td>$270M – $360M</td></tr>
+    <tr><td>2030</td><td>$2.84B – $3.79B</td><td>$35.0M</td><td>$525M – $700M</td></tr>
+  </tbody>
+</table>
+
+*Original Valuation applies 15–20× to annual revenue from Section 12–13 as ARR proxy. Incremental Enterprise Value applies the same multiple to combined pharma Ending ARR only.*
+
+---
+
 **End of Report**
 
-*Generated: 2026-06-14 19:23:37*
+*Generated: 2026-06-27*
